@@ -1,0 +1,1 @@
+Ce module permet de gérer les Acides Aminées (AA) que l'on souhaite utiliser, et aussi d'avoir les AA possible pour une masse donnée (plus la masse est grandz, plus le temps de calcul l'est aussi,en dessous de 500 da, cela reste très corrrect)
