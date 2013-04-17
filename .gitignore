@@ -1,0 +1,25 @@
+# Compiled Object files
+*.slo
+*.lo
+*.o
+main
+
+# Compiled Dynamic libraries
+*.so
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+
+#python
+*.log
+*.pot
+*.pyc
+local_settings.py
+
+#perso
+trunk/mgf/
+*.mgf
+*.arp
+*.vim
