@@ -8,10 +8,10 @@ all: serveur local
 	$(CC) $(FLAGS) -o "$@" -c "$<"
 	@cp $@ $(OBJ_DIR)
 
-local: local.o local.hpp
+local: local.o local.hpp 
 	#$(CC) $^ $(FLAGS) -o $@
 
-serveur: serveur.o serveur.hpp
+serveur: serveur.o serveur.hpp Socket.o
 	#$(CC) $^ $(FLAGS) -o $@
 
 
