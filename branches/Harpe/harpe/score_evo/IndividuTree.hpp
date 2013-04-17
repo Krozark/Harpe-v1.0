@@ -7,7 +7,7 @@
 #include <vector>
 #include <stack>
 
-#include "../analyseur_peptide.hpp"
+#include "../analyseur/analyseur_peptide.hpp"
 
 #define TREE_INIT_PROONDEUR 7
 #define TREE_SUB_INIT_PROFONDEUR 5

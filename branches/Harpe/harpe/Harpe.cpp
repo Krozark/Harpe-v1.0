@@ -3,7 +3,7 @@
 //#include<list>
 
 #include "parser_mgf/parser.hpp"
-#include "analyseur_peptide.hpp"
+#include "analyseur/analyseur_peptide.hpp"
 #include "score_evo/random.hpp"
 
 #ifdef APPRENTISSAGE
@@ -21,7 +21,7 @@ AA_Tab aa_tab = AA_Tab();
 
 
 int normal(int argc, char* argv[]);
-void serveur(int argc,char* argv[]);
+int serveur(int argc,char* argv[]);
 
 int main(int argc, char* argv[])
 {
@@ -40,7 +40,7 @@ float calc_stats[20][STATS_SIZE];
  * -e erreur
  * -l nombre (de solutions à afficher)
  **/
-#define SHOW_ARGS(x) {cerr<<x<<endl<<"Les arguments sont:\n\
+#define SHOW_ARGS_NOMAL(x) {cerr<<x<<endl<<"Les arguments sont:\n\
     -f path (de fichier mgf),\n\
     -e erreur,\n\
     -l nombre (de solution à lister),\n\
@@ -54,7 +54,7 @@ float calc_stats[20][STATS_SIZE];
 int normal(int argc, char* argv[])
 {
     if (argc < 2)
-        SHOW_ARGS("pas assez d'arguments")
+        SHOW_ARGS_NOMAL("pas assez d'arguments")
 
     rand_init();
 
@@ -74,21 +74,21 @@ int normal(int argc, char* argv[])
                 if(++i <argc)
                     filepath = argv[i];
                 else
-                    SHOW_ARGS("Pas de nom de fichier")
+                    SHOW_ARGS_NOMAL("Pas de nom de fichier")
             }
             else if (arg == "-e")
             {
                 if(++i <argc)
                     error = atof(argv[i]);
                 else
-                    SHOW_ARGS("Pas de nombre")
+                    SHOW_ARGS_NOMAL("Pas de nombre")
             }
             else if (arg == "-l")
             {
                 if(++i <argc)
                     nb_affiche = atoi(argv[i]);
                 else
-                    SHOW_ARGS("Pas de nombre")
+                    SHOW_ARGS_NOMAL("Pas de nombre")
             }
             else if (arg == "-i")
             {
@@ -99,49 +99,49 @@ int normal(int argc, char* argv[])
                 if(++i <argc)
                     trou_max = atof(argv[i]);
                 else
-                    SHOW_ARGS("Pas de nombre")
+                    SHOW_ARGS_NOMAL("Pas de nombre")
             }
             else if(arg == "-bdd")
             {
                 if(++i <argc)
                     s_bdd = argv[i];
                 else
-                    SHOW_ARGS("Pas de base de donnée spécifiée")
+                    SHOW_ARGS_NOMAL("Pas de base de donnée spécifiée")
             }
             else if(arg == "-pass")
             {
                 if(++i <argc)
                     s_password = argv[i];
                 else
-                    SHOW_ARGS("Pas de mot de pass spécifiée")
+                    SHOW_ARGS_NOMAL("Pas de mot de pass spécifiée")
             }
             else if(arg == "-user")
             {
                 if(++i <argc)
                     s_username = argv[i];
                 else
-                    SHOW_ARGS("Pas de nom d'utilisateur spécifiée")
+                    SHOW_ARGS_NOMAL("Pas de nom d'utilisateur spécifiée")
             }
             else if(arg == "-host")
             {
                 if(++i <argc)
                     s_server = argv[i];
                 else
-                    SHOW_ARGS("Pas d'adresse ip spécifiée")
+                    SHOW_ARGS_NOMAL("Pas d'adresse ip spécifiée")
             }
             else if(arg == "-port")
             {
                 if(++i <argc)
                     s_port = argv[i];
                 else
-                    SHOW_ARGS("Pas de port spécifié")
+                    SHOW_ARGS_NOMAL("Pas de port spécifié")
             }
             ++i;
         }
     }
 
     if(filepath == "")
-        SHOW_ARGS("Un fichier mgf est requis");
+        SHOW_ARGS_NOMAL("Un fichier mgf est requis");
 
     BDD_INIT();
 
@@ -217,6 +217,84 @@ int normal(int argc, char* argv[])
     return 0;
 };
 
-void serveur(int argc,char* argv[])
+#define SHOW_ARGS_SERVEUR(x) {cerr<<x<<endl<<"Les arguments sont:\n\
+    -l nombre (de solution à lister),\n\
+    -m masse max d'un trou à considérer\n\
+    -i ignorer les charges des peaks dans le fichier, \n\
+    -bdd base de donnée (Harpe par défaut), \n\
+    -pass mot de passe de l'utilisateur de la basse de donnée (root par défaut), \n\
+    -user utilisateur de la basse de donnée (root par défaut), -host adresse ip du serveur (127.0.0.1 par défaut), \n\
+    -port port de connextion à la base donnée (3306 par défaut)"<<endl;return 1;}
+
+int serveur(int argc,char* argv[])
 {
+    int nb_affiche = -1;
+    bool ignore = false;
+    float trou_max = 500;
+    {//recuperation des arguments
+        int i=1;
+        while(i<argc)
+        {
+            string arg = string(argv[i]);
+
+            if (arg == "-l")
+            {
+                if(++i <argc)
+                    nb_affiche = atoi(argv[i]);
+                else
+                    SHOW_ARGS_SERVEUR("Pas de nombre")
+            }
+            else if (arg == "-i")
+            {
+                ignore=true;
+            }
+            else if (arg == "-m")
+            {
+                if(++i <argc)
+                    trou_max = atof(argv[i]);
+                else
+                    SHOW_ARGS_SERVEUR("Pas de nombre")
+            }
+            else if(arg == "-bdd")
+            {
+                if(++i <argc)
+                    s_bdd = argv[i];
+                else
+                    SHOW_ARGS_SERVEUR("Pas de base de donnée spécifiée")
+            }
+            else if(arg == "-pass")
+            {
+                if(++i <argc)
+                    s_password = argv[i];
+                else
+                    SHOW_ARGS_SERVEUR("Pas de mot de pass spécifiée")
+            }
+            else if(arg == "-user")
+            {
+                if(++i <argc)
+                    s_username = argv[i];
+                else
+                    SHOW_ARGS_SERVEUR("Pas de nom d'utilisateur spécifiée")
+            }
+            else if(arg == "-host")
+            {
+                if(++i <argc)
+                    s_server = argv[i];
+                else
+                    SHOW_ARGS_SERVEUR("Pas d'adresse ip spécifiée")
+            }
+            else if(arg == "-port")
+            {
+                if(++i <argc)
+                    s_port = argv[i];
+                else
+                    SHOW_ARGS_SERVEUR("Pas de port spécifié")
+            }
+            ++i;
+        }
+    }
+
+    BDD_INIT();
+    BDD_DESTROY()
+    return 0;
 };

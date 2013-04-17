@@ -1,21 +1,12 @@
-export CC = g++
-INCPATH = 
-LIBS = -lmysqlcppconn 
-#export DEFINES = -DAPPRENTISSAGE
-export DEFINES = 
-export FLAGS = -g -std=c++0x -o3 $(INCPATH) $(LIBS) $(DEFINES)
-export TOP := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
-export OBJ_DIR = $(TOP)/obj
-
 SRC = $(wildcard *.c*)
 OBJ = $(SRC:.cpp=.o) $(SRC:*.cpp=.o)
 
-SUBDIRS = harpe obj
+BASE_SUBDIRS = parser_mgf aa_search combinaisons sql analyseur
 
 ifeq ($(DEFINES),-DAPPRENTISSAGE)
-export EXEC = Harpe-apprentissage
+SUBDIRS = $(BASE_SUBDIRS) score_evo
 else
-export EXEC = Harpe
+SUBDIRS = $(BASE_SUBDIRS)
 endif
 
 CLEANDIRS = $(SUBDIRS:%=clean-%)
@@ -33,11 +24,11 @@ $(SUBDIRS):
 
 .cpp.o:
 	$(CC) $(FLAGS) -o $@ -c $^;
-	@mv $@ obj
+	@cp $@ $(OBJ_DIR)
 
 .c.o :
 	$(CC) $(FLAGS) -o $@ -c $^;
-	@mv $@ obj
+	@cp $@ $(OBJ_DIR)
 
 
 #$(EXEC): $(OBJ) $(SUBDIRS)

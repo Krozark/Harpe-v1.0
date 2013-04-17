@@ -7,11 +7,11 @@
 #include <stddef.h>
 #include <iostream>
 #include <memory>
-#include "aa_search/Enzyme.hpp"
+#include "../aa_search/Enzyme.hpp"
 
 //#include <tuple>
-#include "aa_search/AA_tab.hpp"
-#include "parser_mgf/parser.hpp"
+#include "../aa_search/AA_tab.hpp"
+#include "../parser_mgf/parser.hpp"
 
 /*#ifdef APPRENTISSAGE
 #include "score_evo/IndividuTree.hpp"
