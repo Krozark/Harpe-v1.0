@@ -1,5 +1,6 @@
 #include <cstdlib>
 #include <ctime>
+//#include<list>
 
 #include "parser_mgf/parser.hpp"
 #include "analyseur_peptide.hpp"
@@ -9,29 +10,48 @@
 #include "score_evo/IndividuTree.hpp"
 #include "score_evo/GenetiqueEngine.hpp"
 #else
-#include "fonction_finds/372.hpp"
+#include "fonction_finds/408.hpp"
 #endif
 
 using namespace std;
 
+BDD_DECLARE();
+
+AA_Tab aa_tab = AA_Tab();
+
+
+int normal(int argc, char* argv[]);
+void serveur(int argc,char* argv[]);
+
+int main(int argc, char* argv[])
+{
+    return normal(argc,argv);
+};
+
+#if DEBUG & DEBUG_STATS
+float calc_stats[20][STATS_SIZE];
+#endif
+
+
+///////////// FONCTIONS //////////////////////////
 /**
  * @arg 
  * -f file name
  * -e erreur
  * -l nombre (de solutions à afficher)
  **/
-#define SHOW_ARGS(x) {cerr<<x<<endl<<"Les arguments sont:\n -f path (de fichier mgf),\n -e erreur,\n -l nombre (de solution à lister),\n -m masse max d'un trou à considérer\n -i ignorer les charges des peaks dans le fichier, \n -bdd base de donnée (Harpe par défaut), \n -pass mot de passe de l'utilisateur de la basse de donnée (root par défaut), \n -user utilisateur de la basse de donnée (root par défaut), -host adresse ip du serveur (127.0.0.1 par défaut), \n -port port de connextion à la base donnée (3306 par défaut)"<<endl;return 0;}
+#define SHOW_ARGS(x) {cerr<<x<<endl<<"Les arguments sont:\n\
+    -f path (de fichier mgf),\n\
+    -e erreur,\n\
+    -l nombre (de solution à lister),\n\
+    -m masse max d'un trou à considérer\n\
+    -i ignorer les charges des peaks dans le fichier, \n\
+    -bdd base de donnée (Harpe par défaut), \n\
+    -pass mot de passe de l'utilisateur de la basse de donnée (root par défaut), \n\
+    -user utilisateur de la basse de donnée (root par défaut), -host adresse ip du serveur (127.0.0.1 par défaut), \n\
+    -port port de connextion à la base donnée (3306 par défaut)"<<endl;return 1;}
 
-#if DEBUG & DEBUG_STATS
-float calc_stats[20][STATS_SIZE];
-#endif
-
-BDD_DECLARE();
-
-AA_Tab aa_tab = AA_Tab();
-    #include<list>
-
-int main(int argc, char* argv[])
+int normal(int argc, char* argv[])
 {
     if (argc < 2)
         SHOW_ARGS("pas assez d'arguments")
@@ -195,4 +215,8 @@ int main(int argc, char* argv[])
     BDD_DESTROY()
 
     return 0;
+};
+
+void serveur(int argc,char* argv[])
+{
 };
