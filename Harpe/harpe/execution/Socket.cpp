@@ -1,6 +1,7 @@
 #include "Socket.hpp"
 
-unsigned int Socket::Max_clients = 5;
+int Socket::Max_clients = 5;
+int Socket::Port = 1977;
 
 Socket::Socket(Socket::Dommaine dommaine,Socket::Type type,int protocole)
 {
@@ -12,7 +13,7 @@ Socket::Socket(Socket::Dommaine dommaine,Socket::Type type,int protocole)
     //sin_family = Dommaine
     sock_cfg.sin_family = dommaine;
     //sin_port = port à utiliser
-    sock_cfg.sin_port = htons(PORT);
+    sock_cfg.sin_port = htons(Socket::Port);
 
     if(bind(sock,(SOCKADDR*)&sock_cfg,sizeof(sock_cfg)) == SOCKET_ERROR)
     {

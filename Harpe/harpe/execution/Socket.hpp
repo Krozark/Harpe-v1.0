@@ -33,7 +33,6 @@
 
 #define CRLF		"\r\n"
 #define BUF_SIZE	1024
-#define PORT	 	1977
 
 class Socket
 {
@@ -44,7 +43,9 @@ class Socket
         Socket(Dommaine dommaine,Type type,int protocole=0);
         ~Socket();
 
-        static unsigned int Max_clients;
+        static int Max_clients;
+        static int Port;
+        static int Buffer_size;
 
     private:
         //socket
