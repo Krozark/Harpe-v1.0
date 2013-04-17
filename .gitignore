@@ -21,5 +21,6 @@ local_settings.py
 #perso
 trunk/mgf/
 *.mgf
+!file_test.mgf
 *.arp
 *.vim
