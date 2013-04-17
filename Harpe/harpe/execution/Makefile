@@ -1,0 +1,17 @@
+all: main
+
+.cpp.o:
+	$(CC) $(FLAGS) -o "$@" -c "$<" 
+	@cp $@ $(OBJ_DIR)
+
+.c.o:
+	$(CC) $(FLAGS) -o "$@" -c "$<"
+	@cp $@ $(OBJ_DIR)
+
+main: local.o serveur.o
+	#$(CC) $^ $(FLAGS) -o $@
+
+
+clean:
+	@rm -f *.o
+	@rm -f main

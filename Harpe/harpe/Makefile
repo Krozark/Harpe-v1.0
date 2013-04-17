@@ -1,7 +1,7 @@
 SRC = $(wildcard *.c*)
 OBJ = $(SRC:.cpp=.o) $(SRC:*.cpp=.o)
 
-BASE_SUBDIRS = parser_mgf aa_search combinaisons sql analyseur
+BASE_SUBDIRS = parser_mgf aa_search combinaisons sql analyseur execution
 
 ifeq ($(DEFINES),-DAPPRENTISSAGE)
 SUBDIRS = $(BASE_SUBDIRS) score_evo
