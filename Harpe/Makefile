@@ -13,9 +13,9 @@ OBJ = $(SRC:.cpp=.o) $(SRC:*.cpp=.o)
 SUBDIRS = harpe obj
 
 ifeq ($(DEFINES),-DAPPRENTISSAGE)
-export EXEC = Harpe-apprentissage
+export EXEC = Harpe-apprentissage.exe
 else
-export EXEC = Harpe
+export EXEC = Harpe.exe
 endif
 
 CLEANDIRS = $(SUBDIRS:%=clean-%)

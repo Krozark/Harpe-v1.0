@@ -1,4 +1,4 @@
-all: main
+all: main.exe
 
 .cpp.o:
 	$(CC) $(FLAGS) -o "$@" -c "$<"
@@ -8,7 +8,7 @@ all: main
 	$(CC) $(FLAGS) -o "$@" -c "$<"
 	@cp $@ $(OBJ_DIR)
 
-main: main.cpp parser.lex.o parser.o
+main.exe: main.cpp parser.lex.o parser.o
 	$(CC) $^ $(FLAGS) -o $@
 
 parser.lex.o : parser.lex.c
@@ -22,5 +22,5 @@ parser.lex.c: parser.lex defines.hpp
 
 clean:
 	@rm -f *.o
-	@rm -f main
+	@rm -f main.exe
 	@rm -f parser.lex.c

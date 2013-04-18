@@ -1,4 +1,4 @@
-all: serveur local main
+all: serveur.exe local.exe main
 
 .cpp.o:
 	$(CC) $(FLAGS) -o "$@" -c "$<" 
@@ -10,14 +10,13 @@ all: serveur local main
 
 main : local.o serveur.o Socket.o
 
-local: local-main.cpp Socket.o
+local.exe: local-main.cpp Socket.o
 	$(CC) $^ $(FLAGS) -o $@
 
-serveur: serveur-main.cpp Socket.o
+serveur.exe: serveur-main.cpp Socket.o
 	$(CC) $^ $(FLAGS) -o $@
 
 
 clean:
 	@rm -f *.o
-	@rm -f local
-	@rm -f serveur
+	@rm -f *.exe

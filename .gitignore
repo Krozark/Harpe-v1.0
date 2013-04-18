@@ -3,6 +3,7 @@
 *.lo
 *.o
 main
+*.exe
 
 # Compiled Dynamic libraries
 *.so
