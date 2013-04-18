@@ -1,23 +1,15 @@
-#ifndef APPRENTISSAGE
-#include "../fonction_finds/408.hpp"
-#endif
-
-#include "serveur.hpp"
-
-#if DEBUG & DEBUG_STATS
-float calc_stats[20][STATS_SIZE];
-#endif
-
-using namespace std;
-
-BDD_DECLARE();
-
-AA_Tab aa_tab = AA_Tab();
-
+#include "Socket.hpp"
+#include <iostream>
 
 int main(int argc, char* argv[])
 {
-    return serveur(argc,argv);
+    Socket sock(Socket::Dommaine::IP,Socket::Type::TCP);
+    Socket client = sock.Wait();
+    char msg[32] = "hello word!";
+    std::cout<<"Envoi du message: "<<msg<<std::endl;
+    client.Send(msg,32);
+    client.Shutdown();
+    return 0;
 };
 
 

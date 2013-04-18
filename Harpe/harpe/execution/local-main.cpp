@@ -1,25 +1,14 @@
-//#include <cstdlib>
-//#include <ctime>
-#ifndef APPRENTISSAGE
-#include "../fonction_finds/408.hpp"
-#endif
-
-#include "local.hpp"
-
-#if DEBUG & DEBUG_STATS
-float calc_stats[20][STATS_SIZE];
-#endif
-
-using namespace std;
-
-BDD_DECLARE();
-
-AA_Tab aa_tab = AA_Tab();
-
+#include "Socket.hpp"
+#include <iostream>
 
 int main(int argc, char* argv[])
 {
-    return local(argc,argv);
+    Socket sock(Socket::Dommaine::IP,Socket::Type::TCP);
+    sock.Connect("127.0.0.1");
+    char msg[32] = {0};
+    sock.Receive(msg,32);
+    std::cout<<"Recu : "<<msg<<std::endl;
+    return 0;
 };
 
 

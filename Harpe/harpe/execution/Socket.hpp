@@ -30,24 +30,50 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
+#include <string>
 
 #define CRLF		"\r\n"
 #define BUF_SIZE	1024
+#define PORT 1977
 
 class Socket
 {
     public:
         enum Dommaine {IP=AF_INET, LOCAL=AF_UNIX};
         enum Type {TCP=SOCK_STREAM, UDP=SOCK_DGRAM};
+        enum Down {EMIT=0,RECIVE=1,BOTH=2};
 
         Socket(Dommaine dommaine,Type type,int protocole=0);
         ~Socket();
 
+        void Connect(std::string host,int port=PORT);
+        Socket Wait(std::string host="",int port=PORT);
+
+        template<typename T>
+        inline void Send(const T* data,const size_t len,const int flags=0) const
+        {
+            if(send(sock,data,sizeof(T)*len,flags) ==  SOCKET_ERROR)
+            {
+                perror("Sending message fail");
+                throw "Sending message fail";
+            }
+        }
+
+        template<typename T>
+        inline void Receive(T* buffer,const size_t len,const int flags=0) const
+        {
+            recv(sock,buffer,sizeof(T)*len,flags);
+        };
+
+        void Shutdown(Down mode=Down::BOTH);
+
+
         static int Max_clients;
-        static int Port;
         static int Buffer_size;
 
     private:
+        Socket(){}// intern use only;
+        inline void _close(){closesocket(sock);};
         //socket
         SOCKET sock;
         //configuration

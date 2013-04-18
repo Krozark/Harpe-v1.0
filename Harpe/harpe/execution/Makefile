@@ -1,4 +1,4 @@
-all: serveur local
+all: serveur local main
 
 .cpp.o:
 	$(CC) $(FLAGS) -o "$@" -c "$<" 
@@ -8,13 +8,16 @@ all: serveur local
 	$(CC) $(FLAGS) -o "$@" -c "$<"
 	@cp $@ $(OBJ_DIR)
 
-local: local.o local.hpp 
-	#$(CC) $^ $(FLAGS) -o $@
+main : local.o serveur.o Socket.o
 
-serveur: serveur.o serveur.hpp Socket.o
-	#$(CC) $^ $(FLAGS) -o $@
+local: local-main.cpp Socket.o
+	$(CC) $^ $(FLAGS) -o $@
+
+serveur: serveur-main.cpp Socket.o
+	$(CC) $^ $(FLAGS) -o $@
 
 
 clean:
 	@rm -f *.o
-	@rm -f main
+	@rm -f local
+	@rm -f serveur

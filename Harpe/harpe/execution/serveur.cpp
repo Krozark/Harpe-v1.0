@@ -5,8 +5,6 @@
 #include <errno.h>
 #include <string.h>
 
-using namespace std;
-
 int serveur(int argc,char* argv[])
 {
     int nb_affiche = -1;
@@ -16,7 +14,7 @@ int serveur(int argc,char* argv[])
         int i=1;
         while(i<argc)
         {
-            string arg = string(argv[i]);
+            std::string arg(argv[i]);
 
             if (arg == "-l")
             {
