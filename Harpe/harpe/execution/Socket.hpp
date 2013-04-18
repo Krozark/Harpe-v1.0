@@ -34,7 +34,7 @@
 
 #define CRLF		"\r\n"
 #define BUF_SIZE	1024
-#define PORT 1977
+#define PORT 3987
 
 class Socket
 {
