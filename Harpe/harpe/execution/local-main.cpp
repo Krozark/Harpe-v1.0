@@ -2,6 +2,8 @@
 #include "Serializer.hpp"
 #include <iostream>
 
+#include <stdio.h>
+
 int main(int argc, char* argv[])
 {
     Socket sock(Socket::Dommaine::IP,Socket::Type::TCP);
@@ -18,23 +20,26 @@ int main(int argc, char* argv[])
     ser<<'t'
         <<65
         <<67
-        <<a;
+        <<a
+        <<68;
 
-    std::cout<<ser.size()<<" ";
-    for(int i=0; i< ser.size();++i)
-        std::cout<<"<"<<ser.buffer()[i]<<">";
-    std::cout<<std::endl;
 
     char c;
     ser>>c;
     std::cout<<c<<std::endl;
 
-    std::cout<<ser.size()<<" ";
-    for(int i=0; i< ser.size();++i)
-        std::cout<<"<"<<ser.buffer()[i]<<">";
-    std::cout<<std::endl;
+    int i;
+    ser>>i;
+    std::cout<<i<<std::endl;
 
-    
+    ser>>i;
+    std::cout<<i<<std::endl;
+
+    char* s = NULL;
+
+    ser>>s;
+    std::cout<<s<<std::endl;
+
     return 0;
 };
 

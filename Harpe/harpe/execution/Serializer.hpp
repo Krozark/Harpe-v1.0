@@ -3,6 +3,9 @@
 
 #include <string.h>
 #include <stdint.h>
+#include <iostream>
+
+#include <stdio.h>
 
 /*
  * Se base sur .. pour les fonction en interne
@@ -20,17 +23,18 @@ __ORDER_PDP_ENDIAN__
 class Serializer
 {
     public:
-        explicit Serializer(unsigned int buffer_cursor_end=255);
+        explicit Serializer(unsigned int buffer_size=255);
         ~Serializer();
+
+        void clear();
         
         Serializer(Serializer&) = delete;
         Serializer& operator=(const Serializer& other) = delete;
 
 
-        inline const unsigned char* const buffer(){return _buffer;};
-        inline const unsigned int& size(){return _cursor_end;};
+        inline const unsigned int size(){return _cursor_end - _cursor_begin;};
 
-        /********* SERIALIZE (empile) *************/
+        /********* SERIALIZE *************/
         //1 oct | 8 bit
         inline Serializer& operator<<(char c){push(*reinterpret_cast<uint8_t*>(&c));return *this;};         
         //2 oct | 16 bit
@@ -44,24 +48,48 @@ class Serializer
         //16 oct | 124 bit
         //inline Serializer& operator<<(long double ld){push(*reinterpret_cast<uint128_t*>(&ld);};
         //1 oct | 8 bit []
-        inline Serializer& operator<<(const char* c){
+        inline Serializer& operator<<(const char* const c){
             uint8_t* data = (uint8_t*)c;
             for(int i=0;c[i];++i) //exit when \0
                 push(data[i]);
+            uint8_t end = '\0';
+            push(end);
             return *this;
         };
 
-        /********** UNSERIALIZE (depile) ***********/
+        /********** UNSERIALIZE ***********/
         //1 oct | 8 bit
-        inline Serializer& operator>>(char& c){pop_back(*reinterpret_cast<uint8_t*>(&c));return *this;};         
+        inline Serializer& operator>>(char& c){pop(*reinterpret_cast<uint8_t*>(&c));return *this;};         
         //2 oct | 16 bit
-        inline Serializer& operator>>(short int s){pop_back(*reinterpret_cast<uint16_t*>(&s));return *this;};
+        inline Serializer& operator>>(short int s){pop(*reinterpret_cast<uint16_t*>(&s));return *this;};
         //4 oct | 32 bit
-        inline Serializer& operator>>(int& i){pop_back(*reinterpret_cast<uint32_t*>(&i));return *this;};
-        inline Serializer& operator>>(float& f){pop_back(*reinterpret_cast<uint32_t*>(&f));return *this;};
+        inline Serializer& operator>>(int& i){pop(*reinterpret_cast<uint32_t*>(&i));return *this;};
+        inline Serializer& operator>>(float& f){pop(*reinterpret_cast<uint32_t*>(&f));return *this;};
         //8 oct | 64 bit
-        inline Serializer& operator>>(double& d){pop_back(*reinterpret_cast<uint64_t*>(&d));return *this;};
-        inline Serializer& operator>>(long int& l){pop_back(*reinterpret_cast<uint64_t*>(&l));return *this;};
+        inline Serializer& operator>>(double& d){pop(*reinterpret_cast<uint64_t*>(&d));return *this;};
+        inline Serializer& operator>>(long int& l){pop(*reinterpret_cast<uint64_t*>(&l));return *this;};
+        //1 oct | 8 bit []
+        inline Serializer& operator>>(char*& c){
+            unsigned int size = _cursor_begin;
+            for(;size<_cursor_end && _buffer[size] != '\0';++size){}
+            size -= _cursor_begin-1;
+
+            char* data = new char[size];
+
+            for(unsigned int i=0;i<size;++i)
+                data[i] = _buffer[_cursor_begin + i];
+
+            _cursor_begin += size;
+
+            if (c)
+                delete c;
+            c=data;
+
+            return *this;
+        };
+
+
+        friend std::ostream& operator<<(std::ostream& output,const Serializer& self);
 
 
     private:
@@ -161,71 +189,71 @@ class Serializer
         }
 
         /***************** GET DATAs ****************/
-        inline void pop_back(uint8_t& a){
-            if(_cursor_end > 1)
+        inline void pop(uint8_t& a){
+            if(_cursor_begin +1 <= _cursor_end )
             {
-                a= _buffer[--_cursor_end];
+                a= _buffer[_cursor_begin++];
             }
         };
 
-        inline void pop_back(uint16_t& a){
-            if(_cursor_end > 2)
+        inline void pop(uint16_t& a){
+            if(_cursor_begin +2 <= _cursor_end)
             {
                 uint8_t *d = (uint8_t *)&a;
                 #if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
-                d[1]= _buffer[--_cursor_end];
-                d[0]= _buffer[--_cursor_end];
+                d[0]= _buffer[_cursor_begin++];
+                d[1]= _buffer[_cursor_begin++];
                 #elif __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
-                d[0]= _buffer[--_cursor_end];
-                d[1]= _buffer[--_cursor_end];
+                d[1]= _buffer[_cursor_begin++];
+                d[0]= _buffer[_cursor_begin++];
                 #else
                 #error "byte orden not suported (PDP endian)"
                 #endif
             }
         };
 
-        inline void pop_back(uint32_t& a){
-            if(_cursor_end > 4)
+        inline void pop(uint32_t& a){
+            if(_cursor_begin +4 <= _cursor_end)
             {
                 uint8_t *d = (uint8_t *)&a;
                 #if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
-                d[3]= _buffer[--_cursor_end];
-                d[2]= _buffer[--_cursor_end];
-                d[1]= _buffer[--_cursor_end];
-                d[0]= _buffer[--_cursor_end];
+                d[0]= _buffer[_cursor_begin++];
+                d[1]= _buffer[_cursor_begin++];
+                d[2]= _buffer[_cursor_begin++];
+                d[3]= _buffer[_cursor_begin++];
                 #elif __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
-                d[0]= _buffer[--_cursor_end];
-                d[1]= _buffer[--_cursor_end];
-                d[2]= _buffer[--_cursor_end];
-                d[3]= _buffer[--_cursor_end];
+                d[3]= _buffer[_cursor_begin++];
+                d[2]= _buffer[_cursor_begin++];
+                d[1]= _buffer[_cursor_begin++];
+                d[0]= _buffer[_cursor_begin++];
                 #else
                 #error "byte orden not suported (PDP endian)"
                 #endif
             }
         };
 
-        inline void pop_back(uint64_t& a){
-            if(_cursor_end > 8)
+        inline void pop(uint64_t& a){
+            if(_cursor_begin +8 <= _cursor_end)
             {
                 uint8_t *d = (uint8_t *)&a;
                 #if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
-                d[7]= _buffer[--_cursor_end];
-                d[6]= _buffer[--_cursor_end];
-                d[5]= _buffer[--_cursor_end];
-                d[4]= _buffer[--_cursor_end];
-                d[3]= _buffer[--_cursor_end];
-                d[2]= _buffer[--_cursor_end];
-                d[1]= _buffer[--_cursor_end];
-                d[0]= _buffer[--_cursor_end];
+                d[0]= _buffer[_cursor_begin++];
+                d[1]= _buffer[_cursor_begin++];
+                d[2]= _buffer[_cursor_begin++];
+                d[3]= _buffer[_cursor_begin++];
+                d[4]= _buffer[_cursor_begin++];
+                d[5]= _buffer[_cursor_begin++];
+                d[6]= _buffer[_cursor_begin++];
+                d[7]= _buffer[_cursor_begin++];
                 #elif __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
-                d[0]= _buffer[--_cursor_end];
-                d[1]= _buffer[--_cursor_end];
-                d[2]= _buffer[--_cursor_end];
-                d[3]= _buffer[--_cursor_end];
-                d[4]= _buffer[--_cursor_end];
-                d[5]= _buffer[--_cursor_end];
-                d[6]= _buffer[--_cursor_end];
-                d[7]= _buffer[--_cursor_end];
+                d[7]= _buffer[_cursor_begin++];
+                d[6]= _buffer[_cursor_begin++];
+                d[5]= _buffer[_cursor_begin++];
+                d[4]= _buffer[_cursor_begin++];
+                d[3]= _buffer[_cursor_begin++];
+                d[2]= _buffer[_cursor_begin++];
+                d[1]= _buffer[_cursor_begin++];
+                d[0]= _buffer[_cursor_begin++];
                 #else
                 #error "byte orden not suported (PDP endian)"
                 #endif
