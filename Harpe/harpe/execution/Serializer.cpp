@@ -1,6 +1,5 @@
 #include "Serializer.hpp"
 
-
 Serializer::Serializer(unsigned int buffer_size) : _cursor_end(0),_cursor_begin(0), _buffer_size(buffer_size)
 {
    _buffer = new unsigned char[buffer_size];
