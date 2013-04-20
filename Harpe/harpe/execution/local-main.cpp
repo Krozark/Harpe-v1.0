@@ -4,7 +4,7 @@
 
 int main(int argc, char* argv[])
 {
-    Socket sock(Socket::Dommaine::IP,Socket::Type::TCP);
+    ntw::Socket sock(ntw::Socket::Dommaine::IP,ntw::Socket::Type::TCP);
     sock.Connect("127.0.0.1");
     char msg[32] = {0};
     sock.Receive(msg,32);
@@ -13,7 +13,7 @@ int main(int argc, char* argv[])
         <<" "<<__ORDER_LITTLE_ENDIAN__
         <<" "<<__ORDER_BIG_ENDIAN__<<std::endl;
 
-    Serializer ser(0);
+    ntw::Serializer ser(0);
     char a[]="test de la mort";
     ser<<'t'
         <<65

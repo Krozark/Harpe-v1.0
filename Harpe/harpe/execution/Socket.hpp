@@ -36,6 +36,8 @@
 #define BUF_SIZE	1024
 #define PORT 3987
 
+namespace ntw {
+
 class Socket
 {
     public:
@@ -81,4 +83,5 @@ class Socket
 
 };
 
+};
 #endif

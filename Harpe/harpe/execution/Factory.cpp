@@ -1,4 +1,4 @@
-#include <typeinfo>
+/*#include <typeinfo>
 #include <cxxabi.h>
 #include <map>
 
@@ -90,4 +90,4 @@ Register<C> C::reg;
 
     }
 
-
+*/

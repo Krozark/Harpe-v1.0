@@ -20,6 +20,7 @@ __ORDER_PDP_ENDIAN__
 #error "byte orden not suported (PDP endian)"
 #endif
 
+namespace ntw {
 /* Convert local data in BIG ENDIAN for network, and from big endian to local  */
 class Serializer
 {
@@ -262,4 +263,7 @@ class Serializer
         };
 };
 
+};
+
 #endif
+

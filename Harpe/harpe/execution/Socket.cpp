@@ -3,6 +3,8 @@
 
 #include "Socket.hpp"
 
+namespace ntw {
+
 int Socket::Max_clients = 5;
 int Socket::Buffer_size = 1024;
 
@@ -79,5 +81,7 @@ void Socket::Shutdown(Socket::Down mode)
         perror("Shutdown()");
         throw "Can't shutdown socket";
     }
+};
+
 };
 

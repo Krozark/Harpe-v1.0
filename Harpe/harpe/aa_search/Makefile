@@ -1,4 +1,4 @@
-all: aa_search.exe
+all: $(OBJ) aa_search.exe
 
 .cpp.o:
 	$(CC) $(FLAGS) -o "$@" -c "$<"

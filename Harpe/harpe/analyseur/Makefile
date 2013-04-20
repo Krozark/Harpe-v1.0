@@ -1,4 +1,4 @@
-all: main
+all: $(OBJ) main
 
 .cpp.o:
 	$(CC) $(FLAGS) -o "$@" -c "$<" 

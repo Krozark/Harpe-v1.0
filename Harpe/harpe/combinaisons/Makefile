@@ -1,4 +1,4 @@
-all: combinatoire.exe
+all: $(OBJ) combinatoire.exe
 
 .cpp.o:
 	$(CC) $(FLAGS) -o "$@" -c "$<"
