@@ -48,6 +48,8 @@ class Socket
         Socket(Dommaine dommaine,Type type,int protocole=0);
         ~Socket();
 
+        Socket& operator=(const Socket&) = delete;
+
         void Connect(std::string host,int port=PORT);
         Socket Wait(std::string host="",int port=PORT);
 

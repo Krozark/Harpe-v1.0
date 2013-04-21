@@ -30,8 +30,8 @@ class Serializer
 
         void clear();
         
-        Serializer(Serializer&) = delete;
-        Serializer& operator=(const Serializer& other) = delete;
+        Serializer(const Serializer&) = delete;
+        Serializer& operator=(const Serializer&) = delete;
 
 
         inline const unsigned int size(){return _cursor_end - _cursor_begin;};
@@ -264,6 +264,5 @@ class Serializer
 };
 
 };
-
 #endif
 

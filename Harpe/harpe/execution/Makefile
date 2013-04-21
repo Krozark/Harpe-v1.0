@@ -1,4 +1,4 @@
-all: $(OBJ) serveur.exe local.exe
+all: $(OBJ) serveur.exe local.exe main
 
 .cpp.o:
 	$(CC) $(FLAGS) -o "$@" -c "$<" 
@@ -7,6 +7,8 @@ all: $(OBJ) serveur.exe local.exe
 .c.o:
 	$(CC) $(FLAGS) -o "$@" -c "$<"
 	@cp $@ $(OBJ_DIR)
+
+main : local.o serveur.o SocketSerialized.o
 
 local.exe: local-main.cpp Socket.o Serializer.o
 	$(CC) $^ $(FLAGS) -o $@
