@@ -30,12 +30,15 @@ class SelectManager
         void SetTimout(float timout_sec=0);
 
         void Start(); //create a thread and lunch Run() a loop while(run); ie while Stop() is not called
-        inline void Stop(){run=false;thread.join();};
-        void Run();
+        inline void Stop(){run=false;Wait();};
+        inline void Wait(){thread.join();};
+        //inline void Detach(){thread.detach();};
 
         SelectManager(const SelectManager& other) = delete;
         SelectManager& operator=(const SelectManager& other) = delete;
+
     private:
+        void Run(); //Use Start to run it
 
         fd_set* readfds;
         fd_set* writefds;
@@ -45,6 +48,7 @@ class SelectManager
         int max_id;
         bool run;
         std::thread thread;
+        //std::mutex ??
 };
 
 };

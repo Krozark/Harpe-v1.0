@@ -142,7 +142,7 @@ void SelectManager::Run()
             FD_SET(id,exceptfds);
     }
     
-
+    //can be stop withing Stop on other thread
     while(run)
     {
         int res;
