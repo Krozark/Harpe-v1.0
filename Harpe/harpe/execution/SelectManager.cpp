@@ -1,9 +1,33 @@
 #include "SelectManager.hpp"
 
+#include <iostream>
+
+
+
+
 namespace ntw {
 
-SelectManager::SelectManager(): readfds(0), writefds(0), exceptfds(0), timeout(0), OnSelect(0)
+SelectManager::SelectManager(): readfds(0), writefds(0), exceptfds(0), timeout(0), OnSelect(0), max_id(0), run(false)
 {
+};
+
+SelectManager::~SelectManager()
+{
+    if(readfds)
+        delete readfds;
+    if(writefds)
+        delete writefds;
+    if(exceptfds)
+        delete exceptfds;
+    if(timeout)
+        delete timeout;
+}
+
+void SelectManager::Remove(Socket* s)
+{
+    auto it = datas.find(s->Id());
+    if(it != datas.end())
+        datas.erase(it);
 };
 
 void SelectManager::SetArgs(bool read,bool write,bool except,float timeout_sec)
@@ -80,6 +104,88 @@ void SelectManager::SetTimout(float timeout_sec)
         {
             delete timeout;
             timeout = 0;
+        }
+    }
+};
+
+template<class C,typename ... Args>
+void thread_method(C* obj,void(C::*func)(Args ...),Args ... args)
+{
+    (obj->*func)(args ...);
+};
+
+void SelectManager::Start()
+{
+    thread= std::thread(thread_method<SelectManager>,this,&SelectManager::Run);
+};
+
+void SelectManager::Run()
+{
+    run = true;
+
+    if(readfds)
+        FD_ZERO(readfds);
+    if(writefds)
+        FD_ZERO(writefds);
+    if(exceptfds)
+        FD_ZERO(exceptfds);
+    /* add the connection socket */
+    auto end = datas.end();
+    for(auto it=datas.begin();it!=end;++it)
+    {
+        int id = it->second->Id();
+        if(readfds)
+            FD_SET(id,readfds);
+        if(writefds)
+            FD_SET(id,writefds);
+        if(exceptfds)
+            FD_SET(id,exceptfds);
+    }
+    
+
+    while(run)
+    {
+        int res;
+        if(timeout)
+        {
+            timeval time = *timeout;
+            res = select(max_id,readfds,writefds,exceptfds,&time);
+        }
+        else
+        {
+            res = select(max_id,readfds,writefds,exceptfds,NULL);
+        }
+
+
+        if(res <0)
+        {
+            perror("select()");
+            return;
+        }
+
+        //loop sur les Socket pour savoir si c'est elle
+        auto end = datas.end();
+        for(auto it=datas.begin();it!=end and res > 0;++it)
+        {
+            auto& iit = *it;
+            if(readfds and FD_ISSET(iit.first,readfds))
+            {
+                OnSelect(*this,*(iit.second));
+                --res;
+                continue;
+            }
+            if(writefds and FD_ISSET(iit.first,writefds))
+            {
+                OnSelect(*this,*(iit.second));
+                --res;
+                continue;
+            }
+            if(exceptfds and FD_ISSET(iit.first,exceptfds))
+            {
+                OnSelect(*this,*(iit.second));
+                --res;
+                continue;
+            }
         }
     }
 };

@@ -1,6 +1,6 @@
 export CC = g++
 INCPATH = 
-LIBS = -lmysqlcppconn 
+LIBS = -lmysqlcppconn -lpthread 
 #export DEFINES = -DAPPRENTISSAGE
 export DEFINES = 
 export FLAGS = -g -std=c++0x -o3 $(INCPATH) $(LIBS) $(DEFINES)

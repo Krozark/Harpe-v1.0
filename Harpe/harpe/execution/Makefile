@@ -13,7 +13,7 @@ main : local.o serveur.o Socket.o Serializer.o SocketSerialized.o SelectManager.
 local.exe: local-main.cpp Socket.o Serializer.o SocketSerialized.o
 	$(CC) $^ $(FLAGS) -o $@
 
-serveur.exe: serveur-main.cpp Socket.o Serializer.o SocketSerialized.o
+serveur.exe: serveur-main.cpp Socket.o Serializer.o SocketSerialized.o SelectManager.o
 	$(CC) $^ $(FLAGS) -o $@
 
 Serializer.o : Serializer.cpp Serializer.hpp
