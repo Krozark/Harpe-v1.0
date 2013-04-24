@@ -20,40 +20,6 @@ SocketSerialized::~SocketSerialized()
 {
 };
 
-/*SocketSerialized SocketSerialized::Wait(std::string host,int port)
-{
-    //sin_addr.s_addr = adresse IP à utiliser
-    //IP automatiquement chopée
-    if(host.size() == 0)
-        sock_cfg.sin_addr.s_addr = htonl(INADDR_ANY);
-    else
-        sock_cfg.sin_addr.s_addr= inet_addr(host.c_str());
-
-    //sin_port = port à utiliser
-    sock_cfg.sin_port = htons(port);
-
-    if(bind(sock,(SOCKADDR*)&sock_cfg,sizeof(sock_cfg)) == SOCKET_ERROR)
-    {
-        perror("bind()");
-        throw "Ennable to bind soket";
-    }
-
-    if(listen(sock,Socket::Max_clients) == SOCKET_ERROR)
-    {
-        perror("listen()");
-        throw "Ennable to listen";
-    }
-
-    socklen_t size = sizeof(SOCKADDR_IN);
-    SocketSerialized client;
-    std::cout<<"Patientez pendant que le client se connecte sur le port "<<htons(sock_cfg.sin_port)<<std::endl;
-
-    client.sock = accept(sock,(SOCKADDR*) &client.sock_cfg, &size);
-    std::cout<<"Un client se connecte avec la socket "<<client.sock<<" de "<<inet_ntoa(client.sock_cfg.sin_addr)<<":"<<htons(client.sock_cfg.sin_port)<<std::endl;
-    return client;
-    
-};*/
-
 void SocketSerialized::Send()
 {
     //écrire la taille dans les 2 premier oct

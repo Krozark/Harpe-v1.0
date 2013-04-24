@@ -15,7 +15,7 @@ class SocketSerialized : public Serializer, private Socket
 
         /// SOCKET
         inline void Connect(std::string host,int port=PORT){Socket::Connect(host,port);};
-        Socket Wait(std::string host="",int port=PORT){return Socket::Wait(host,port);};
+        inline Socket Wait(std::string host="",int port=PORT){return Socket::Wait(host,port);};
         inline void Shutdown(Socket::Down mode=Socket::Down::BOTH){Socket::Shutdown(mode);};
 
         void Send();
