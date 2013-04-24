@@ -38,6 +38,8 @@
 
 namespace ntw {
 
+class SocketSerialized;
+
 class Socket
 {
     public:
@@ -52,11 +54,12 @@ class Socket
 
         void Connect(std::string host,int port=PORT);
         Socket Wait(std::string host="",int port=PORT);
+        void Shutdown(Down mode=Down::BOTH);
 
         template<typename T>
-        inline void Send(const T* data,const size_t len,const int flags=0) const
+        inline void Send(const T* data,const size_t size,const int flags=0) const
         {
-            if(send(sock,data,sizeof(T)*len,flags) ==  SOCKET_ERROR)
+            if(send(sock,data,size,flags) ==  SOCKET_ERROR)
             {
                 perror("Sending message fail");
                 throw "Sending message fail";
@@ -64,18 +67,18 @@ class Socket
         }
 
         template<typename T>
-        inline void Receive(T* buffer,const size_t len,const int flags=0) const
+        inline void Receive(T* buffer,const size_t size,const int flags=0) const
         {
-            recv(sock,buffer,sizeof(T)*len,flags);
+            recv(sock,buffer,size,flags);
         };
 
-        void Shutdown(Down mode=Down::BOTH);
 
 
         static int Max_clients;
         static int Buffer_size;
 
-    private:
+    protected:
+        friend class SocketSerialized;
         Socket(){}// intern use only;
         inline void _close(){closesocket(sock);};
         //socket

@@ -34,7 +34,7 @@ class Serializer
         Serializer& operator=(const Serializer&) = delete;
 
 
-        inline const unsigned int size(){return _cursor_end - _cursor_begin;};
+        inline const unsigned int size()const{return _cursor_end - _cursor_begin;};
 
         /********* SERIALIZE *************/
         //1 oct | 8 bit
@@ -94,7 +94,7 @@ class Serializer
         friend std::ostream& operator<<(std::ostream& output,const Serializer& self);
 
 
-    private:
+    protected:
 
         unsigned char* _buffer;
         unsigned int _cursor_end;
@@ -104,7 +104,7 @@ class Serializer
         inline void resize(const unsigned int buffer_cursor_end)
         {
             unsigned char* buffer = new unsigned char[buffer_cursor_end];
-            buffer = (unsigned char*)memcpy(buffer,_buffer,_cursor_end);
+            buffer = (unsigned char*)memcpy(buffer,_buffer,_buffer_size);
 
             delete _buffer;
             _buffer = buffer;

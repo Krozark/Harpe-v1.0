@@ -24,6 +24,7 @@ void Serializer::clear()
 
 std::ostream& operator<<(std::ostream& output,const Serializer& self)
 {
+    output<<"["<<self.size()<<"]";
     for(int i=self._cursor_begin; i<self._cursor_end;++i)
         output<<"<"<<self._buffer[i]<<">";
     return output;
