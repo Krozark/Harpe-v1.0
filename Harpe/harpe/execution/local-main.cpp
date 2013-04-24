@@ -43,8 +43,27 @@ int main(int argc, char* argv[])
     sockSer.Connect("127.0.0.1");
     std::cout<<sockSer<<std::endl;
     sockSer.Receive();
+    sockSer.Shutdown(ntw::Socket::Down::BOTH);
 
     std::cout<<sockSer<<std::endl;
+
+    char* c=0;
+    sockSer>>c;
+    std::cout<<"char* "<<c<<std::endl;
+
+    int i;
+    sockSer>>i;
+    std::cout<<"i1 "<<i<<std::endl;
+
+    sockSer>>i;
+    std::cout<<"i2 "<<i<<std::endl;
+
+    double d;
+    sockSer>>d;
+    std::cout<<"d1 "<<d<<std::endl;
+    std::cout<<sockSer<<std::endl;
+
+
 
 
 
