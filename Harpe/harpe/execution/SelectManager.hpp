@@ -3,6 +3,7 @@
 
 #include <unordered_map>
 #include <thread>
+#include <mutex>
 
 #include "Socket.hpp"
 
@@ -14,13 +15,9 @@ class SelectManager
         explicit SelectManager();
         ~SelectManager();
         
-        inline void Add(Socket* s){
-            int id = s->Id();
-            datas[id]=s;
-            max_id=(id>max_id)?id+1:max_id;
-        };
+        void Add(Socket* s);
         void Remove(Socket* s);
-        inline void Clear(){datas.clear();max_id=0;};
+        void Clear();
 
         void(*OnSelect)(SelectManager& self,Socket& s);
         void SetArgs(bool read=false,bool write=false,bool except=false,float timeout_sec=0);
@@ -30,15 +27,24 @@ class SelectManager
         void SetTimout(float timout_sec=0);
 
         void Start(); //create a thread and lunch Run() a loop while(run); ie while Stop() is not called
-        inline void Stop(){run=false;Wait();};
+        inline void Stop(bool detach=false){
+            mutex.lock();
+            run=false;
+            mutex.unlock();
+            if(detach)
+                Detach();
+            else
+                Wait();
+        };
         inline void Wait(){thread.join();};
-        //inline void Detach(){thread.detach();};
+        inline void Detach(){thread.detach();};
 
         SelectManager(const SelectManager& other) = delete;
         SelectManager& operator=(const SelectManager& other) = delete;
 
     private:
         void Run(); //Use Start to run it
+        void Reset();
 
         fd_set* readfds;
         fd_set* writefds;
@@ -48,7 +54,7 @@ class SelectManager
         int max_id;
         bool run;
         std::thread thread;
-        //std::mutex ??
+        std::mutex mutex;
 };
 
 };

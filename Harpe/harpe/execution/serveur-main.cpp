@@ -22,7 +22,7 @@ void newclient(ntw::SelectManager& selector,ntw::Socket& sock)
 {
     ntw::SocketSerialized clientSock(sock.Accept());
 
-    std::cout<<"Envoi du message: <hello word!> et de la stuctur Test{12,13,14.5}"<<std::endl;
+    /*std::cout<<"Envoi du message: <hello word!> et de la stuctur Test{12,13,14.5}"<<std::endl;
     clientSock<<"hello word!";
     Test t =  {12,13,14.5f};
     clientSock<<t;
@@ -30,7 +30,7 @@ void newclient(ntw::SelectManager& selector,ntw::Socket& sock)
     std::cout<<clientSock<<std::endl;
 
     clientSock.Send();
-    clientSock.Shutdown(ntw::Socket::Down::SEND);
+    clientSock.Shutdown(ntw::Socket::Down::SEND);*/
 
 };
 
@@ -56,7 +56,7 @@ int main(int argc, char* argv[])
     serverSelector.Add(&sockSer);
 
     serverSelector.Start();
-    std::this_thread::sleep_for(std::chrono::milliseconds(3000));
+    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     serverSelector.Stop();
 
     return 0;

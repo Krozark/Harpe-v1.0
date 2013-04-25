@@ -23,11 +23,66 @@ SelectManager::~SelectManager()
         delete timeout;
 }
 
+void SelectManager::Add(Socket* s)
+{
+    int id = s->Id();
+    datas[id]=s;
+    max_id=(id>max_id)?id+1:max_id;
+    if(readfds)
+        FD_SET(id,readfds);
+    if(writefds)
+        FD_SET(id,writefds);
+    if(exceptfds)
+        FD_SET(id,exceptfds);
+};
+
 void SelectManager::Remove(Socket* s)
 {
-    auto it = datas.find(s->Id());
+    int id = s->Id();
+    auto it = datas.find(id);
     if(it != datas.end())
         datas.erase(it);
+    if(readfds)
+        FD_CLR(id,readfds);
+    if(writefds)
+        FD_CLR(id,writefds);
+    if(exceptfds)
+        FD_CLR(id,exceptfds);
+};
+void SelectManager::Clear()
+{
+    datas.clear();
+    max_id=0;
+    if(readfds)
+        FD_ZERO(readfds);
+    if(writefds)
+        FD_ZERO(writefds);
+    if(exceptfds)
+        FD_ZERO(exceptfds);
+};
+
+void SelectManager::Reset()
+{
+    if(readfds)
+        FD_ZERO(readfds);
+    if(writefds)
+        FD_ZERO(writefds);
+    if(exceptfds)
+        FD_ZERO(exceptfds);
+    // add the connection socket
+    auto end = datas.end();
+    max_id = 0;
+    for(auto it=datas.begin();it!=end;++it)
+    {
+        int id = it->second->Id();
+        max_id=(id>max_id)?id+1:max_id;
+        if(readfds)
+            FD_SET(id,readfds);
+        if(writefds)
+            FD_SET(id,writefds);
+        if(exceptfds)
+            FD_SET(id,exceptfds);
+    }
 };
 
 void SelectManager::SetArgs(bool read,bool write,bool except,float timeout_sec)
@@ -40,6 +95,7 @@ void SelectManager::SetArgs(bool read,bool write,bool except,float timeout_sec)
 
 void SelectManager::SetRead(bool read)
 {
+    mutex.lock();
     if(read)
     {
         if(not readfds)
@@ -53,10 +109,12 @@ void SelectManager::SetRead(bool read)
             readfds = 0;
         }
     }
+    mutex.unlock();
 };
 
 void SelectManager::SetWrite(bool write)
 {
+    mutex.lock();
     if(write)
     {
         if(not writefds)
@@ -70,10 +128,12 @@ void SelectManager::SetWrite(bool write)
             writefds = 0;
         }
     }
+    mutex.unlock();
 };
 
 void SelectManager::SetExcept(bool except)
 {
+    mutex.lock();
     if(except)
     {
         if(not exceptfds)
@@ -87,10 +147,12 @@ void SelectManager::SetExcept(bool except)
             exceptfds = 0;
         }
     }
+    mutex.unlock();
 };
 
 void SelectManager::SetTimout(float timeout_sec)
 {
+    mutex.lock();
     if(timeout_sec > 0.f)
     {
         if(not timeout)
@@ -106,6 +168,7 @@ void SelectManager::SetTimout(float timeout_sec)
             timeout = 0;
         }
     }
+    mutex.unlock();
 };
 
 template<class C,typename ... Args>
@@ -116,31 +179,15 @@ void thread_method(C* obj,void(C::*func)(Args ...),Args ... args)
 
 void SelectManager::Start()
 {
+    mutex.lock();
+    run = true;
     thread= std::thread(thread_method<SelectManager>,this,&SelectManager::Run);
+    mutex.unlock();
 };
 
 void SelectManager::Run()
 {
-    run = true;
-
-    if(readfds)
-        FD_ZERO(readfds);
-    if(writefds)
-        FD_ZERO(writefds);
-    if(exceptfds)
-        FD_ZERO(exceptfds);
-    /* add the connection socket */
-    auto end = datas.end();
-    for(auto it=datas.begin();it!=end;++it)
-    {
-        int id = it->second->Id();
-        if(readfds)
-            FD_SET(id,readfds);
-        if(writefds)
-            FD_SET(id,writefds);
-        if(exceptfds)
-            FD_SET(id,exceptfds);
-    }
+    //Reset();
     
     //can be stop withing Stop on other thread
     while(run)
