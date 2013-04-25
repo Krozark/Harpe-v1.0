@@ -2,8 +2,9 @@
 
 #include <iostream>
 
-
-
+#include <errno.h>
+#include <signal.h>
+#include <string.h>
 
 namespace ntw {
 
@@ -156,8 +157,10 @@ void SelectManager::SetTimout(float timeout_sec)
     if(timeout_sec > 0.f)
     {
         if(not timeout)
+            //timeout = new timespec;
             timeout = new timeval;
         timeout->tv_sec = (int)timeout_sec;
+        //timeout->tv_nsec = (int)timeout_sec*100000000;//10⁻⁹
         timeout->tv_usec = (int)timeout_sec*100000;//10⁻⁶
     }
     else
@@ -185,29 +188,76 @@ void SelectManager::Start()
     mutex.unlock();
 };
 
+// Signal handler to catch SIGTERM.
+void handler(int sig) {
+    std::cout<<"Signal chopé: "<<sig<<std::endl;
+}
+
 void SelectManager::Run()
 {
-    //Reset();
-    
-    //can be stop withing Stop on other thread
+    sigset_t originalSignals;     
+    sigset_t blockedSignals;
+    sigemptyset(&blockedSignals);
+    sigaddset(&blockedSignals, SIGUSR1);
+    if(sigprocmask(SIG_BLOCK, &blockedSignals, &originalSignals) != 0)
+    {
+        perror("Failed to block signals");
+        return;
+    }
+    struct sigaction signalAction;
+    memset(&signalAction, 0, sizeof(struct sigaction));
+
+    signalAction.sa_mask = blockedSignals;
+
+    signalAction.sa_handler = handler;
+
+    if(sigaction(SIGUSR1, &signalAction, NULL) == -1)
+    {
+        perror("Could not set signal handler");
+        return;
+    }
     while(run)
     {
+
+        Reset();//TODO
         int res;
+
+        sigset_t omask;
+        if (sigprocmask(SIG_SETMASK, &originalSignals, &omask) < 0) {
+            perror("sigprocmask");
+            break;
+        }
+
         if(timeout)
         {
-            timeval time = *timeout;
+            auto time = *timeout;
+            std::cout<<"start select"<<std::endl;
             res = select(max_id,readfds,writefds,exceptfds,&time);
+            std::cout<<"endselect"<<std::endl;
         }
         else
         {
+            std::cout<<"start select"<<std::endl;
             res = select(max_id,readfds,writefds,exceptfds,NULL);
+            std::cout<<"endselect"<<std::endl;
         }
-
+        if (sigprocmask(SIG_SETMASK, &omask, NULL) < 0) {
+            perror("sigprocmask");
+            break;
+        }
 
         if(res <0)
         {
-            perror("select()");
-            return;
+            if (errno == EINTR)
+            {
+                std::cout<<"Signal chopé"<<std::endl;
+                continue;
+            }
+            else
+            {
+                perror("pselect()");
+                return;
+            }
         }
 
         //loop sur les Socket pour savoir si c'est elle

@@ -10,7 +10,7 @@ all: $(OBJ) serveur.exe local.exe main
 
 main : local.o serveur.o Socket.o Serializer.o SocketSerialized.o SelectManager.o
 
-local.exe: local-main.cpp Socket.o Serializer.o SocketSerialized.o
+local.exe: local-main.cpp Socket.o Serializer.o SocketSerialized.o SelectManager.o
 	$(CC) $^ $(FLAGS) -o $@
 
 serveur.exe: serveur-main.cpp Socket.o Serializer.o SocketSerialized.o SelectManager.o

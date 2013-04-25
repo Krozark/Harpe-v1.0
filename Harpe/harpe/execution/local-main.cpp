@@ -6,28 +6,20 @@
 
 void reply(ntw::SelectManager& selector,ntw::Socket& sock)
 {
-    ntw::SocketSerialized& sockSer = *(ntw::SocketSerialized*)&sock;
-    std::cout<<sockSer<<std::endl;
-    sockSer.Receive();
-    sockSer.Shutdown(ntw::Socket::Down::RECIVE);
+    ntw::SocketSerialized& clientSock = *(ntw::SocketSerialized*)&sock;
+    clientSock.Receive();
+    //clientSock.Shutdown(ntw::Socket::Down::RECIVE);
 
-    std::cout<<sockSer<<std::endl;
+    std::cout<<clientSock<<std::endl;
 
     char* c=0;
-    sockSer>>c;
-    std::cout<<"char* "<<c<<std::endl;
+    clientSock>>c;
+    std::cout<<"[client] recu char*: <"<<c<<">"<<std::endl;
 
-    int i;
-    sockSer>>i;
-    std::cout<<"i1 "<<i<<std::endl;
-
-    sockSer>>i;
-    std::cout<<"i2 "<<i<<std::endl;
-
-    double d;
-    sockSer>>d;
-    std::cout<<"d1 "<<d<<std::endl;
-    std::cout<<sockSer<<std::endl;
+    clientSock.Clear();
+    clientSock<<"<message venu du client.>";
+    clientSock.Send();
+    
 };
 
 int main(int argc, char* argv[])
@@ -66,17 +58,18 @@ int main(int argc, char* argv[])
     std::cout<<s<<std::endl;
     */
     
-    ntw::SocketSerialized sockSer(ntw::Socket::Dommaine::IP,ntw::Socket::Type::TCP);
-    sockSer.Connect("127.0.0.1");
+    ntw::SocketSerialized clientSock(ntw::Socket::Dommaine::IP,ntw::Socket::Type::TCP);
+    clientSock.Connect("127.0.0.1");
 
     ntw::SelectManager clientSelector;
     clientSelector.SetRead(true);
     clientSelector.OnSelect = reply;
-    clientSelector.Add(&sockSer);
+    clientSelector.Add(&clientSock);
 
     clientSelector.Start();
-    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-    clientSelector.Stop();
+    //std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+    //clientSelector.Stop();
+    clientSelector.Wait();
 
     return 0;
 };

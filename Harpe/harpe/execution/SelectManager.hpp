@@ -49,6 +49,7 @@ class SelectManager
         fd_set* readfds;
         fd_set* writefds;
         fd_set* exceptfds;
+        //timespec* timeout;
         timeval* timeout;
         std::unordered_map<int,Socket*> datas;
         int max_id;

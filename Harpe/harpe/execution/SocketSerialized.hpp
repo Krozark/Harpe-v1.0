@@ -22,7 +22,7 @@ class SocketSerialized : public Serializer, public Socket
         void Receive();
 
         /// SERIALIZE
-        void clear();
+        void Clear();
 
         SocketSerialized(const SocketSerialized&) = delete;
         SocketSerialized& operator=(const SocketSerialized&) = delete;

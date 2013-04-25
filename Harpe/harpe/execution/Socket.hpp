@@ -31,12 +31,26 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <string>
+#include <exception>
 
 #define CRLF		"\r\n"
 #define BUF_SIZE	1024
 #define PORT 3987
 
 namespace ntw {
+
+class SocketExeption: public std::exception
+{
+    public:
+        SocketExeption(std::string error) : msg(error) {};
+        ~SocketExeption() throw() {};
+        virtual const char* what() const throw()
+        {
+            return msg.c_str();
+        };
+    private:
+        std::string msg;
+};
 
 class SocketSerialized;
 
@@ -71,8 +85,8 @@ class Socket
         {
             if(send(sock,data,size,flags) ==  SOCKET_ERROR)
             {
-                perror("Sending message fail");
-                throw "Sending message fail";
+                perror("Send()");
+                throw SocketExeption("Sending message fail");
             }
         }
 

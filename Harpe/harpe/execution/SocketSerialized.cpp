@@ -22,6 +22,7 @@ SocketSerialized::~SocketSerialized()
 
 void SocketSerialized::Send()
 {
+    std::cout<<"<id:"<<sock<<">Send datas:"<<*this<<std::endl;
     //écrire la taille dans les 2 premier oct
     uint16_t size = _cursor_end - _cursor_begin;
     uint8_t *d = (uint8_t *)&size;
@@ -63,9 +64,10 @@ void SocketSerialized::Receive()
     _cursor_end = 2+size;
     //remplacer le buffer
     Socket::Receive(_buffer+2,size);
+    std::cout<<"<id:"<<sock<<">receive datas:"<<*this<<std::endl;
 };
 
-void SocketSerialized::clear()
+void SocketSerialized::Clear()
 {
     _cursor_begin = _cursor_end = 2;
 }
