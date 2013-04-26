@@ -46,6 +46,11 @@ void Socket::Connect(std::string host,int port)
     //sin_port = port à utiliser
     sock_cfg.sin_port = htons(port);
 
+    Connect();
+};
+
+void Socket::Connect()
+{
     if(connect(sock, (SOCKADDR*)&sock_cfg, sizeof(sockaddr)) != SOCKET_ERROR)
         std::cerr<<"<id:"<<sock<<">Connect to "<<inet_ntoa(sock_cfg.sin_addr)<<":"<<htons(sock_cfg.sin_port)<<std::endl;
     else
