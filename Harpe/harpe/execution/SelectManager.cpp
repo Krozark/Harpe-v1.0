@@ -1,6 +1,7 @@
 #include "SelectManager.hpp"
 
 #include <iostream>
+#include <algorithm>
 
 #include <errno.h>
 #include <signal.h>
@@ -8,8 +9,9 @@
 
 namespace ntw {
 
-SelectManager::SelectManager(): readfds(0), writefds(0), exceptfds(0), timeout(0), OnSelect(0), max_id(0), run(false)
+SelectManager::SelectManager(): readfds(0), writefds(0), exceptfds(0), OnSelect(0), max_id(0), run(false)
 {
+    SetTimout(5);
 };
 
 SelectManager::~SelectManager()
@@ -20,14 +22,12 @@ SelectManager::~SelectManager()
         delete writefds;
     if(exceptfds)
         delete exceptfds;
-    if(timeout)
-        delete timeout;
 }
 
 void SelectManager::Add(Socket* s)
 {
     int id = s->Id();
-    datas[id]=s;
+    datas.emplace_back(s);
     max_id=(id>max_id)?id+1:max_id;
     if(readfds)
         FD_SET(id,readfds);
@@ -40,15 +40,11 @@ void SelectManager::Add(Socket* s)
 void SelectManager::Remove(Socket* s)
 {
     int id = s->Id();
-    auto it = datas.find(id);
-    if(it != datas.end())
+    auto end = datas.end();
+    auto it = std::find(datas.begin(),end,s);
+    if(it != end)
         datas.erase(it);
-    if(readfds)
-        FD_CLR(id,readfds);
-    if(writefds)
-        FD_CLR(id,writefds);
-    if(exceptfds)
-        FD_CLR(id,exceptfds);
+    Reset();
 };
 void SelectManager::Clear()
 {
@@ -64,19 +60,22 @@ void SelectManager::Clear()
 
 void SelectManager::Reset()
 {
+    //reset
     if(readfds)
         FD_ZERO(readfds);
     if(writefds)
         FD_ZERO(writefds);
     if(exceptfds)
         FD_ZERO(exceptfds);
-    // add the connection socket
+
     auto end = datas.end();
     max_id = 0;
+    // add to the connection all socket
     for(auto it=datas.begin();it!=end;++it)
     {
-        int id = it->second->Id();
-        max_id=(id>max_id)?id+1:max_id;
+        int id = (*it)->Id();
+        max_id=(id>=max_id)?id+1:max_id;
+        //add socket
         if(readfds)
             FD_SET(id,readfds);
         if(writefds)
@@ -154,23 +153,8 @@ void SelectManager::SetExcept(bool except)
 void SelectManager::SetTimout(float timeout_sec)
 {
     mutex.lock();
-    if(timeout_sec > 0.f)
-    {
-        if(not timeout)
-            //timeout = new timespec;
-            timeout = new timeval;
-        timeout->tv_sec = (int)timeout_sec;
-        //timeout->tv_nsec = (int)timeout_sec*100000000;//10⁻⁹
-        timeout->tv_usec = (int)timeout_sec*100000;//10⁻⁶
-    }
-    else
-    {
-        if(timeout)
-        {
-            delete timeout;
-            timeout = 0;
-        }
-    }
+    timeout.tv_sec = (int)timeout_sec;
+    timeout.tv_usec = (int)timeout_sec*100000;//10⁻⁶
     mutex.unlock();
 };
 
@@ -189,97 +173,46 @@ void SelectManager::Start()
 };
 
 // Signal handler to catch SIGTERM.
-void handler(int sig) {
-    std::cout<<"Signal chopé: "<<sig<<std::endl;
-}
 
 void SelectManager::Run()
 {
-    sigset_t originalSignals;     
-    sigset_t blockedSignals;
-    sigemptyset(&blockedSignals);
-    sigaddset(&blockedSignals, SIGUSR1);
-    if(sigprocmask(SIG_BLOCK, &blockedSignals, &originalSignals) != 0)
-    {
-        perror("Failed to block signals");
-        return;
-    }
-    struct sigaction signalAction;
-    memset(&signalAction, 0, sizeof(struct sigaction));
-
-    signalAction.sa_mask = blockedSignals;
-
-    signalAction.sa_handler = handler;
-
-    if(sigaction(SIGUSR1, &signalAction, NULL) == -1)
-    {
-        perror("Could not set signal handler");
-        return;
-    }
+    int res;
     while(run)
     {
-
         Reset();//TODO
-        int res;
-
-        sigset_t omask;
-        if (sigprocmask(SIG_SETMASK, &originalSignals, &omask) < 0) {
-            perror("sigprocmask");
-            break;
-        }
-
-        if(timeout)
-        {
-            auto time = *timeout;
-            std::cout<<"start select"<<std::endl;
-            res = select(max_id,readfds,writefds,exceptfds,&time);
-            std::cout<<"endselect"<<std::endl;
-        }
-        else
-        {
-            std::cout<<"start select"<<std::endl;
-            res = select(max_id,readfds,writefds,exceptfds,NULL);
-            std::cout<<"endselect"<<std::endl;
-        }
-        if (sigprocmask(SIG_SETMASK, &omask, NULL) < 0) {
-            perror("sigprocmask");
-            break;
-        }
+        
+        auto time = timeout;//copy
+        res = select(max_id,readfds,writefds,exceptfds,&time);
 
         if(res <0)
         {
-            if (errno == EINTR)
-            {
-                std::cout<<"Signal chopé"<<std::endl;
-                continue;
-            }
-            else
-            {
-                perror("pselect()");
-                return;
-            }
+            perror("select()");
+            return;
         }
+        else if (res == 0) //timout
+            continue;
 
         //loop sur les Socket pour savoir si c'est elle
         auto end = datas.end();
-        for(auto it=datas.begin();it!=end and res > 0;++it)
+        for(auto it=datas.begin();it!=end /*and res > 0*/;++it)
         {
-            auto& iit = *it;
-            if(readfds and FD_ISSET(iit.first,readfds))
+            auto& iit = **it;
+            int id = iit.Id(); 
+            if(readfds and FD_ISSET(id,readfds))
             {
-                OnSelect(*this,*(iit.second));
+                OnSelect(*this,iit);
                 --res;
                 continue;
             }
-            if(writefds and FD_ISSET(iit.first,writefds))
+            if(writefds and FD_ISSET(id,writefds))
             {
-                OnSelect(*this,*(iit.second));
+                OnSelect(*this,iit);
                 --res;
                 continue;
             }
-            if(exceptfds and FD_ISSET(iit.first,exceptfds))
+            if(exceptfds and FD_ISSET(id,exceptfds))
             {
-                OnSelect(*this,*(iit.second));
+                OnSelect(*this,iit);
                 --res;
                 continue;
             }

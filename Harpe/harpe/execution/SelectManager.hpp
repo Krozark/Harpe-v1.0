@@ -1,7 +1,7 @@
 #ifndef SELECTMANAGER_HPP
 #define SELECTMANAGER_HPP
 
-#include <unordered_map>
+#include <vector>
 #include <thread>
 #include <mutex>
 
@@ -27,14 +27,10 @@ class SelectManager
         void SetTimout(float timout_sec=0);
 
         void Start(); //create a thread and lunch Run() a loop while(run); ie while Stop() is not called
-        inline void Stop(bool detach=false){
+        inline void Stop(){
             mutex.lock();
             run=false;
             mutex.unlock();
-            if(detach)
-                Detach();
-            else
-                Wait();
         };
         inline void Wait(){thread.join();};
         inline void Detach(){thread.detach();};
@@ -49,11 +45,10 @@ class SelectManager
         fd_set* readfds;
         fd_set* writefds;
         fd_set* exceptfds;
-        //timespec* timeout;
-        timeval* timeout;
-        std::unordered_map<int,Socket*> datas;
-        int max_id;
-        bool run;
+        timeval timeout;
+        std::vector<Socket*> datas;
+        volatile int max_id;
+        volatile bool run;
         std::thread thread;
         std::mutex mutex;
 };

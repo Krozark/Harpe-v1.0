@@ -35,19 +35,21 @@ void reply(ntw::SelectManager& selector,ntw::Socket& sock)
 {
     ntw::SocketSerialized& clientSock = *(ntw::SocketSerialized*)&sock;
     std::cout<<"Répond à "<<clientSock.Id()<<std::endl;
-    clientSock.Receive();
-    //sockSer.Shutdown(ntw::Socket::Down::RECIVE);
-
-    std::cout<<clientSock<<std::endl;
-
-    char* c=0;
-    clientSock>>c;
-    std::cout<<"[serveur] recu char*: <"<<c<<">"<<std::endl;
-    std::cout<<clientSock<<std::endl;
-
-    clientSock.Clear();
-    clientSock<<"<message venu du serveur.>";
-    clientSock.Send();
+    if(clientSock.Receive() >0)
+    {
+        char* c=0;
+        clientSock>>c;
+        std::cout<<"[serveur] recu char*: <"<<c<<">"<<std::endl;
+        clientSock.Clear();
+        clientSock<<"message du serveur";
+        clientSock.Send();
+    }
+    else
+    {
+        std::cerr<<"Client connection lost <id:"<<clientSock.Id()<<">"<<std::endl; 
+        selector.Remove(&clientSock);
+        delete &clientSock;
+    }
 };
 
 

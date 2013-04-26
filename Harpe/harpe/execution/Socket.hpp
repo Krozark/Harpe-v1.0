@@ -91,17 +91,17 @@ class Socket
         }
 
         template<typename T>
-        inline void Receive(T* buffer,const size_t size,const int flags=0) const
+        inline int Receive(T* buffer,const size_t size,const int flags=0) const
         {
-            recv(sock,buffer,size,flags);
+            return recv(sock,buffer,size,flags);
         };
 
 
 
     protected:
         friend class SocketSerialized;
-        Socket(){}// intern use only;
-        inline void _close(){closesocket(sock);};
+        Socket();// intern use only;
+        inline void _close(){if(sock != INVALID_SOCKET)closesocket(sock);};
         //socket
         SOCKET sock;
         //configuration

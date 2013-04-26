@@ -7,19 +7,24 @@
 void reply(ntw::SelectManager& selector,ntw::Socket& sock)
 {
     ntw::SocketSerialized& clientSock = *(ntw::SocketSerialized*)&sock;
-    clientSock.Receive();
-    //clientSock.Shutdown(ntw::Socket::Down::RECIVE);
-
-    std::cout<<clientSock<<std::endl;
-
-    char* c=0;
-    clientSock>>c;
-    std::cout<<"[client] recu char*: <"<<c<<">"<<std::endl;
-
-    clientSock.Clear();
-    clientSock<<"<message venu du client.>";
-    clientSock.Send();
+    if (clientSock.Receive() > 0)
+    {
+        char* c=0;
+        clientSock>>c;
+        std::cout<<"[client] recu char*: <"<<c<<">"<<std::endl;
     
+        clientSock.Clear();
+        clientSock<<"message du client";
+
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+        clientSock.Send();
+    }
+    else
+    {
+        std::cerr<<"Server connection lost"<<std::endl; 
+        selector.Remove(&sock);
+        selector.Stop();
+    }
 };
 
 int main(int argc, char* argv[])

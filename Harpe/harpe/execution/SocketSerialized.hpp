@@ -19,7 +19,7 @@ class SocketSerialized : public Serializer, public Socket
         //inline void Shutdown(Socket::Down mode=Socket::Down::BOTH){Socket::Shutdown(mode);};
 
         void Send();
-        void Receive();
+        int Receive();
 
         /// SERIALIZE
         void Clear();
