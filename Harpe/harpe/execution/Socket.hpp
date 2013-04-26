@@ -64,9 +64,12 @@ class Socket
         enum Down {SEND=0,RECIVE=1,BOTH=2};
 
         Socket(Dommaine dommaine,Type type,int protocole=0);
+        Socket(Socket&& other);
         ~Socket();
 
+        Socket(const Socket& other) = delete;
         Socket& operator=(const Socket&) = delete;
+
 
         const SOCKET Id(){return sock;}
 

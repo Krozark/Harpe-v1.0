@@ -23,6 +23,13 @@ Socket::Socket(Socket::Dommaine dommaine,Socket::Type type,int protocole) : sock
     memset(&(sock_cfg.sin_zero),'\0',8); // mise a 0
 };
 
+Socket::Socket(Socket&& other)
+{
+    std::swap(other.sock_cfg,sock_cfg);
+    sock = other.sock;
+    other.sock = INVALID_SOCKET;
+};
+
 Socket::Socket() : sock(INVALID_SOCKET)
 {
 }
