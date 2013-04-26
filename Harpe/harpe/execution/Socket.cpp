@@ -39,22 +39,28 @@ Socket::~Socket()
     _close();
 };
 
-void Socket::Connect(std::string host,int port)
+bool Socket::Connect(std::string host,int port)
 {
     //sin_addr.s_addr =  adresse IP
     sock_cfg.sin_addr.s_addr = inet_addr(host.c_str());
     //sin_port = port à utiliser
     sock_cfg.sin_port = htons(port);
 
-    Connect();
+    return Connect();
 };
 
-void Socket::Connect()
+bool Socket::Connect()
 {
     if(connect(sock, (SOCKADDR*)&sock_cfg, sizeof(sockaddr)) != SOCKET_ERROR)
+    {
         std::cerr<<"<id:"<<sock<<">Connect to "<<inet_ntoa(sock_cfg.sin_addr)<<":"<<htons(sock_cfg.sin_port)<<std::endl;
+        return true;
+    }
     else
+    {
         std::cerr<<"<id:"<<sock<<">Ennable to connect"<<std::endl;;
+        return false;
+    }
 };
 
 void Socket::Bind()

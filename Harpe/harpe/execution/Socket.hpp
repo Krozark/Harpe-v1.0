@@ -73,8 +73,8 @@ class Socket
 
         const SOCKET Id(){return sock;}
 
-        void Connect(std::string host,int port=PORT);
-        void Connect();
+        bool Connect(std::string host,int port=PORT);
+        bool Connect();
         void Bind();
         void Listen(const int max_connexion);
         void ServeurMode(const int max_connexion=5,std::string host="",int port=PORT);//init sock_cfg + bind + listen
