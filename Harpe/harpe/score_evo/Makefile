@@ -14,4 +14,5 @@ main.exe: main.cpp IndividuTree.o IndividuLinear.hpp Engine/src/GenetiqueEngine.
 
 clean:
 	@rm -f *.o
+	@rm Engine/src/*.o
 	@rm -f main.exe

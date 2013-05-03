@@ -14,4 +14,5 @@ main: analyseur_peptide.o ../combinaisons/src/Combinaison.o
 
 clean:
 	@rm -f *.o
+	@rm ../combinaisons/src/*.o
 	@rm -f main

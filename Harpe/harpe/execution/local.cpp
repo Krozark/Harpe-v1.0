@@ -1,12 +1,12 @@
 #include "../parser_mgf/parser.hpp"
 #include "../analyseur/analyseur_peptide.hpp"
-//#include "../score_evo/random.hpp"
+#include "../score_evo/Engine/src/random.hpp"
 #include "../sql/config.hpp"
 #include "local.hpp"
 
 #ifdef APPRENTISSAGE
 #include "../score_evo/IndividuTree.hpp"
-#include "../score_evo/Engine/src/GenetiqueEngine.hpp"
+#include "../score_evo/Engine/src/GenetiqueThread.hpp"
 #endif
 
 using namespace std;

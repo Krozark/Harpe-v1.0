@@ -128,7 +128,7 @@ Parser::peptide* Parser::parse_next(bool ignore)
                 if (lex_st == AFF_VALUE)
                 {
                     pep->title = yytext;
-                    pep->title.erase(0);
+                    pep->title.erase(0,1);
                 }
                 else
                     PERROR("state "<<lex_st<<" "<<yytext);
@@ -331,6 +331,7 @@ void Parser::peptide::add(const double m,const unsigned int i,const char c)
 };
 
 void Parser::peptide::__print__() const {
+    cout<<"titre:"<<title<<endl;
     cout<<"masse:"<<masse<<" charge:"<<(int)charge<<" mz:"<<mz<<" intensitee:"<<intensitee<<endl;
 
     const unsigned int size = peaks.size();

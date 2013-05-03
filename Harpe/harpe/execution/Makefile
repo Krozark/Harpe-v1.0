@@ -18,4 +18,5 @@ serveur.exe: serveur-main.cpp Socket/src/Socket.o Socket/src/Serializer.o Socket
 
 clean:
 	@rm -f *.o
+	@rm Socket/src/*.o
 	@rm -f *.exe
