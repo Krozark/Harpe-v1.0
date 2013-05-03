@@ -1,5 +1,5 @@
 #include "analyseur_peptide.hpp"
-#include "../combinaisons/Combinaison.hpp"
+#include "../combinaisons/src/Combinaison.hpp"
 
 #include <iomanip>
 #include <algorithm>

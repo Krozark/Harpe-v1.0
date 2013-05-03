@@ -8,7 +8,7 @@ all: $(OBJ) main
 	$(CC) $(FLAGS) -o "$@" -c "$<"
 	@cp $@ $(OBJ_DIR)
 
-main: analyseur_peptide.o
+main: analyseur_peptide.o ../combinaisons/src/Combinaison.o
 	#$(CC) $^ $(FLAGS) -o $@
 
 
