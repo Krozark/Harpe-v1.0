@@ -8,7 +8,7 @@ all: main.exe
 	$(CC) $(FLAGS) -o "$@" -c "$<"
 	@cp $@ $(OBJ_DIR)
 
-main.exe: main.cpp IndividuLinear.hpp IndividuTree.o GenetiqueEngine.o
+main.exe: main.cpp IndividuTree.o IndividuLinear.hpp Engine/src/GenetiqueEngine.o
 	#$(CC) $^ $(FLAGS) -o $@
 
 

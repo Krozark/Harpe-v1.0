@@ -17,7 +17,7 @@ class IndividuTree
 {
     public:
         IndividuTree(): genome(0),score(0)/*, seuil(1.f)*/{}; //pour les vector, list ...
-        IndividuTree(int profondeur_init);
+        IndividuTree(const int& profondeur_init);
 
         IndividuTree* clone();
 

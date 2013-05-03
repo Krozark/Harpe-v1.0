@@ -4,3 +4,6 @@
 [submodule "Harpe/harpe/combinaisons"]
 	path = Harpe/harpe/combinaisons
 	url = https://github.com/Krozark/Generateur-Combinaison.git
+[submodule "Harpe/harpe/score_evo/Engine"]
+	path = Harpe/harpe/score_evo/Engine
+	url = git@github.com:Krozark/cpp-GeneticEngine.git

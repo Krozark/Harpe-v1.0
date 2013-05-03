@@ -5,11 +5,11 @@
 
 #include "../parser_mgf/parser.hpp"
 #include "../analyseur/analyseur_peptide.hpp"
-#include "../score_evo/random.hpp"
+//#include "../score_evo/Engine/src/random.hpp"
 
 #ifdef APPRENTISSAGE
 #include "../score_evo/IndividuTree.hpp"
-#include "../score_evo/GenetiqueEngine.hpp"
+#include "../score_evo/Engine/src/GenetiqueEngine.hpp"
 #endif
 
 #if DEBUG & DEBUG_STATS

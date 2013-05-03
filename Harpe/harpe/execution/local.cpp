@@ -1,12 +1,12 @@
 #include "../parser_mgf/parser.hpp"
 #include "../analyseur/analyseur_peptide.hpp"
-#include "../score_evo/random.hpp"
+//#include "../score_evo/random.hpp"
 #include "../sql/config.hpp"
 #include "local.hpp"
 
 #ifdef APPRENTISSAGE
 #include "../score_evo/IndividuTree.hpp"
-#include "../score_evo/GenetiqueEngine.hpp"
+#include "../score_evo/Engine/src/GenetiqueEngine.hpp"
 #endif
 
 using namespace std;
@@ -124,8 +124,12 @@ int local(int argc, char* argv[])
         vector<AnalyseurPeptide*> liste_AP;
         IndividuTree::Node::max_indice = AnalyseurPeptide::VALUES_SIZE;
 
-        const int pop_size = 1500;
-        GenetiqueEngine<IndividuTree> engine(pop_size,TREE_INIT_PROONDEUR);
+        int pop_size = 1000;
+        float mutation_taux = 0.05;
+        int mutation_tranche = 100;
+        int pop_child = pop_size*0.75;
+        int profondeur_init = TREE_INIT_PROONDEUR;
+        GenetiqueEngine<IndividuTree> engine(mutation_taux,mutation_tranche,"res",pop_size,profondeur_init);
 
         #endif
 
@@ -161,7 +165,7 @@ int local(int argc, char* argv[])
         //destruction des analiser_pep 
 
         #ifdef APPRENTISSAGE
-        bool (* condition_arret)(int score,decltype(liste_AP) l) = [](int score,decltype(liste_AP) l){return false;};
+        bool (* condition_arret)(const IndividuTree& score,decltype(liste_AP)& l) = [](const IndividuTree& best,decltype(liste_AP)& l){return false;};
         IndividuTree* best = engine.run_while(condition_arret,pop_size*0.75,liste_AP);
         cout<<"best: "<<*best<<endl;
         delete best;

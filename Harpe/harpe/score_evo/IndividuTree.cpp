@@ -1,15 +1,15 @@
-#include "random.hpp"
 #include <algorithm>
 #include <functional>
 #include <tuple>
 
+#include "Engine/src/random.hpp"
 #include "IndividuTree.hpp"
 
 
 using  namespace std;
 
 
-IndividuTree::IndividuTree(int profondeur_init): /*seuil(1),*/ score(0.f)
+IndividuTree::IndividuTree(const int& profondeur_init): /*seuil(1),*/ score(0.f)
 {
     genome = Node::CreateRandTree(profondeur_init);
 };
