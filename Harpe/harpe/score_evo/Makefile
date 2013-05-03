@@ -1,4 +1,4 @@
-all: main
+all: main.exe
 
 .cpp.o:
 	$(CC) $(FLAGS) -o "$@" -c "$<" 
@@ -8,10 +8,10 @@ all: main
 	$(CC) $(FLAGS) -o "$@" -c "$<"
 	@cp $@ $(OBJ_DIR)
 
-main: main.cpp IndividuLinear.hpp IndividuTree.o GenetiqueEngine.o
+main.exe: main.cpp IndividuLinear.hpp IndividuTree.o GenetiqueEngine.o
 	#$(CC) $^ $(FLAGS) -o $@
 
 
 clean:
 	@rm -f *.o
-	@rm -f main
+	@rm -f main.exe

@@ -1,4 +1,4 @@
-all: combinatoire
+all: $(OBJ) combinatoire.exe
 
 .cpp.o:
 	$(CC) $(FLAGS) -o "$@" -c "$<"
@@ -8,11 +8,11 @@ all: combinatoire
 	$(CC) $(FLAGS) -o "$@" -c "$<"
 	@cp $@ $(OBJ_DIR)
 
-combinatoire : main.cpp Combinaison.o
+combinatoire.exe : main.cpp Combinaison.o
 	$(CC) $^ $(FLAGS) -o $@
 
 
 clean:
 	@rm -f *.o
 	@rm -f main
-	@rm -f combinatoire
+	@rm -f combinatoire.exe
