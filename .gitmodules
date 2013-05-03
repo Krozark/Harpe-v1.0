@@ -1,0 +1,3 @@
+[submodule "Harpe/harpe/execution/Socket"]
+	path = Harpe/harpe/execution/Socket
+	url = https://github.com/Krozark/cpp-Socket.git
