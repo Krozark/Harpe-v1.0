@@ -126,7 +126,7 @@ int local(int argc, char* argv[])
 
         int pop_size = 10000;
         float mutation_taux = 0.01;
-        int nb_threads = 4;
+        int nb_threads = -1;
         int pop_child = 1000;
         int profondeur_init = TREE_INIT_PROONDEUR;
         GeneticEngine<IndividuTree> engine(nb_threads,mutation_taux,"res",pop_size,pop_child,profondeur_init);
