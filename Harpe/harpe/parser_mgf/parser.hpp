@@ -31,7 +31,8 @@ extern FILE* yyout;
 #define DEBUG_MGF_PEAKS_START 1<<12
 
 #define DEBUG_PEAKS 0
-#define GENETIQUE_SAVE_RESULTS 1
+
+#define GENETIQUE_SAVE_RESULTS  1
 
 #ifndef APPRENTISSAGE
 #define DEBUG (DEBUG_NO )

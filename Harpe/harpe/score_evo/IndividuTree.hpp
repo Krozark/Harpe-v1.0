@@ -13,20 +13,23 @@
 #define TREE_SUB_INIT_PROFONDEUR 5
 #define TO_BE_BEST 3
 
+
 class IndividuTree
 {
     public:
         IndividuTree(): genome(0),score(0)/*, seuil(1.f)*/{}; //pour les vector, list ...
         IndividuTree(const int& profondeur_init);
 
-        IndividuTree* clone();
+        IndividuTree* clone() const;
 
         ~IndividuTree();
 
         void mutate(); //fait mutter un coef en ajoutant [-1,1] ou remplacer sous arbre
-        IndividuTree* crossOver(IndividuTree& other);
+        IndividuTree* crossOver(const IndividuTree& other) const;
 
-        void eval(std::vector<AnalyseurPeptide*>& to_test); //fonction d'évaluation, affect le score
+        void eval(); //fonction d'évaluation, affect le score
+        static std::vector<AnalyseurPeptide*>* pep_to_test;
+        bool need_eval(){return not evaluate;};
 
         bool operator>(const IndividuTree& other)const {return (this->score == other.score)?this->size()<other.size():this->score > other.score;}
 
@@ -102,12 +105,14 @@ class IndividuTree
 
     private:
         inline std::stack<Node*> get(int numero);/* entre ]1,genome->nb_sub_nodes[ , genome->nb_sub_nodes est le numero de la racine*/
-        inline Node* get_node(int numero);/* entre ]1,genome->nb_sub_nodes[ , genome->nb_sub_nodes est le numero de la racine*/
+        inline Node* get_node(int numero) const;/* entre ]1,genome->nb_sub_nodes[ , genome->nb_sub_nodes est le numero de la racine*/
 
         int score;
         Node* genome;
 
         void minimize(Node* root);
+
+        bool evaluate;
 };
 
 #endif

@@ -9,7 +9,7 @@
 
 #ifdef APPRENTISSAGE
 #include "../score_evo/IndividuTree.hpp"
-#include "../score_evo/Engine/src/GenetiqueEngine.hpp"
+#include "../score_evo/Engine/src/GeneticEngine.hpp"
 #endif
 
 #if DEBUG & DEBUG_STATS

@@ -5,21 +5,23 @@
 #include "Engine/src/random.hpp"
 #include "IndividuTree.hpp"
 
-
 using  namespace std;
 
+std::vector<AnalyseurPeptide*>* IndividuTree::pep_to_test = 0;
 
-IndividuTree::IndividuTree(const int& profondeur_init): /*seuil(1),*/ score(0.f)
+
+IndividuTree::IndividuTree(const int& profondeur_init): /*seuil(1),*/ score(0.f), evaluate(false)
 {
     genome = Node::CreateRandTree(profondeur_init);
 };
 
-IndividuTree* IndividuTree::clone()
+IndividuTree* IndividuTree::clone() const
 {
     IndividuTree* res = new IndividuTree();
     res->genome = genome->clone();
     //res->seuil = seuil;
     res->score = score;
+    res->evaluate = evaluate;
     return res;
 };
 
@@ -32,6 +34,7 @@ IndividuTree::~IndividuTree()
 
 void IndividuTree::mutate()
 {
+    evaluate = false;
     //tirer un node random
     std::stack<Node*> pile;
 
@@ -127,10 +130,11 @@ void IndividuTree::mutate()
 
 };
 
-IndividuTree* IndividuTree::crossOver(IndividuTree& other)
+IndividuTree* IndividuTree::crossOver(const IndividuTree& other) const
 {
     IndividuTree* res = new IndividuTree;
     res->genome = this->genome->clone();
+    res->evaluate = false;
     //res->seuil = this->seuil;
 
     std::stack<Node*> pile;
@@ -178,11 +182,13 @@ std::ostream& operator<<(std::ostream& output,const IndividuTree& individu)
     output<<individu.genome;
 };
 
-void IndividuTree::eval(std::vector<AnalyseurPeptide*>& to_test)
+void IndividuTree::eval()
 {
+    std::vector<AnalyseurPeptide*>& to_test = *(pep_to_test);
     this->score = 0;
     for(AnalyseurPeptide* pep : to_test)
     {
+        //pep->mutex.lock();
         //calculer le score de chaqun de proposition + trouver le meilleur
         for(AnalyseurPeptide::ApprentissageSolution& proposition : pep->propositions)
         {
@@ -190,14 +196,18 @@ void IndividuTree::eval(std::vector<AnalyseurPeptide*>& to_test)
             proposition.score = /*(res >= seuil)? res:0;*/res;
         }
         std::partial_sort(pep->propositions.begin(),pep->propositions.begin()+TO_BE_BEST,pep->propositions.end(),greater<AnalyseurPeptide::ApprentissageSolution>());
+        
         const int size = pep->propositions.size();
         //rate pour que les TO_BE_BEST premiers soit correctes
         for (int i=0;i<size && i<TO_BE_BEST;++i)
         {
             this->score += pep->propositions[i].real_score;
         }
+        //pep->mutex.unlock();
 
     }
+
+    evaluate = true;
 };
 
 void IndividuTree::minimize(IndividuTree::Node* root)
@@ -293,7 +303,7 @@ std::stack<IndividuTree::Node*> IndividuTree::get(int numero)
 
 ///////////////////////// NODE ///////////////////////////////////
 
-IndividuTree::Node* IndividuTree::get_node(int numero)
+IndividuTree::Node* IndividuTree::get_node(int numero) const
 {
     Node* res = genome;
     int current_nb = res->nb_sub_nodes;

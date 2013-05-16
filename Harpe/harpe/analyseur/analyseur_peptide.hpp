@@ -7,6 +7,7 @@
 #include <stddef.h>
 #include <iostream>
 #include <memory>
+#include <mutex>
 #include "../aa_search/Enzyme.hpp"
 
 //#include <tuple>
@@ -145,6 +146,8 @@ class AnalyseurPeptide
         #else
         void verifier_resultats_complet(std::list<v_tokens_ptr>& s);
         #endif
+
+        std::mutex mutex;
     #endif
     private:
 
