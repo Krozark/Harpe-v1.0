@@ -209,7 +209,26 @@ void AnalyseurPeptide::save_stack(const AnalyseurPeptide::pile_tokens_ptr& searc
     //add the current
     res.emplace_back(l);
     //add all other possibilites tha can be (or not) complete
-    --i--;
+    --i;//peaks
+    --i;//current head
+    end = search.begin();//decement
+    const int size =l.size();
+    while(i!=end)
+    {
+        if((*i)->type == AnalyseurPeptide::stack_token::Type::PEAK_TOKEN)
+        {
+            cout<<"PEAK_TOKEN"<<endl;
+            break;
+        }
+        else if ((*i)->type == AnalyseurPeptide::stack_token::Type::AA_TOKEN and (*i)->aa_token.pt_data!=NULL)
+        {
+            cout<<"AA_TOKEN"<<endl;
+            l[size-2] = (*i);
+            l[size-1] = (*i)->aa_token.pt_data;
+            res.emplace_back(l);
+        }
+        --i;
+    }
 
 };
 
@@ -332,14 +351,10 @@ void AnalyseurPeptide::resolve(int debut)
                 find=get_near(current_peak_index,sens);
                 int size = find->size();
 
-                cout<<"++++++++++++++++++++++++++"<<endl;
-                print_stack_used(search);
-                print_stack_all(search);
-
                 if (size <= 0) // rien de trouvé
                 {
 
-                    if (sens == Sens::RIGHT )
+                    /*if (sens == Sens::RIGHT )
                     {
                         save_stack(search,results_right);
                         //TODO complet_solution(results_right.back(),Sens::RIGHT);
@@ -348,7 +363,7 @@ void AnalyseurPeptide::resolve(int debut)
                     {
                        save_stack(search,results_left);
                        //TODO complet_solution(results_left.back(),Sens::LEFT);
-                    }
+                    }*/
 
                     current_peak_index = depiler(search,sens);
                     if (current_peak_index == -1)
@@ -399,7 +414,7 @@ void AnalyseurPeptide::resolve(int debut)
                         current_stack_peak->__print__();
                         #endif
 
-                        //save_stack(search,results_right);
+                        save_stack(search,results_right);
                     }
                     else if (sens == Sens::LEFT)
                     {
@@ -428,7 +443,7 @@ void AnalyseurPeptide::resolve(int debut)
 
                         search.emplace_front(current_stack_peak); //PEAK
 
-                        //save_stack(search,results_left);
+                        save_stack(search,results_left);
                     }
                 }
                 delete find;
