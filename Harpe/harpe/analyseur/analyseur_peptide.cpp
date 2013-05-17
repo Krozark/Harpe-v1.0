@@ -205,9 +205,12 @@ void AnalyseurPeptide::save_stack(const AnalyseurPeptide::pile_tokens_ptr& searc
         }
         ++i;
     }
-
     l.shrink_to_fit();
+    //add the current
     res.emplace_back(l);
+    //add all other possibilites tha can be (or not) complete
+    --i--;
+
 };
 
 void AnalyseurPeptide::print_results(const std::list<AnalyseurPeptide::v_tokens_ptr>& res)
@@ -329,6 +332,10 @@ void AnalyseurPeptide::resolve(int debut)
                 find=get_near(current_peak_index,sens);
                 int size = find->size();
 
+                cout<<"++++++++++++++++++++++++++"<<endl;
+                print_stack_used(search);
+                print_stack_all(search);
+
                 if (size <= 0) // rien de trouvé
                 {
 
@@ -371,6 +378,7 @@ void AnalyseurPeptide::resolve(int debut)
                     {
                         for (int i=0;i<size-1;++i)
                         {
+
                             #if DEBUG & DEBUG_SOLUTION
                             cout<<"trouvé: ";
                             (*find)[i]->__print__();
@@ -390,13 +398,17 @@ void AnalyseurPeptide::resolve(int debut)
                         cout<<"prochain peak: ";
                         current_stack_peak->__print__();
                         #endif
+
+                        //save_stack(search,results_right);
                     }
                     else if (sens == Sens::LEFT)
                     {
+
                         stack_token* current_stack_peak = (*find)[size-1]->get_peak_stack_NULL();
 
                         current_peak_index = (current_stack_peak->peak_token.index);
                         search.emplace_front((*find)[size-1]); //AA
+
 
                         #if DEBUG & DEBUG_SOLUTION
                         cout<<"trouvé: ";
@@ -415,6 +427,8 @@ void AnalyseurPeptide::resolve(int debut)
                         }
 
                         search.emplace_front(current_stack_peak); //PEAK
+
+                        //save_stack(search,results_left);
                     }
                 }
                 delete find;
@@ -433,6 +447,17 @@ void AnalyseurPeptide::resolve(int debut)
             cout<<" ------------------------- END RESOLVE ----------------------"<<endl;
             #endif
 
+            cout<<" ++++++++++++++++ MERGE ++++++++++++++++++++++++++"<<endl;
+            for(auto i=results_left.begin();i != results_left.end();++i)
+            {
+                print_AA((*i));
+            }
+            cout<<" +++++++++++++++++++ END MERGE ++++++++++++++++++++ "<<endl;
+            for(auto i=results_right.begin();i != results_right.end();++i)
+            {
+                print_AA((*i));
+            }
+            cout<<" +++++++++++++++++++ END MERGE ++++++++++++++++++++ "<<endl;
 
             merge_solution(results_left,results_right);
 
@@ -904,6 +929,7 @@ const AnalyseurPeptide::v_tokens_ptr* AnalyseurPeptide::get_near(const int index
 
 void AnalyseurPeptide::merge_solution(std::list<AnalyseurPeptide::v_tokens_ptr>& left_part,const std::list<AnalyseurPeptide::v_tokens_ptr>& right_part)
 {
+
     auto l_end = left_part.end();
     auto r_end = right_part.end();
     auto l_begin = left_part.begin();
@@ -939,13 +965,13 @@ void AnalyseurPeptide::merge_solution(std::list<AnalyseurPeptide::v_tokens_ptr>&
         }
     }
     //ajouter une solution non fusionné pour chaque coté 
-    for(auto i=l_begin; i != l_end; ++i)
+    /*for(auto i=l_begin; i != l_end; ++i)
         if(i->size() > 4) //il y a au moins 1 AA
             tmp_l.emplace_back(*i);
 
     for(auto j=r_begin; j!= r_end; ++j)
         if(j->size() > 4) //il y a au moins 1 AA
-            tmp_l.emplace_back(*j);
+            tmp_l.emplace_back(*j);*/
     
     swap(left_part,tmp_l);
 
