@@ -352,17 +352,6 @@ void AnalyseurPeptide::resolve(int debut)
                 if (size <= 0) // rien de trouvé
                 {
 
-                    /*if (sens == Sens::RIGHT )
-                    {
-                        save_stack(search,results_right);
-                        //TODO complet_solution(results_right.back(),Sens::RIGHT);
-                    }
-                    else if (sens == Sens::LEFT)
-                    {
-                       save_stack(search,results_left);
-                       //TODO complet_solution(results_left.back(),Sens::LEFT);
-                    }*/
-
                     current_peak_index = depiler(search,sens);
                     if (current_peak_index == -1)
                     {
@@ -413,6 +402,9 @@ void AnalyseurPeptide::resolve(int debut)
                         #endif
 
                         save_stack(search,results_right);
+                        #if COMPLET_SOLUTION == 1
+                        complet_solution(results_right.back(),Sens::RIGHT);
+                        #endif
                     }
                     else if (sens == Sens::LEFT)
                     {
@@ -442,6 +434,9 @@ void AnalyseurPeptide::resolve(int debut)
                         search.emplace_front(current_stack_peak); //PEAK
 
                         save_stack(search,results_left);
+                        #if COMPLET_SOLUTION == 1
+                        complet_solution(results_left.back(),Sens::LEFT);
+                        #endif
                     }
                 }
                 delete find;
@@ -477,8 +472,11 @@ void AnalyseurPeptide::resolve(int debut)
             #endif
 
             #warning "TODO ajouter l'enzyme corectement, et non en dure"
-            //TODO Enzyme tryp("Trypsine");
-            //TODO filter_enzyme(results_left,tryp);
+            #if FILTER_SOLUTION == 1
+            //TODO
+            Enzyme tryp("Trypsine");
+            filter_enzyme(results_left,tryp);
+            #endif
 
 
             #ifdef APPRENTISSAGE
@@ -1366,8 +1364,8 @@ void AnalyseurPeptide::stack_token::__print__() const
         for(int i=0;i<Parser::peptide::SIZE;++i)
         {
             cout<<i<<" to find : "<<header_token.holds[i].to_find<<"("<<(header_token.holds[i].link.get()?header_token.holds[i].link->size():0)<<")"<<endl;
-            /*if (header_token.holds[i].link.get())
-                aa_tab.print(*header_token.holds[i].link,header_token.holds[i].link->size());*/
+            if (header_token.holds[i].link.get())
+                aa_tab.print(*header_token.holds[i].link,header_token.holds[i].link->size());
         }
     }
 };

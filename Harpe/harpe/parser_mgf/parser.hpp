@@ -35,10 +35,13 @@ extern FILE* yyout;
 #define GENETIQUE_SAVE_RESULTS  1
 
 #ifndef APPRENTISSAGE
-#define DEBUG (DEBUG_NO )
+#define DEBUG (DEBUG_FILTER )
 #else
 #define DEBUG (DEBUG_APPRENTISSAGE_STATS)
 #endif
+
+#define COMPLET_SOLUTION 0
+#define FILTER_SOLUTION 0
 
 class AA_Tab;
 extern AA_Tab aa_tab;
