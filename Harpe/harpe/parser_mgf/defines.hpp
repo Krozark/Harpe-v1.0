@@ -21,7 +21,8 @@ enum lex_states{
     SOLUTION,
     UNKNOW
 };
-#ifdef APPRENTISSAGE
+
+#ifdef COLORS
 
 #define ROUGE  	"\033[31m"
 #define VERT   	"\033[32m"

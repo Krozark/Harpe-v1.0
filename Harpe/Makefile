@@ -1,8 +1,9 @@
 export CC = g++
 INCPATH = 
 LIBS = -lmysqlcppconn -lpthread 
-#export DEFINES = -DAPPRENTISSAGE
-export DEFINES = 
+#APPRENTISSAGE = -DAPPRENTISSAGE
+APPRENTISSAGE = 
+export DEFINES = -DCOLORS $(APPRENTISSAGE)
 export FLAGS = -g -std=c++0x $(INCPATH) $(LIBS) $(DEFINES)
 export TOP := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
 export OBJ_DIR = $(TOP)/obj
@@ -12,7 +13,7 @@ OBJ = $(SRC:.cpp=.o) $(SRC:*.cpp=.o)
 
 SUBDIRS = harpe obj
 
-ifeq ($(DEFINES),-DAPPRENTISSAGE)
+ifeq ($(APPRENTISSAGE),-DAPPRENTISSAGE)
 export EXEC = Harpe-apprentissage.exe
 else
 export EXEC = Harpe.exe

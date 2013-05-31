@@ -217,12 +217,10 @@ void AnalyseurPeptide::save_stack(const AnalyseurPeptide::pile_tokens_ptr& searc
     {
         if((*i)->type == AnalyseurPeptide::stack_token::Type::PEAK_TOKEN)
         {
-            cout<<"PEAK_TOKEN"<<endl;
             break;
         }
         else if ((*i)->type == AnalyseurPeptide::stack_token::Type::AA_TOKEN and (*i)->aa_token.pt_data!=NULL)
         {
-            cout<<"AA_TOKEN"<<endl;
             l[size-2] = (*i);
             l[size-1] = (*i)->aa_token.pt_data;
             res.emplace_back(l);
@@ -462,18 +460,6 @@ void AnalyseurPeptide::resolve(int debut)
             cout<<" ------------------------- END RESOLVE ----------------------"<<endl;
             #endif
 
-            cout<<" ++++++++++++++++ MERGE ++++++++++++++++++++++++++"<<endl;
-            for(auto i=results_left.begin();i != results_left.end();++i)
-            {
-                print_AA((*i));
-            }
-            cout<<" +++++++++++++++++++ END MERGE ++++++++++++++++++++ "<<endl;
-            for(auto i=results_right.begin();i != results_right.end();++i)
-            {
-                print_AA((*i));
-            }
-            cout<<" +++++++++++++++++++ END MERGE ++++++++++++++++++++ "<<endl;
-
             merge_solution(results_left,results_right);
 
             #if DEBUG & DEBUG_STATS 
@@ -496,20 +482,19 @@ void AnalyseurPeptide::resolve(int debut)
 
 
             #ifdef APPRENTISSAGE
-
-            #if DEBUG & DEBUG_STATS
-            verifier_resultats_complet(results_left,k-1);
-            #else
-            verifier_resultats_complet(results_left);
-            #endif
-
-            for(auto current_sol= results_left.begin();current_sol != results_left.end();++current_sol)
-            {
-                propositions.emplace_back(ApprentissageSolution(*current_sol,pep));
-                #if DEBUG & DEBUG_APPRENTISSAGE_STATS
-                //propositions.back().__print__();
+                #if DEBUG & DEBUG_STATS
+                verifier_resultats_complet(results_left,k-1);
+                #else
+                verifier_resultats_complet(results_left);
                 #endif
-            }
+
+                for(auto current_sol= results_left.begin();current_sol != results_left.end();++current_sol)
+                {
+                    propositions.emplace_back(ApprentissageSolution(*current_sol,pep));
+                    #if DEBUG & DEBUG_APPRENTISSAGE_STATS
+                    //propositions.back().__print__();
+                    #endif
+                }
             #endif
 
             for(auto i=results_left.begin();i!=results_left.end();++i)
