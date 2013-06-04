@@ -34,7 +34,7 @@ class stack_token;
 class AnalyseurPeptide
 {
     public:
-        AnalyseurPeptide(Parser::peptide* pep,int nb,const double er,double masse_max);
+        AnalyseurPeptide(Parser::peptide* pep,int nb_affiche,const double er,double masse_max,int finds_max_size=-1);
         ~AnalyseurPeptide();
         void resolve(int debut=-1);
         #warning "une fois le noyeau calculé, mettre pour chaque AA sa suretée (nombre de fois présente dans les saloution, si les peaks pris en cmpt changent), et fusionner plusieurs solutions quand on peut : AA-AA-trou + trou-AA-AA = AA-AA-trou?-AA-AA"
@@ -160,6 +160,7 @@ class AnalyseurPeptide
         std::vector<stack_token*> tokens_ptr;
 
         int nb_affiche;
+        int finds_max_size;
         const double erreur, masse_max_trou;
 
         const int get_index_max_intensitee();

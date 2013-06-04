@@ -10,10 +10,11 @@
 using namespace std;
 
 
-AnalyseurPeptide::AnalyseurPeptide (Parser::peptide* pep,int nb,const double er, double masse_max) : erreur(er), masse_max_trou(masse_max)
+AnalyseurPeptide::AnalyseurPeptide (Parser::peptide* pep,int nb,const double er, double masse_max,int max_size) : erreur(er), masse_max_trou(masse_max)
 {
     this->pep = pep;
     nb_affiche = nb;
+    finds_max_size = max_size;
 
 };
 
@@ -497,6 +498,15 @@ void AnalyseurPeptide::resolve(int debut)
 
             for(auto i=results_left.begin();i!=results_left.end();++i)
                 finds.emplace_back(move(*i));
+
+            #ifndef APPRENTISSAGE
+            sort(finds.begin(),finds.end(),solution_gt);
+            if(finds_max_size >0)
+                if(finds.size() > finds_max_size)
+                {
+                    finds.resize(finds_max_size);
+                }
+            #endif
         }
 
     #if DEBUG & DEBUG_STATS 

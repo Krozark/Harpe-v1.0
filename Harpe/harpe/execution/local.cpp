@@ -143,7 +143,7 @@ int local(int argc, char* argv[])
         {
             cout.precision(10);
 
-            AnalyseurPeptide* analiser_pep=new AnalyseurPeptide(p,nb_affiche,error, trou_max);
+            AnalyseurPeptide* analiser_pep=new AnalyseurPeptide(p,nb_affiche,error, trou_max,1000);
             analiser_pep->resolve();
 
             #ifdef APPRENTISSAGE

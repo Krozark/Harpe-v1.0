@@ -35,7 +35,7 @@ extern FILE* yyout;
 #define GENETIQUE_SAVE_RESULTS  1
 
 #ifndef APPRENTISSAGE
-#define DEBUG (DEBUG_FILTER )
+#define DEBUG (DEBUG_NO )
 #else
 #define DEBUG (DEBUG_APPRENTISSAGE_STATS)
 #endif
