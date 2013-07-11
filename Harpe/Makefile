@@ -1,8 +1,21 @@
-export CC = g++
-INCPATH = 
-LIBS = -lmysqlcppconn -lpthread 
+#export SYSTEM = LINUX
+export SYSTEM = WIN
+
 #APPRENTISSAGE = -DAPPRENTISSAGE
 APPRENTISSAGE = 
+
+
+ifeq ($(SYSTEM),LINUX)
+export CC = g++
+export EXTENTION =
+export INCPATH =
+else
+export CC = i586-mingw32msvc-g++
+export EXTENTION = .exe
+export INCPATH = -I/usr/include/ -I/usr/include/i386-linux-gnu/
+endif
+
+LIBS = -lmysqlcppconn -lpthread 
 export DEFINES = -DCOLORS $(APPRENTISSAGE)
 export FLAGS = -g -std=c++0x $(INCPATH) $(LIBS) $(DEFINES)
 export TOP := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
@@ -14,9 +27,9 @@ OBJ = $(SRC:.cpp=.o) $(SRC:*.cpp=.o)
 SUBDIRS = harpe obj
 
 ifeq ($(APPRENTISSAGE),-DAPPRENTISSAGE)
-export EXEC = Harpe-apprentissage.exe
+export EXEC = Harpe-apprentissage$(EXTENTION)
 else
-export EXEC = Harpe.exe
+export EXEC = Harpe$(EXTENTION)
 endif
 
 CLEANDIRS = $(SUBDIRS:%=clean-%)
@@ -39,10 +52,6 @@ $(SUBDIRS):
 .c.o :
 	$(CC) $(FLAGS) -o $@ -c $^;
 	@mv $@ obj
-
-
-#$(EXEC): $(OBJ) $(SUBDIRS)
-#	$(CC) $(FLAGS) $^ -o $@
 
 
 clean: $(CLEANDIRS)

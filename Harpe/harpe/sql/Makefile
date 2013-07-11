@@ -1,4 +1,4 @@
-all: main.exe
+all: main$(EXTENTION)
 
 .cpp.o:
 	$(CC) $(FLAGS) -o "$@" -c "$<"
@@ -8,10 +8,10 @@ all: main.exe
 	$(CC) $(FLAGS) -o "$@" -c "$<"
 	@cp $@ $(OBJ_DIR)
 
-main.exe: main.cpp config.hpp SqlObject.hpp
+main$(EXTENTION): main.cpp config.hpp SqlObject.hpp
 	$(CC) $^ $(FLAGS) -o $@
 
 
 clean:
 	@rm -f *.o
-	@rm -f main.exe
+	@rm -f main$(EXTENTION)

@@ -1,4 +1,4 @@
-all: $(OBJ) serveur.exe local.exe main
+all: $(OBJ) serveur$(EXTENTION) local$(EXTENTION) main
 
 .cpp.o:
 	$(CC) $(FLAGS) -o "$@" -c "$<" 
@@ -10,13 +10,14 @@ all: $(OBJ) serveur.exe local.exe main
 
 main : local.o serveur.o Socket/src/Socket.o Socket/src/Serializer.o Socket/src/SocketSerialized.o Socket/src/SelectManager.o
 
-local.exe: local-main.cpp Socket/src/Socket.o Socket/src/Serializer.o Socket/src/SocketSerialized.o Socket/src/SelectManager.o
+local$(EXTENTION): local-main.cpp Socket/src/Socket.o Socket/src/Serializer.o Socket/src/SocketSerialized.o Socket/src/SelectManager.o
 	$(CC) $^ $(FLAGS) -o $@
 
-serveur.exe: serveur-main.cpp Socket/src/Socket.o Socket/src/Serializer.o Socket/src/SocketSerialized.o Socket/src/SelectManager.o
+serveur$(EXTENTION): serveur-main.cpp Socket/src/Socket.o Socket/src/Serializer.o Socket/src/SocketSerialized.o Socket/src/SelectManager.o
 	$(CC) $^ $(FLAGS) -o $@
 
 clean:
 	@rm -f *.o
 	@rm -f Socket/src/*.o
-	@rm -f *.exe
+	@rm -f local$(EXTENTION)
+	@rm -f serveur$(EXTENTION)

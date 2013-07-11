@@ -1,5 +1,6 @@
 all: $(OBJ) main
 
+
 .cpp.o:
 	$(CC) $(FLAGS) -o "$@" -c "$<" 
 	@cp $@ $(OBJ_DIR)
