@@ -22,6 +22,7 @@ enum param {
     };
 
 BDD_DECLARE();
+
 AA_Tab aa_tab = AA_Tab();
 
 int main(int argc, char* argv[])
@@ -140,7 +141,7 @@ int main(int argc, char* argv[])
         else
             PARAMS_ERROR("mauvais argument")
     }
-        
+
 
     tab.add_all_AA();
 
@@ -181,7 +182,7 @@ int main(int argc, char* argv[])
 
         delete &res;
     }
-    
+
     BDD_DESTROY();
     return 0;
 };

@@ -6,45 +6,35 @@
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
-			<Target title="Debug">
-				<Option output="bin/Debug/code-block" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj/Debug/" />
+			<Target title="win_x64">
+				<Option output="./bin/win-x64/Harpe-win-x64" prefix_auto="1" extension_auto="1" />
+				<Option object_output="./obj/win-x64/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Compiler>
-					<Add option="-O2" />
-					<Add option="-pg" />
-					<Add option="-g" />
-				</Compiler>
 				<Linker>
-					<Add option="-pg" />
-					<Add directory="lib/debug" />
+					<Add directory="lib/win-x64" />
 				</Linker>
 			</Target>
-			<Target title="Release">
-				<Option output="bin/Release/code-block" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj/Release/" />
+			<Target title="ubuntu_x64">
+				<Option output="./bin/ubuntu-x64/Harpe-ubuntu-x64" prefix_auto="1" extension_auto="1" />
+				<Option object_output="./obj/ubuntu-x64/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Compiler>
-					<Add option="-O3" />
-				</Compiler>
 				<Linker>
-					<Add option="-s" />
-					<Add directory="lib/release" />
+					<Add directory="lib/ubuntu-x64" />
 				</Linker>
 			</Target>
 		</Build>
 		<Compiler>
 			<Add option="-std=c++0x" />
 			<Add option="-Wall" />
+			<Add option="-g" />
 			<Add option="-fexceptions" />
 			<Add directory="include" />
 		</Compiler>
 		<Linker>
 			<Add option="-lmysqlcppconn" />
 			<Add option="-lpthread" />
-			<Add directory="lib" />
 		</Linker>
 		<Unit filename="../harpe/aa_search/AA.cpp" />
 		<Unit filename="../harpe/aa_search/AA.hpp" />

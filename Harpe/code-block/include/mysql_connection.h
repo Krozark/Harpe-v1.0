@@ -1,35 +1,32 @@
 /*
-Copyright (c) 2008, 2013, Oracle and/or its affiliates. All rights reserved.
+  Copyright (c) 2008, 2010, Oracle and/or its affiliates. All rights reserved.
 
-The MySQL Connector/C++ is licensed under the terms of the GPLv2
-<http://www.gnu.org/licenses/old-licenses/gpl-2.0.html>, like most
-MySQL Connectors. There are special exceptions to the terms and
-conditions of the GPLv2 as it is applied to this software, see the
-FLOSS License Exception
-<http://www.mysql.com/about/legal/licensing/foss-exception.html>.
+  The MySQL Connector/C++ is licensed under the terms of the GPLv2
+  <http://www.gnu.org/licenses/old-licenses/gpl-2.0.html>, like most
+  MySQL Connectors. There are special exceptions to the terms and
+  conditions of the GPLv2 as it is applied to this software, see the
+  FLOSS License Exception
+  <http://www.mysql.com/about/legal/licensing/foss-exception.html>.
 
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published
-by the Free Software Foundation; version 2 of the License.
+  This program is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published
+  by the Free Software Foundation; version 2 of the License.
 
-This program is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
-or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
-for more details.
+  This program is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+  for more details.
 
-You should have received a copy of the GNU General Public License along
-with this program; if not, write to the Free Software Foundation, Inc.,
-51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA
+  You should have received a copy of the GNU General Public License along
+  with this program; if not, write to the Free Software Foundation, Inc.,
+  51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA
 */
-
-
 
 #ifndef _MYSQL_CONNECTION_H_
 #define _MYSQL_CONNECTION_H_
 
 #include <cppconn/connection.h>
 #include <boost/shared_ptr.hpp>
-#include <boost/scoped_ptr.hpp>
 
 namespace sql
 {
@@ -56,8 +53,7 @@ private:
 
 
 class MySQL_DebugLogger;
-struct MySQL_ConnectionData; /* PIMPL */
-class MySQL_Statement;
+class MySQL_ConnectionData; /* PIMPL */
 
 namespace NativeAPI
 {
@@ -66,8 +62,6 @@ class NativeConnectionWrapper;
 
 class CPPCONN_PUBLIC_FUNC MySQL_Connection : public sql::Connection
 {
-	MySQL_Statement * createServiceStmt();
-
 public:
 	MySQL_Connection(Driver * _driver,
 					::sql::mysql::NativeAPI::NativeConnectionWrapper & _proxy,
@@ -150,26 +144,20 @@ public:
 
 	void setTransactionIsolation(enum_transaction_isolation level);
 
-	virtual sql::SQLString getSessionVariable(const sql::SQLString & varname);
+	sql::SQLString getSessionVariable(const sql::SQLString & varname);
 
-	virtual void setSessionVariable(const sql::SQLString & varname, const sql::SQLString & value);
+	void setSessionVariable(const sql::SQLString & varname, const sql::SQLString & value);
 
-	virtual sql::SQLString getLastStatementInfo();
-
-private:
-	/* We do not really think this class has to be subclassed*/
+protected:
 	void checkClosed();
 	void init(std::map< sql::SQLString, sql::ConnectPropertyVal > & properties);
 
 	Driver * driver;
 	boost::shared_ptr< NativeAPI::NativeConnectionWrapper > proxy;
 
-	/* statement handle to execute queries initiated by driver. Perhaps it is
-	   a good idea to move it to a separate helper class */
-	boost::scoped_ptr< ::sql::mysql::MySQL_Statement > service;
-
 	MySQL_ConnectionData * intern; /* pimpl */
 
+private:
 	/* Prevent use of these */
 	MySQL_Connection(const MySQL_Connection &);
 	void operator=(MySQL_Connection &);

@@ -1,5 +1,5 @@
-export SYSTEM = LINUX
-#export SYSTEM = WIN
+#export SYSTEM = LINUX
+export SYSTEM = WIN
 
 #APPRENTISSAGE = -DAPPRENTISSAGE
 APPRENTISSAGE = 
@@ -26,7 +26,7 @@ LIBS = -lmysqlcppconn -lpthread
 #endif
 
 export DEFINES = -DCOLORS $(APPRENTISSAGE) 
-export FLAGS = -std=c++0x $(SFLAGS) $(INCPATH) $(LIBS) $(DEFINES)
+export FLAGS = -g -std=c++0x $(SFLAGS) $(INCPATH) $(LIBS) $(DEFINES)
 export TOP := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
 export OBJ_DIR = $(TOP)/obj
 
