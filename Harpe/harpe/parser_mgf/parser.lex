@@ -70,7 +70,7 @@ CHARGE {
 }
 
 
-[0-9]+[+-]? {
+[0-9]+[+] {
     return CONST_CHARGE;
 }
 

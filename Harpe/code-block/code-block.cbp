@@ -6,8 +6,8 @@
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
-			<Target title="win_x64">
-				<Option output="./bin/win-x64/Harpe-win-x64" prefix_auto="1" extension_auto="1" />
+			<Target title="aa_search-win_x64">
+				<Option output="./bin/win-x64/aa_search-win-x64" prefix_auto="1" extension_auto="1" />
 				<Option object_output="./obj/win-x64/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
@@ -15,8 +15,8 @@
 					<Add directory="lib/win-x64" />
 				</Linker>
 			</Target>
-			<Target title="ubuntu_x64">
-				<Option output="./bin/ubuntu-x64/Harpe-ubuntu-x64" prefix_auto="1" extension_auto="1" />
+			<Target title="aa_search-ubuntu_x64">
+				<Option output="./bin/ubuntu-x64/aa_search-ubuntu-x64" prefix_auto="1" extension_auto="1" />
 				<Option object_output="./obj/ubuntu-x64/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
@@ -24,7 +24,103 @@
 					<Add directory="lib/ubuntu-x64" />
 				</Linker>
 			</Target>
+			<Target title="combinaison-win_x64">
+				<Option output="./bin/win-x64/combinaison-win-x64" prefix_auto="1" extension_auto="1" />
+				<Option object_output="./obj/win-x64/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Linker>
+					<Add directory="lib/win-x64" />
+				</Linker>
+			</Target>
+			<Target title="combinaison-ubuntu_x64">
+				<Option output="./bin/ubuntu-x64/combinaison-ubuntu-x64" prefix_auto="1" extension_auto="1" />
+				<Option object_output="./obj/ubuntu-x64/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Linker>
+					<Add directory="lib/ubuntu-x64" />
+				</Linker>
+			</Target>
+			<Target title="serveur-win_x64">
+				<Option output="./bin/win-x64/serveur-win-x64" prefix_auto="1" extension_auto="1" />
+				<Option object_output="./obj/win-x64/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Linker>
+					<Add directory="lib/win-x64" />
+				</Linker>
+			</Target>
+			<Target title="serveur-ubuntu_x64">
+				<Option output="./bin/ubuntu-x64/serveur-ubuntu-x64" prefix_auto="1" extension_auto="1" />
+				<Option object_output="./obj/ubuntu-x64/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Linker>
+					<Add directory="lib/ubuntu-x64" />
+				</Linker>
+			</Target>
+			<Target title="local-win_x64">
+				<Option output="./bin/win-x64/local-win-x64" prefix_auto="1" extension_auto="1" />
+				<Option object_output="./obj/win-x64/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Linker>
+					<Add directory="lib/win-x64" />
+				</Linker>
+			</Target>
+			<Target title="local-ubuntu_x64">
+				<Option output="./bin/ubuntu-x64/local-ubuntu-x64" prefix_auto="1" extension_auto="1" />
+				<Option object_output="./obj/ubuntu-x64/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Linker>
+					<Add directory="lib/ubuntu-x64" />
+				</Linker>
+			</Target>
+			<Target title="socket_serveur-win_x64">
+				<Option output="./bin/win-x64/external/socket_serveur-win_x64" prefix_auto="1" extension_auto="1" />
+				<Option object_output="./obj/win-x64/external/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+			</Target>
+			<Target title="socket_serveur-ubuntu_x64">
+				<Option output="./bin/ubuntu-x64/external/socket_serveur-ubuntu_x64" prefix_auto="1" extension_auto="1" />
+				<Option object_output="./obj/ubuntu-x64/external/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+			</Target>
+			<Target title="socket_client-win_x64">
+				<Option output="./bin/win-x64/external/socket_client-win_x64" prefix_auto="1" extension_auto="1" />
+				<Option object_output="./obj/win-x64/external/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+			</Target>
+			<Target title="socket_client-ubuntu_x64">
+				<Option output="./bin/ubuntu-x64/external/socket_client-ubuntu_x64" prefix_auto="1" extension_auto="1" />
+				<Option object_output="./obj/ubuntu-x64/external/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+			</Target>
+			<Target title="parseur-win_x64">
+				<Option output="./bin/win-x64/external/parseur-win_x64" prefix_auto="1" extension_auto="1" />
+				<Option object_output="./obj/win-x64/external/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+			</Target>
+			<Target title="parseur-ubuntu_x64">
+				<Option output="./bin/ubuntu-x64/external/parseur-ubuntu_x64" prefix_auto="1" extension_auto="1" />
+				<Option object_output="./obj/ubuntu-x64/external/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+			</Target>
 		</Build>
+		<VirtualTargets>
+			<Add alias="all-ubuntu_x64" targets="aa_search-ubuntu_x64;combinaison-ubuntu_x64;local-ubuntu_x64;serveur-ubuntu_x64;" />
+			<Add alias="all-win_x64" targets="aa_search-win_x64;combinaison-win_x64;serveur-win_x64;local-win_x64;" />
+			<Add alias="external-ubuntu_x64" targets="socket_serveur-ubuntu_x64;socket_client-ubuntu_x64;parseur-ubuntu_x64;" />
+			<Add alias="external-win_x64" targets="socket_serveur-win_x64;socket_client-win_x64;parseur-win_x64;" />
+		</VirtualTargets>
 		<Compiler>
 			<Add option="-std=c++0x" />
 			<Add option="-Wall" />
@@ -36,18 +132,183 @@
 			<Add option="-lmysqlcppconn" />
 			<Add option="-lpthread" />
 		</Linker>
-		<Unit filename="../harpe/aa_search/AA.cpp" />
-		<Unit filename="../harpe/aa_search/AA.hpp" />
-		<Unit filename="../harpe/aa_search/AA_model.cpp" />
-		<Unit filename="../harpe/aa_search/AA_tab.cpp" />
-		<Unit filename="../harpe/aa_search/AA_tab.hpp" />
-		<Unit filename="../harpe/aa_search/Enzyme.cpp" />
-		<Unit filename="../harpe/aa_search/Enzyme.hpp" />
-		<Unit filename="../harpe/aa_search/Enzyme_model.cpp" />
-		<Unit filename="../harpe/aa_search/defines.hpp" />
-		<Unit filename="../harpe/aa_search/main.cpp" />
-		<Unit filename="../harpe/sql/SqlObject.hpp" />
-		<Unit filename="../harpe/sql/config.hpp" />
+		<Unit filename="../harpe/aa_search/AA.cpp">
+			<Option target="aa_search-win_x64" />
+			<Option target="aa_search-ubuntu_x64" />
+		</Unit>
+		<Unit filename="../harpe/aa_search/AA.hpp">
+			<Option target="aa_search-win_x64" />
+			<Option target="aa_search-ubuntu_x64" />
+		</Unit>
+		<Unit filename="../harpe/aa_search/AA_model.cpp">
+			<Option target="aa_search-win_x64" />
+			<Option target="aa_search-ubuntu_x64" />
+		</Unit>
+		<Unit filename="../harpe/aa_search/AA_tab.cpp">
+			<Option target="aa_search-win_x64" />
+			<Option target="aa_search-ubuntu_x64" />
+		</Unit>
+		<Unit filename="../harpe/aa_search/AA_tab.hpp">
+			<Option target="aa_search-win_x64" />
+			<Option target="aa_search-ubuntu_x64" />
+		</Unit>
+		<Unit filename="../harpe/aa_search/Enzyme.cpp">
+			<Option target="aa_search-win_x64" />
+			<Option target="aa_search-ubuntu_x64" />
+		</Unit>
+		<Unit filename="../harpe/aa_search/Enzyme.hpp">
+			<Option target="aa_search-win_x64" />
+			<Option target="aa_search-ubuntu_x64" />
+		</Unit>
+		<Unit filename="../harpe/aa_search/Enzyme_model.cpp">
+			<Option target="aa_search-win_x64" />
+			<Option target="aa_search-ubuntu_x64" />
+		</Unit>
+		<Unit filename="../harpe/aa_search/defines.hpp">
+			<Option target="aa_search-win_x64" />
+			<Option target="aa_search-ubuntu_x64" />
+		</Unit>
+		<Unit filename="../harpe/aa_search/main.cpp">
+			<Option target="aa_search-win_x64" />
+			<Option target="aa_search-ubuntu_x64" />
+		</Unit>
+		<Unit filename="../harpe/combinaisons/src/Combinaison.cpp">
+			<Option target="combinaison-win_x64" />
+			<Option target="combinaison-ubuntu_x64" />
+		</Unit>
+		<Unit filename="../harpe/combinaisons/src/Combinaison.hpp">
+			<Option target="combinaison-win_x64" />
+			<Option target="combinaison-ubuntu_x64" />
+		</Unit>
+		<Unit filename="../harpe/combinaisons/src/main.cpp">
+			<Option target="combinaison-win_x64" />
+			<Option target="combinaison-ubuntu_x64" />
+		</Unit>
+		<Unit filename="../harpe/execution/Socket/src/SelectManager.cpp">
+			<Option target="serveur-win_x64" />
+			<Option target="serveur-ubuntu_x64" />
+			<Option target="local-win_x64" />
+			<Option target="local-ubuntu_x64" />
+			<Option target="socket_serveur-ubuntu_x64" />
+			<Option target="socket_serveur-win_x64" />
+			<Option target="socket_client-ubuntu_x64" />
+			<Option target="socket_client-win_x64" />
+		</Unit>
+		<Unit filename="../harpe/execution/Socket/src/SelectManager.hpp">
+			<Option target="serveur-win_x64" />
+			<Option target="serveur-ubuntu_x64" />
+			<Option target="local-win_x64" />
+			<Option target="local-ubuntu_x64" />
+			<Option target="socket_serveur-ubuntu_x64" />
+			<Option target="socket_serveur-win_x64" />
+			<Option target="socket_client-ubuntu_x64" />
+			<Option target="socket_client-win_x64" />
+		</Unit>
+		<Unit filename="../harpe/execution/Socket/src/Serializer.cpp">
+			<Option target="serveur-win_x64" />
+			<Option target="serveur-ubuntu_x64" />
+			<Option target="local-win_x64" />
+			<Option target="local-ubuntu_x64" />
+			<Option target="socket_serveur-ubuntu_x64" />
+			<Option target="socket_serveur-win_x64" />
+			<Option target="socket_client-ubuntu_x64" />
+			<Option target="socket_client-win_x64" />
+		</Unit>
+		<Unit filename="../harpe/execution/Socket/src/Serializer.hpp">
+			<Option target="serveur-win_x64" />
+			<Option target="serveur-ubuntu_x64" />
+			<Option target="local-win_x64" />
+			<Option target="local-ubuntu_x64" />
+			<Option target="socket_serveur-ubuntu_x64" />
+			<Option target="socket_serveur-win_x64" />
+			<Option target="socket_client-ubuntu_x64" />
+			<Option target="socket_client-win_x64" />
+		</Unit>
+		<Unit filename="../harpe/execution/Socket/src/Socket.cpp">
+			<Option target="serveur-win_x64" />
+			<Option target="serveur-ubuntu_x64" />
+			<Option target="local-win_x64" />
+			<Option target="local-ubuntu_x64" />
+			<Option target="socket_serveur-ubuntu_x64" />
+			<Option target="socket_serveur-win_x64" />
+			<Option target="socket_client-ubuntu_x64" />
+			<Option target="socket_client-win_x64" />
+		</Unit>
+		<Unit filename="../harpe/execution/Socket/src/Socket.hpp">
+			<Option target="serveur-win_x64" />
+			<Option target="serveur-ubuntu_x64" />
+			<Option target="local-win_x64" />
+			<Option target="local-ubuntu_x64" />
+			<Option target="socket_serveur-ubuntu_x64" />
+			<Option target="socket_serveur-win_x64" />
+			<Option target="socket_client-ubuntu_x64" />
+			<Option target="socket_client-win_x64" />
+		</Unit>
+		<Unit filename="../harpe/execution/Socket/src/SocketSerialized.cpp">
+			<Option target="serveur-win_x64" />
+			<Option target="serveur-ubuntu_x64" />
+			<Option target="local-win_x64" />
+			<Option target="local-ubuntu_x64" />
+			<Option target="socket_serveur-ubuntu_x64" />
+			<Option target="socket_serveur-win_x64" />
+			<Option target="socket_client-ubuntu_x64" />
+			<Option target="socket_client-win_x64" />
+		</Unit>
+		<Unit filename="../harpe/execution/Socket/src/SocketSerialized.hpp">
+			<Option target="serveur-win_x64" />
+			<Option target="serveur-ubuntu_x64" />
+			<Option target="local-win_x64" />
+			<Option target="local-ubuntu_x64" />
+			<Option target="socket_serveur-ubuntu_x64" />
+			<Option target="socket_serveur-win_x64" />
+			<Option target="socket_client-ubuntu_x64" />
+			<Option target="socket_client-win_x64" />
+		</Unit>
+		<Unit filename="../harpe/execution/Socket/src/client-main.cpp">
+			<Option target="socket_client-ubuntu_x64" />
+			<Option target="socket_client-win_x64" />
+		</Unit>
+		<Unit filename="../harpe/execution/Socket/src/serveur-main.cpp">
+			<Option target="socket_serveur-ubuntu_x64" />
+			<Option target="socket_serveur-win_x64" />
+		</Unit>
+		<Unit filename="../harpe/execution/local-main.cpp">
+			<Option target="local-win_x64" />
+			<Option target="local-ubuntu_x64" />
+		</Unit>
+		<Unit filename="../harpe/execution/serveur-main.cpp">
+			<Option target="serveur-win_x64" />
+			<Option target="serveur-ubuntu_x64" />
+		</Unit>
+		<Unit filename="../harpe/parser_mgf/defines.hpp">
+			<Option target="parseur-win_x64" />
+			<Option target="parseur-ubuntu_x64" />
+		</Unit>
+		<Unit filename="../harpe/parser_mgf/main.cpp">
+			<Option target="parseur-win_x64" />
+			<Option target="parseur-ubuntu_x64" />
+		</Unit>
+		<Unit filename="../harpe/parser_mgf/parser.cpp">
+			<Option target="parseur-win_x64" />
+			<Option target="parseur-ubuntu_x64" />
+		</Unit>
+		<Unit filename="../harpe/parser_mgf/parser.hpp">
+			<Option target="parseur-win_x64" />
+			<Option target="parseur-ubuntu_x64" />
+		</Unit>
+		<Unit filename="../harpe/parser_mgf/parser.lex.c">
+			<Option compilerVar="CC" />
+			<Option target="parseur-win_x64" />
+			<Option target="parseur-ubuntu_x64" />
+		</Unit>
+		<Unit filename="../harpe/sql/SqlObject.hpp">
+			<Option target="aa_search-win_x64" />
+			<Option target="aa_search-ubuntu_x64" />
+		</Unit>
+		<Unit filename="../harpe/sql/config.hpp">
+			<Option target="aa_search-win_x64" />
+			<Option target="aa_search-ubuntu_x64" />
+		</Unit>
 		<Extensions>
 			<code_completion />
 			<debugger />
