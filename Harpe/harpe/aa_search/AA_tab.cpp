@@ -15,7 +15,7 @@ inline void resolve_equation(const double to_find,list<list_arg >* res,arg* list
         l.erreur = to_find - tot_up;
         for(int i=0;i<size;++i)
             if (list_val[i].coef > 0)
-            //{}         
+            //{}
                l.list.emplace_back(list_val[i]);
         res->emplace_back(l);
     }
@@ -61,7 +61,7 @@ AA_Tab::AA_Tab()
 
 void AA_Tab::__print__() const
 {
-    for(int i=0;i <length;++i)
+    for(unsigned int i=0;i <length;++i)
         AAs[i].__print__();
 };
 
@@ -71,7 +71,7 @@ void AA_Tab::add_all_AA()
     vector<AA>  AA_all = AA::all();
     for (AA& aa : AA_all)
         add_AA(aa);
-    
+
     //calc_moyenne();
 
 };
@@ -113,7 +113,7 @@ std::list< list_arg >* AA_Tab::resolve(const double to_find,const double error)
     }
     return res;
 };
-void AA_Tab::print(list<list_arg > &res,int limite) 
+void AA_Tab::print(list<list_arg > &res,int limite)
 {
     cout<<VERT;
     for(auto i=res.begin();i!=res.end() && limite > 0;++i)
@@ -124,7 +124,7 @@ void AA_Tab::print(list<list_arg > &res,int limite)
     cout<<BLANC;
 };
 
-void AA_Tab::print(list_arg &res) 
+void AA_Tab::print(list_arg &res)
 {
     cout<<"erreur: "<<res.erreur<<" ";
     for(auto i=res.list.begin();i!=res.list.end();++i)
@@ -155,7 +155,7 @@ void AA_Tab::sort(std::list<list_arg>& arg)
 
 int AA_Tab::get_id(std::string name) const
 {
-    for(int i=0;i<length;++i)
+    for(unsigned int i=0;i<length;++i)
         if(AAs[i].slug==name)
             return AAs[i].id;
     return -1;
@@ -171,7 +171,7 @@ int AA_Tab::get_id(char code) const
 
 int AA_Tab::get_pk(int pk)
 {
-    for(int i=0;i<length;++i)
+    for(unsigned int i=0;i<length;++i)
         if(AAs[i].get_pk()==pk)
             return AAs[i].id;
     return -1;
@@ -207,7 +207,7 @@ double AA_Tab::delete_masse_of(double masse,char* names)
 
 void AA_Tab::delete_masse_all(double masse)
 {
-    for(int i=0;i<length;++i)
+    for(unsigned int i=0;i<length;++i)
         cout<<AAs[i].slug<<" "<<delete_masse_of(masse,i)<<endl;
 };
 
@@ -242,7 +242,7 @@ double AA_Tab::add_masse_of(double masse,char* names)
 
 void AA_Tab::add_masse_all(double masse)
 {
-    for(int i=0;i<length;++i)
+    for(unsigned int i=0;i<length;++i)
         cout<<AAs[i].slug<<" "<<(masse + AAs[i].masse)<<endl;
 };
 
@@ -250,7 +250,6 @@ void AA_Tab::add_masse_all(double masse)
 double AA_Tab::get_masse_for(const char* chaine,double res) const
 {
     int i=0;
-    char code[2];
     while(chaine[i]!='\0')
     {
         int index=-1;

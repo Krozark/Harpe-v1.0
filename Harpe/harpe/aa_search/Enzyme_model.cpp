@@ -77,6 +77,6 @@ void Enzyme::ImpossibleCut::save(bool commit)
     else
     {
         update("first_id="+std::to_string(first),"second_id="+std::to_string(second));
-    }    
+    }
 };
 

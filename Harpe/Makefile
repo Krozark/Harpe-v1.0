@@ -1,8 +1,10 @@
-#export SYSTEM = LINUX
-export SYSTEM = WIN
+export SYSTEM = LINUX
+#export SYSTEM = WIN
 
 #APPRENTISSAGE = -DAPPRENTISSAGE
 APPRENTISSAGE = 
+
+#STATIC = 0
 
 
 ifeq ($(SYSTEM),LINUX)
@@ -16,8 +18,15 @@ export INCPATH = -I/usr/include/ -I/usr/include/i386-linux-gnu/
 endif
 
 LIBS = -lmysqlcppconn -lpthread 
-export DEFINES = -DCOLORS $(APPRENTISSAGE)
-export FLAGS = -g -std=c++0x $(INCPATH) $(LIBS) $(DEFINES)
+
+#ifeq ($(STATIC),0)
+#SFLAGS = 
+#else
+#SFLAGS = -static  -Ldir_path -lmysqlclient
+#endif
+
+export DEFINES = -DCOLORS $(APPRENTISSAGE) 
+export FLAGS = -std=c++0x $(SFLAGS) $(INCPATH) $(LIBS) $(DEFINES)
 export TOP := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
 export OBJ_DIR = $(TOP)/obj
 

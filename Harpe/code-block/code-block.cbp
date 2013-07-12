@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="code-block" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/code-block" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-pg" />
+					<Add option="-g" />
+				</Compiler>
+				<Linker>
+					<Add option="-pg" />
+					<Add directory="lib/debug" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/code-block" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O3" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add directory="lib/release" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-std=c++0x" />
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+			<Add directory="include" />
+		</Compiler>
+		<Linker>
+			<Add option="-lmysqlcppconn" />
+			<Add option="-lpthread" />
+			<Add directory="lib" />
+		</Linker>
+		<Unit filename="../harpe/aa_search/AA.cpp" />
+		<Unit filename="../harpe/aa_search/AA.hpp" />
+		<Unit filename="../harpe/aa_search/AA_model.cpp" />
+		<Unit filename="../harpe/aa_search/AA_tab.cpp" />
+		<Unit filename="../harpe/aa_search/AA_tab.hpp" />
+		<Unit filename="../harpe/aa_search/Enzyme.cpp" />
+		<Unit filename="../harpe/aa_search/Enzyme.hpp" />
+		<Unit filename="../harpe/aa_search/Enzyme_model.cpp" />
+		<Unit filename="../harpe/aa_search/defines.hpp" />
+		<Unit filename="../harpe/aa_search/main.cpp" />
+		<Unit filename="../harpe/sql/SqlObject.hpp" />
+		<Unit filename="../harpe/sql/config.hpp" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+			<envvars />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
