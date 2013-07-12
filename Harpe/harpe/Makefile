@@ -3,7 +3,7 @@ OBJ = $(SRC:.cpp=.o) $(SRC:*.cpp=.o)
 
 BASE_SUBDIRS = parser_mgf aa_search sql analyseur execution
 
-ifeq ($(DEFINES),-DAPPRENTISSAGE)
+ifeq ($(APPRENTISSAGE),-DAPPRENTISSAGE)
 SUBDIRS = $(BASE_SUBDIRS) score_evo
 else
 SUBDIRS = $(BASE_SUBDIRS)
