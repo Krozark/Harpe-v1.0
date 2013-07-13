@@ -1,14 +1,49 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
-	<ActiveTarget name="win_x64" />
-	<File name="..\harpe\aa_search\main.cpp" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<ActiveTarget name="external-ubuntu_x64" />
+	<File name="../harpe/parser_mgf/parser.lex.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1324" topLine="24" />
+			<Cursor1 position="9346" topLine="308" />
 		</Cursor>
 	</File>
-	<File name="..\harpe\aa_search\Enzyme.cpp" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="../harpe/aa_search/Enzyme.cpp" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="400" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="../harpe/parser_mgf/parser.hpp" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="158" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="../harpe/execution/serveur-main.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="713" topLine="3" />
+		</Cursor>
+	</File>
+	<File name="../harpe/parser_mgf/parser.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2787" topLine="100" />
+		</Cursor>
+	</File>
+	<File name="../harpe/aa_search/main.cpp" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1264" topLine="24" />
+		</Cursor>
+	</File>
+	<File name="../harpe/parser_mgf/parser.lex" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="980" topLine="55" />
+		</Cursor>
+	</File>
+	<File name="../harpe/parser_mgf/defines.hpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="641" topLine="28" />
+		</Cursor>
+	</File>
+	<File name="../harpe/score_evo/Engine/src/gnuplot/src/gnuplot_i.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="13667" topLine="485" />
 		</Cursor>
 	</File>
 </CodeBlocks_layout_file>
