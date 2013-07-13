@@ -195,11 +195,12 @@ void IndividuTree::eval()
             float res = genome->eval(proposition.values);
             proposition.score = /*(res >= seuil)? res:0;*/res;
         }
-        std::partial_sort(pep->propositions.begin(),pep->propositions.begin()+TO_BE_BEST,pep->propositions.end(),greater<AnalyseurPeptide::ApprentissageSolution>());
+        const unsigned int to_sort_ok = MIN(pep->propositions.size(),PRECISION_SORT);
+        std::partial_sort(pep->propositions.begin(),pep->propositions.begin()+to_sort_ok,pep->propositions.end(),greater<AnalyseurPeptide::ApprentissageSolution>());
         
         const int size = pep->propositions.size();
-        //rate pour que les TO_BE_BEST premiers soit correctes
-        for (int i=0;i<size && i<TO_BE_BEST;++i)
+        //rate pour que les to_sort_ok premiers soit correctes
+        for (int i=0;i<to_sort_ok;++i)
         {
             this->score += pep->propositions[i].real_score;
         }

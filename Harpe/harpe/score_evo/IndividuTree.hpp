@@ -11,7 +11,7 @@
 
 #define TREE_INIT_PROONDEUR 7
 #define TREE_SUB_INIT_PROFONDEUR 5
-#define TO_BE_BEST 3
+#define PRECISION_SORT 3
 
 
 class IndividuTree
