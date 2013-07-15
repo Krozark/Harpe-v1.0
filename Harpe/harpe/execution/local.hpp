@@ -15,5 +15,6 @@ int local(int argc, char* argv[]);
     -bdd base de donnée (Harpe par défaut), \n\
     -pass mot de passe de l'utilisateur de la basse de donnée (root par défaut), \n\
     -user utilisateur de la basse de donnée (root par défaut), -host adresse ip du serveur (127.0.0.1 par défaut), \n\
-    -port port de connextion à la base donnée (3306 par défaut)"<<endl;return 1;}
+    -port port de connextion à la base donnée (3306 par défaut), \n\
+    -limite nombre de solution à considérer (1000 défaut, -1 pour aucune)"<<endl;return 1;}
 

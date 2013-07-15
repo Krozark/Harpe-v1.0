@@ -502,10 +502,12 @@ void AnalyseurPeptide::resolve(int debut)
             #ifndef APPRENTISSAGE
             sort(finds.begin(),finds.end(),solution_gt);
             if(finds_max_size >0)
+            {
                 if(finds.size() > finds_max_size)
                 {
                     finds.resize(finds_max_size);
                 }
+            }
             #endif
         }
 
@@ -516,7 +518,6 @@ void AnalyseurPeptide::resolve(int debut)
 
     #ifndef APPRENTISSAGE
     {
-        sort(finds.begin(),finds.end(),solution_gt);
         int _size = finds.size();
         int f_size = _size;
         if(nb_affiche >=0 and  nb_affiche<_size)

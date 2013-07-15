@@ -24,6 +24,7 @@ int local(int argc, char* argv[])
     int nb_affiche = -1;
     bool ignore = false;
     float trou_max = 500;
+    int limite = 1000;
     {//recuperation des arguments
         int i=1;
         while(i<argc)
@@ -97,6 +98,13 @@ int local(int argc, char* argv[])
                 else
                     SHOW_ARGS_NOMAL("Pas de port spécifié")
             }
+            else if(arg == "-limite")
+            {
+                if(++i <argc)
+                    limite = atoi(argv[i]);
+                else
+                    SHOW_ARGS_NOMAL("Pas de nombre specifié")
+            }
             ++i;
         }
     }
@@ -143,7 +151,7 @@ int local(int argc, char* argv[])
         {
             cout.precision(10);
 
-            AnalyseurPeptide* analiser_pep=new AnalyseurPeptide(p,nb_affiche,error, trou_max,1000);
+            AnalyseurPeptide* analiser_pep=new AnalyseurPeptide(p,nb_affiche,error, trou_max,limite);
             analiser_pep->resolve();
 
             #ifdef APPRENTISSAGE
