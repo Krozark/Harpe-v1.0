@@ -32,7 +32,7 @@ extern sql::ResultSet  *bdd_res;    // Create a pointer to a ResultSet object to
     std::string s_server   = "tcp://127.0.0.1";\
     std::string s_port = "3306";\
     std::string s_username = "root";\
-    std::string s_password = "toor";\
+    std::string s_password = "root";\
     std::string s_bdd = "Harpe";
 
 

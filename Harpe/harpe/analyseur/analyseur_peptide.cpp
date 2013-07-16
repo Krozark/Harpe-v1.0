@@ -456,38 +456,32 @@ void AnalyseurPeptide::resolve(int debut)
             cout<<" ------------------------- END RESOLVE ----------------------"<<endl;
             #endif
 
-            merge_solution(results_left,results_right);
-
             #if DEBUG & DEBUG_STATS 
-            calc_stats[k-1][NB_SOL_FIND] += results_left.size();
+            merge_solution(results_left,results_right,k);
+            #else
+            merge_solution(results_left,results_right);
             #endif
 
-            //SCORE
-            #ifndef APPRENTISSAGE
-            double tmp_values[VALUES_SIZE];
-            for(auto i=results_left.begin();i != results_left.end();++i)
-            {
-                calc_values(tmp_values,*i,pep);
-                (*i)[0]->header_token.score = calc_score(tmp_values);
-            }
-            #endif
+
+            results_left.clear();
+            results_right.clear();
 
             #warning "TODO ajouter l'enzyme corectement, et non en dure"
             #if FILTER_SOLUTION == 1
             //TODO
             Enzyme tryp("Trypsine");
-            filter_enzyme(results_left,tryp);
+            filter_enzyme(finds,tryp);
             #endif
 
 
             #ifdef APPRENTISSAGE
                 #if DEBUG & DEBUG_STATS
-                verifier_resultats_complet(results_left,k-1);
+                verifier_resultats_complet(finds,k-1);
                 #else
-                verifier_resultats_complet(results_left);
+                verifier_resultats_complet(finds);
                 #endif
 
-                for(auto current_sol= results_left.begin();current_sol != results_left.end();++current_sol)
+                for(auto current_sol= finds.begin();current_sol != finds.end();++current_sol)
                 {
                     propositions.emplace_back(ApprentissageSolution(*current_sol,pep));
                     #if DEBUG & DEBUG_APPRENTISSAGE_STATS
@@ -496,19 +490,6 @@ void AnalyseurPeptide::resolve(int debut)
                 }
             #endif
 
-            for(auto i=results_left.begin();i!=results_left.end();++i)
-                finds.emplace_back(move(*i));
-
-            #ifndef APPRENTISSAGE
-            sort(finds.begin(),finds.end(),solution_gt);
-            if(finds_max_size >0)
-            {
-                if(finds.size() > finds_max_size)
-                {
-                    finds.resize(finds_max_size);
-                }
-            }
-            #endif
         }
 
     #if DEBUG & DEBUG_STATS 
@@ -944,7 +925,9 @@ void AnalyseurPeptide::merge_solution(std::list<AnalyseurPeptide::v_tokens_ptr>&
     auto l_begin = left_part.begin();
     auto r_begin = right_part.begin();
 
-    list<v_tokens_ptr> tmp_l;
+    #ifndef APPRENTISSAGE
+    double tmp_values[VALUES_SIZE];
+    #endif
 
     for(auto i=l_begin; i != l_end; ++i)
     {
@@ -968,25 +951,46 @@ void AnalyseurPeptide::merge_solution(std::list<AnalyseurPeptide::v_tokens_ptr>&
                     //ajout du noyeau (header-peak(en commun)-[AA -peak]* )
                     copy((*j).begin()+2,(*j).end(),back_inserter(tmp)); 
                     //ajout du nouveau
-                    tmp_l.emplace_back(move(tmp));
+                    
+                    //TODO
+                    #if DEBUG & DEBUG_STATS 
+                    ++calc_stats[k-1][NB_SOL_FIND];
+                    #endif
+
+                    //SCORE
+                    #ifndef APPRENTISSAGE
+                    calc_values(tmp_values,tmp,pep);
+                    tmp[0]->header_token.score = calc_score(tmp_values);
+                    #endif
+
+                    finds.emplace_back(move(tmp));
+
+                    #ifndef APPRENTISSAGE
+                    if(finds_max_size >0)
+                    {
+                        if(finds.size() > finds_max_size + 500)
+                        {
+                            sort(finds.begin(),finds.end(),solution_gt);
+                            finds.resize(finds_max_size);
+                        }
+                    }
+                    #endif
                 }
             }
         }
     }
-    //ajouter une solution non fusionné pour chaque coté 
-    /*for(auto i=l_begin; i != l_end; ++i)
-        if(i->size() > 4) //il y a au moins 1 AA
-            tmp_l.emplace_back(*i);
-
-    for(auto j=r_begin; j!= r_end; ++j)
-        if(j->size() > 4) //il y a au moins 1 AA
-            tmp_l.emplace_back(*j);*/
     
-    swap(left_part,tmp_l);
 
+    #ifndef APPRENTISSAGE
+    sort(finds.begin(),finds.end(),solution_gt);
+    if(finds.size() > finds_max_size)
+    {
+        finds.resize(finds_max_size);
+    }
+    #endif
 
     #if DEBUG & DEBUG_MERGE
-    for(auto i=left_part.begin();i != left_part.end();++i)
+    for(auto i=finds.begin();i != finds.end();++i)
     {
         cout<<" ++++++++++++++++ MERGE ++++++++++++++++++++++++++"<<endl;
         print_AA((*i));
