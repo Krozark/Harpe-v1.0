@@ -17,7 +17,7 @@ export EXTENTION = .exe
 export INCPATH = -I/usr/include/ -I/usr/include/i386-linux-gnu/
 endif
 
-LIBS = -lmysqlcppconn -lpthread 
+LIBS = -lmysqlcppconn -lpthread -pg 
 
 #ifeq ($(STATIC),0)
 #SFLAGS = 
@@ -25,8 +25,8 @@ LIBS = -lmysqlcppconn -lpthread
 #SFLAGS = -static  -Ldir_path -lmysqlclient
 #endif
 
-export DEFINES = -DCOLORS $(APPRENTISSAGE) 
-export FLAGS = -g -std=c++0x $(SFLAGS) $(INCPATH) $(LIBS) $(DEFINES)
+export DEFINES = -DCOLORS $(APPRENTISSAGE)
+export FLAGS = -pg -o3 -std=c++0x $(SFLAGS) $(INCPATH) $(LIBS) $(DEFINES)
 export TOP := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
 export OBJ_DIR = $(TOP)/obj
 

@@ -156,7 +156,7 @@ class AnalyseurPeptide
         
         Parser::peptide* pep;
 
-        std::vector<v_tokens_ptr> finds;
+        std::list<v_tokens_ptr> finds;
         std::vector<stack_token*> tokens_ptr;
 
         int nb_affiche;
@@ -176,7 +176,11 @@ class AnalyseurPeptide
         void print_results(const std::list<v_tokens_ptr>& res);
         void complet_solution(v_tokens_ptr& sol,int sens);
 
+        #if DEBUG & DEBUG_STATS 
+        void merge_solution(std::list<v_tokens_ptr >& left_part,const std::list<v_tokens_ptr>& right_part,int boucle); //met tout dasn left
+        #else 
         void merge_solution(std::list<v_tokens_ptr >& left_part,const std::list<v_tokens_ptr>& right_part); //met tout dasn left
+        #endif
         
         void filter_enzyme(std::list<v_tokens_ptr>& solutions,Enzyme& enz);
 

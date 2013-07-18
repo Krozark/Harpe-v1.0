@@ -35,7 +35,7 @@ const int AnalyseurPeptide::depiler(AnalyseurPeptide::pile_tokens_ptr& search,co
     print_stack_all(search);
     #endif
 
-    int nb;
+    register int nb;
     stack_token* token;
 
     if (sens == Sens::RIGHT) // depiler depuis le back
@@ -168,7 +168,7 @@ const int AnalyseurPeptide::depiler(AnalyseurPeptide::pile_tokens_ptr& search,co
     return current_peak_index;
 };
 
-bool solution_gt(const AnalyseurPeptide::v_tokens_ptr _1, const AnalyseurPeptide::v_tokens_ptr _2)
+bool solution_gt(const AnalyseurPeptide::v_tokens_ptr& _1, const AnalyseurPeptide::v_tokens_ptr& _2)
 {
     return _1[0]->header_token.score > _2[0]->header_token.score;
 };
@@ -180,6 +180,7 @@ void AnalyseurPeptide::save_stack(const AnalyseurPeptide::pile_tokens_ptr& searc
     l.emplace_back(tokens_ptr.back());
     auto i=search.begin();
     auto end = search.end();
+
     int nb=0;
     double masse = 0;
     double intensitee = -pep->peaks[0]->intensitee;
@@ -188,20 +189,22 @@ void AnalyseurPeptide::save_stack(const AnalyseurPeptide::pile_tokens_ptr& searc
 
     while(i!=end)
     {
-        if ((*i)->type == AnalyseurPeptide::stack_token::Type::PEAK_TOKEN)
+        AnalyseurPeptide::stack_token& tmp_i= **i;
+
+        if (tmp_i.type == AnalyseurPeptide::stack_token::Type::PEAK_TOKEN)
         {
-            l.emplace_back(*i);
-            Parser::peptide::peak* p = (*i)->peak_token.pt_data;
+            l.emplace_back(&tmp_i);
+            Parser::peptide::peak* p = tmp_i.peak_token.pt_data;
             intensitee += p->intensitee;
             if ( pep->is_one_of_h2o(p))
                  masse += MH2O;
         }
-        if ((*i)->type == AnalyseurPeptide::stack_token::Type::AA_TOKEN and (*i)->aa_token.pt_data==NULL)
+        if (tmp_i.type == AnalyseurPeptide::stack_token::Type::AA_TOKEN and tmp_i.aa_token.pt_data==NULL)
         {
-            l.emplace_back(*i);
-            errors += ABS((*i)->aa_token.error);
-            error_tot += (*i)->aa_token.error;
-            masse += aa_tab[(*i)->aa_token.index].masse;
+            l.emplace_back(&tmp_i);
+            errors += ABS(tmp_i.aa_token.error);
+            error_tot += tmp_i.aa_token.error;
+            masse += aa_tab[tmp_i.aa_token.index].masse;
             ++nb;
         }
         ++i;
@@ -216,19 +219,20 @@ void AnalyseurPeptide::save_stack(const AnalyseurPeptide::pile_tokens_ptr& searc
     const int size =l.size();
     while(i!=end)
     {
-        if((*i)->type == AnalyseurPeptide::stack_token::Type::PEAK_TOKEN)
+        AnalyseurPeptide::stack_token& tmp_i= **i;
+
+        if(tmp_i.type == AnalyseurPeptide::stack_token::Type::PEAK_TOKEN)
         {
             break;
         }
-        else if ((*i)->type == AnalyseurPeptide::stack_token::Type::AA_TOKEN and (*i)->aa_token.pt_data!=NULL)
+        else if (tmp_i.type == AnalyseurPeptide::stack_token::Type::AA_TOKEN and tmp_i.aa_token.pt_data!=NULL)
         {
-            l[size-2] = (*i);
-            l[size-1] = (*i)->aa_token.pt_data;
+            l[size-2] = &tmp_i;
+            l[size-1] = tmp_i.aa_token.pt_data;
             res.emplace_back(l);
         }
         --i;
     }
-
 };
 
 void AnalyseurPeptide::print_results(const std::list<AnalyseurPeptide::v_tokens_ptr>& res)
@@ -240,7 +244,8 @@ void AnalyseurPeptide::print_results(const std::list<AnalyseurPeptide::v_tokens_
         if (nb_affiche >0 && nb++> nb_affiche)
             break;
         cout<<" ---- solution "<<nb<<"----"<<endl;
-        for(auto j=(*i).begin();j!=(*i).end();++j)
+        const AnalyseurPeptide::v_tokens_ptr& tmp_i = *i;
+        for(auto j=tmp_i.begin();j!=tmp_i.end();++j)
         {
             (*j)->__print__();
         }
@@ -267,13 +272,14 @@ void AnalyseurPeptide::print_stack_used(const AnalyseurPeptide::pile_tokens_ptr&
     auto i=search.begin();
     while(i!=search.end())
     {
-        if ((*i)->type == AnalyseurPeptide::stack_token::Type::PEAK_TOKEN)
+        auto& tmp_i = **i;
+        if (tmp_i.type == AnalyseurPeptide::stack_token::Type::PEAK_TOKEN)
         {
-            (*i)->__print__();
+            tmp_i.__print__();
         }
-        if ((*i)->type == AnalyseurPeptide::stack_token::Type::AA_TOKEN and (*i)->aa_token.pt_data==NULL)
+        if (tmp_i.type == AnalyseurPeptide::stack_token::Type::AA_TOKEN and tmp_i.aa_token.pt_data==NULL)
         {
-            (*i)->__print__();
+            tmp_i.__print__();
         }
         ++i;
     }
@@ -283,7 +289,12 @@ void AnalyseurPeptide::print_stack_used(const AnalyseurPeptide::pile_tokens_ptr&
 void AnalyseurPeptide::resolve(int debut)
 {
     //pep->set_seuil();
-    
+    #ifndef APPRENTISSAGE && (DEBUG & DEBUG_STATE_RUNNING) ||(DEBUG & DEBUG_MGF)
+    //visualisation MGF
+    std::cout<<"Spectre reconstitué et complété"<<std::endl;
+    pep->__print__();
+    #endif
+
     #if DEBUG & DEBUG_STATS 
     for( int k=1;k<=20;++k)
     {
@@ -305,24 +316,22 @@ void AnalyseurPeptide::resolve(int debut)
         const int size = peak_index.size();
 
         #if DEBUG & DEBUG_MGF_PEAKS_START
-        cout<<"peaks les plus intenses (points de depart): ";
+        cout<<"peaks les plus intenses (points de depart): "<<std::endl;
         for(auto i:peak_index)
             pep->peaks[i]->__print__();
-        cout<<"peptide: ";
         #endif
-        #if DEBUG & DEBUG_MGF
-        pep->__print__();
-        #endif
+
        
         // instantiation
         for(int i=0;i<size;++i)
         {
-            #if DEBUG & DEBUG_SOLUTION
-            cout<<ROUGE<<"Pic #"<<i<<BLANC<<endl;
-           #endif
-            int current_peak_index = peak_index[i];
+            register int current_peak_index = peak_index[i];
+            #if (DEBUG & DEBUG_SOLUTION) || (DEBUG & DEBUG_STATE_RUNNING)
+            std::cout<<ROUGE<<"Pic #"<<i<<"("<<current_peak_index<<")"<<BLANC;
+            pep->peaks[current_peak_index]->__print__();
+            std::cout<<std::endl;
+            #endif
 
-            const v_tokens_ptr* find;
 
             pile_tokens_ptr search;
             std::list<v_tokens_ptr > results_right;
@@ -347,8 +356,8 @@ void AnalyseurPeptide::resolve(int debut)
                 current_peak->__print__();
                #endif
 
-                find=get_near(current_peak_index,sens);
-                int size = find->size();
+                const v_tokens_ptr& find=*get_near(current_peak_index,sens);
+                int size = find.size();
 
                 if (size <= 0) // rien de trouvé
                 {
@@ -384,20 +393,21 @@ void AnalyseurPeptide::resolve(int debut)
 
                             #if DEBUG & DEBUG_SOLUTION
                             cout<<"trouvé: ";
-                            (*find)[i]->__print__();
+                            find[i]->__print__();
                             #endif
-                            search.emplace_back((*find)[i]);
+                            search.emplace_back(find[i]);
                         }
 
-                        stack_token* current_stack_peak = (*find)[size-1]->get_peak_stack_NULL();
+                        auto& tmp_find_last = *(find[size-1]);
+                        stack_token* current_stack_peak = tmp_find_last.get_peak_stack_NULL();
 
                         current_peak_index = (current_stack_peak->peak_token.index);
-                        search.emplace_back((*find)[size-1]); //AA
+                        search.emplace_back(&tmp_find_last); //AA
                         search.emplace_back(current_stack_peak); //PEAK
 
                         #if DEBUG & DEBUG_SOLUTION
                         cout<<"trouvé: ";
-                        (*find)[size-1]->__print__();
+                        tmp_find_last.__print__();
                         cout<<"prochain peak: ";
                         current_stack_peak->__print__();
                         #endif
@@ -410,15 +420,17 @@ void AnalyseurPeptide::resolve(int debut)
                     else if (sens == Sens::LEFT)
                     {
 
-                        stack_token* current_stack_peak = (*find)[size-1]->get_peak_stack_NULL();
+                        auto& tmp_find_last = *(find[size-1]);
+
+                        stack_token* current_stack_peak = tmp_find_last.get_peak_stack_NULL();
 
                         current_peak_index = (current_stack_peak->peak_token.index);
-                        search.emplace_front((*find)[size-1]); //AA
+                        search.emplace_front(&tmp_find_last); //AA
 
 
                         #if DEBUG & DEBUG_SOLUTION
                         cout<<"trouvé: ";
-                        (*find)[size-1]->__print__();
+                        tmp_find_last__print__();
                         cout<<"prochain peak: ";
                         current_stack_peak->__print__();
                         #endif
@@ -427,9 +439,9 @@ void AnalyseurPeptide::resolve(int debut)
                         {
                             #if DEBUG & DEBUG_SOLUTION
                             cout<<"trouvé: ";
-                            (*find)[i]->__print__();
+                            find[i]->__print__();
                             #endif
-                            search.emplace_front((*find)[i]);
+                            search.emplace_front(find[i]);
                         }
 
                         search.emplace_front(current_stack_peak); //PEAK
@@ -440,9 +452,8 @@ void AnalyseurPeptide::resolve(int debut)
                         #endif
                     }
                 }
-                delete find;
+                delete &find;
             }
-
             
 
             #if DEBUG & DEBUG_SOLUTION
@@ -508,13 +519,18 @@ void AnalyseurPeptide::resolve(int debut)
         
         if(f_size > 0)
         {
-            pep->__print__();
-            for(int i=0;i<f_size; ++i)
-                print_AA(finds[i]);
+            int i=0;
+            for(v_tokens_ptr& ii:finds)
+            {
+                print_AA(ii);
+                if (++i>f_size)
+                    break;
+            }
             std::cout<<std::endl;
         }
     }
     #else
+
     //mise des score reels
     for(int i=0;i<propositions.size();++i)
     {
@@ -865,7 +881,7 @@ const AnalyseurPeptide::v_tokens_ptr* AnalyseurPeptide::get_near(const int index
     const unsigned int size_pep = pep->peaks.size();
     const unsigned int size_aa = aa_tab.length;
     const double initial_masse = pep->peaks[index]->masse;
-    const double max_masse = aa_tab.get_max_masse();
+    const static double max_masse = aa_tab.get_max_masse();
 
     if (inc >= 0) //++i Sens::RIGHT
     {
@@ -878,13 +894,16 @@ const AnalyseurPeptide::v_tokens_ptr* AnalyseurPeptide::get_near(const int index
             if (initial_masse + max_masse + erreur < current_masse) // si la masse est <= que la masse du plus gros AA (on cherche ici que les peak corespondant à 1 AA)
                 break;
 
-            for(unsigned int j=0;j<size_aa;++j) //on cherche l'AA qui corespond à cette différence de masse
+            for(unsigned register int j=0;j<size_aa;++j) //on cherche l'AA qui corespond à cette différence de masse
             {
                 const double aa_masse = initial_masse + aa_tab[j].masse;
                 if(eq_error(current_masse,aa_masse,erreur)) // avec une marge d'erreur
                 {
-                    tokens_ptr.emplace_back(new stack_token(i,pep->peaks[i]));
-                    tokens_ptr.emplace_back(new stack_token(j,current_masse - aa_masse,tokens_ptr.back()));
+                    stack_token* tmp = new stack_token(i,pep->peaks[i])
+                    tokens_ptr.emplace_back(tmp);
+
+                    tmp = new stack_token(j,current_masse - aa_masse,tmp)
+                    tokens_ptr.emplace_back(tmp);
                     res->emplace_back(tokens_ptr.back());
                 }
             }
@@ -954,26 +973,23 @@ void AnalyseurPeptide::merge_solution(std::list<AnalyseurPeptide::v_tokens_ptr>&
                     
                     //TODO
                     #if DEBUG & DEBUG_STATS 
-                    ++calc_stats[k-1][NB_SOL_FIND];
+                    //++calc_stats[k-1][NB_SOL_FIND];
                     #endif
 
                     //SCORE
                     #ifndef APPRENTISSAGE
-                    calc_values(tmp_values,tmp,pep);
-                    tmp[0]->header_token.score = calc_score(tmp_values);
+                    //calc_values(tmp_values,tmp,pep);
+                    //tmp[0]->header_token.score = calc_score(tmp_values);
                     #endif
 
                     finds.emplace_back(move(tmp));
 
                     #ifndef APPRENTISSAGE
-                    if(finds_max_size >0)
+                    /*if(finds_max_size > 0 and finds.size() > finds_max_size + 500)
                     {
-                        if(finds.size() > finds_max_size + 500)
-                        {
-                            sort(finds.begin(),finds.end(),solution_gt);
-                            finds.resize(finds_max_size);
-                        }
-                    }
+                        sort(finds.begin(),finds.end(),solution_gt);
+                        finds.resize(finds_max_size);
+                    }*/
                     #endif
                 }
             }
@@ -982,7 +998,8 @@ void AnalyseurPeptide::merge_solution(std::list<AnalyseurPeptide::v_tokens_ptr>&
     
 
     #ifndef APPRENTISSAGE
-    sort(finds.begin(),finds.end(),solution_gt);
+    //sort(finds.begin(),finds.end(),solution_gt);
+    finds.sort(solution_gt);
     if(finds.size() > finds_max_size)
     {
         finds.resize(finds_max_size);
