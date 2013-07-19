@@ -467,6 +467,8 @@ void AnalyseurPeptide::resolve(int debut)
             cout<<" ------------------------- END RESOLVE ----------------------"<<endl;
             #endif
 
+            std::cout<<"merge ("<<results_left.size()<<" | "<<results_right.size()<<" = "<<results_right.size()*results_left.size()+results_left.size()+results_right.size()<<")"<<std::endl;
+
             #if DEBUG & DEBUG_STATS 
             merge_solution(results_left,results_right,k);
             #else
@@ -967,8 +969,9 @@ void AnalyseurPeptide::merge_solution(std::list<AnalyseurPeptide::v_tokens_ptr>&
                 if(j->size() > 2) //il y a au moins 1 AA
                 {
                     v_tokens_ptr tmp= (*i);
-                    tokens_ptr.emplace_back(new stack_token(*tmp[0]));//copy it
-                    tmp[0] = tokens_ptr.back();
+                    stack_token* tmp_head = new stack_token(*tmp[0]);
+                    tokens_ptr.emplace_back(tmp_head);//copy it
+                    tmp[0] = tmp_head;
                     stack_token& i_0 = *tmp[0];
                     stack_token& j_0 = *(*j)[0];
                     //fusion des header
@@ -992,7 +995,7 @@ void AnalyseurPeptide::merge_solution(std::list<AnalyseurPeptide::v_tokens_ptr>&
                     //tmp[0]->header_token.score = calc_score(tmp_values);
                     #endif
 
-                    finds.emplace_back(move(tmp));
+                    /*finds.emplace_back(move(tmp));
 
                     #ifndef APPRENTISSAGE
                     if(finds_max_size > 0 and ++_size > finds_max_size*5)
@@ -1003,6 +1006,50 @@ void AnalyseurPeptide::merge_solution(std::list<AnalyseurPeptide::v_tokens_ptr>&
                         _size = finds_max_size;
                     }
                     #endif
+                    */
+                    /*
+                    v_tokens_ptr tmp= (*i);
+                    stack_token* tmp_head = new stack_token(*tmp[0]);
+                    stack_token& i_0 = *tmp_head;
+                    stack_token& j_0 = *(*j)[0];
+                    //fusion des header
+                    i_0.header_token.holds[Parser::peptide::FIN_H2O].link = j_0.header_token.holds[Parser::peptide::FIN_H2O].link;
+                    i_0.header_token.holds[Parser::peptide::FIN_H2O].to_find = j_0.header_token.holds[Parser::peptide::FIN_H2O].to_find;
+
+                    i_0.header_token.holds[Parser::peptide::FIN].link = j_0.header_token.holds[Parser::peptide::FIN].link;
+                    i_0.header_token.holds[Parser::peptide::FIN].to_find = j_0.header_token.holds[Parser::peptide::FIN].to_find;
+                    //ajout du noyeau (header-peak(en commun)-[AA -peak]* )
+                    copy((*j).begin()+2,(*j).end(),back_inserter(tmp)); 
+                    //ajout du nouveau
+                    
+                    //TODO
+                    #if DEBUG & DEBUG_STATS 
+                    ++calc_stats[k-1][NB_SOL_FIND];
+                    #endif
+
+                    //SCORE
+                    #ifndef APPRENTISSAGE
+                    calc_values(tmp_values,tmp,pep);
+                    i_0.header_token.score = calc_score(tmp_values);
+                    #endif
+
+                    if(_size < finds_max_size or i_0.header_token.score > finds[_size-1][0]->header_token.score)
+                    {
+                        tokens_ptr.emplace_back(tmp_head);//save to be delete at the end
+                        finds.emplace_back(move(tmp));
+                        ++_size;
+                    }
+
+                    #ifndef APPRENTISSAGE
+                    if(finds_max_size > 0 and _size > finds_max_size*5)
+                    {
+                        const auto& _begin = finds.begin();
+                        partial_sort(_begin,_begin+finds_max_size,finds.end(),solution_gt);
+                        finds.resize(finds_max_size);
+                        _size = finds_max_size;
+                    }
+                    #endif
+                    */
                 }
             }
         }
@@ -1010,12 +1057,12 @@ void AnalyseurPeptide::merge_solution(std::list<AnalyseurPeptide::v_tokens_ptr>&
     
 
     #ifndef APPRENTISSAGE
-    const auto& _begin = finds.begin();
+    /*const auto& _begin = finds.begin();
     partial_sort(_begin,_begin+finds_max_size,finds.end(),solution_gt); //au cas ou tous les peaks n'ont pas eu de charge spécifiées
     if(_size > finds_max_size)
     {
         finds.resize(finds_max_size);
-    }
+    }*/
     #endif
 
     #if DEBUG & DEBUG_MERGE
