@@ -156,7 +156,7 @@ class AnalyseurPeptide
         
         Parser::peptide* pep;
 
-        std::list<v_tokens_ptr> finds;
+        std::vector<v_tokens_ptr> finds;
         std::vector<stack_token*> tokens_ptr;
 
         int nb_affiche;

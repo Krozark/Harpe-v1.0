@@ -532,9 +532,12 @@ void AnalyseurPeptide::resolve(int debut)
     #else
 
     //mise des score reels
-    for(int i=0;i<propositions.size();++i)
     {
-        propositions[i].real_score = propositions[i].validity;
+        const int _size =propositions.size();
+        for(int i=0;i<_size;++i)
+        {
+            propositions[i].real_score = propositions[i].validity;
+        }
     }
     #endif
     
@@ -626,24 +629,30 @@ const std::vector<int> AnalyseurPeptide::get_index_max_intensitee_vector(const i
 {
     vector<int> res;
     vector<Parser::peptide::peak*> res_p;
+
+    std::vector<Parser::peptide::peak*>& pep_peaks = pep->peaks;
     
     //on prend les nb plus intenses
+    const int _size = pep_peaks.size();
+    
     int size_nb = nb*pep->charge+2;
-    if (size_nb >= pep->peaks.size())
-        size_nb = pep->peaks.size()-1;
-    partial_sort(pep->peaks.begin()+2,pep->peaks.begin()+size_nb,pep->peaks.end()-2,gt_intensitee); //au cas ou tous les peaks n'ont pas eu de charge spécifiées
+    if (size_nb >= _size)
+    {
+        size_nb = _size-1;
+    }
+
+    partial_sort(pep_peaks.begin()+2,pep_peaks.begin()+size_nb,pep_peaks.end()-2,gt_intensitee); //au cas ou tous les peaks n'ont pas eu de charge spécifiées
     
     //on les saves
-    const int size = pep->peaks.size();
     #if DEBUG & DEBUG_CALC
     cout<<"MAXI :";
     #endif
-    for(int i=2;i<size_nb && i < size; ++i)
+    for(int i=2;i<size_nb && i < _size; ++i)
     {
         #if DEBUG & DEBUG_CALC
-        pep->peaks[i]->__print__();
+        pep_peaks[i]->__print__();
         #endif
-        res_p.emplace_back(pep->peaks[i]);
+        res_p.emplace_back(pep_peaks[i]);
     }
 
     pep->sort(); //on remet comme c'était
@@ -657,14 +666,14 @@ const std::vector<int> AnalyseurPeptide::get_index_max_intensitee_vector(const i
     for(int j=0;j<size2;++j)
     {
         //pour tous les peaks
-        for(int i=0;i<size;++i)
-            if(pep->peaks[i] == res_p[j]) // si c'est un des peaks
+        for(int i=0;i<_size;++i)
+            if(pep_peaks[i] == res_p[j]) // si c'est un des peaks
             {
                 res.emplace_back(i); //on l'ajoute
                 #if DEBUG & DEBUG_CALC
-                pep->peaks[i]->__print__(); //on l'ajoute
+                pep_peaks[i]->__print__(); //on l'ajoute
                 #endif
-                if(pep->peaks[i]->originale) // si on a récupéré nb peaks différents
+                if(pep_peaks[i]->originale) // si on a récupéré nb peaks différents
                     if(++finds >= nb)
                         goto exit_loop;
             }
@@ -899,10 +908,10 @@ const AnalyseurPeptide::v_tokens_ptr* AnalyseurPeptide::get_near(const int index
                 const double aa_masse = initial_masse + aa_tab[j].masse;
                 if(eq_error(current_masse,aa_masse,erreur)) // avec une marge d'erreur
                 {
-                    stack_token* tmp = new stack_token(i,pep->peaks[i])
+                    stack_token* tmp = new stack_token(i,pep->peaks[i]);
                     tokens_ptr.emplace_back(tmp);
 
-                    tmp = new stack_token(j,current_masse - aa_masse,tmp)
+                    tmp = new stack_token(j,current_masse - aa_masse,tmp);
                     tokens_ptr.emplace_back(tmp);
                     res->emplace_back(tokens_ptr.back());
                 }
@@ -947,6 +956,7 @@ void AnalyseurPeptide::merge_solution(std::list<AnalyseurPeptide::v_tokens_ptr>&
     #ifndef APPRENTISSAGE
     double tmp_values[VALUES_SIZE];
     #endif
+    int _size = 0;
 
     for(auto i=l_begin; i != l_end; ++i)
     {
@@ -985,11 +995,13 @@ void AnalyseurPeptide::merge_solution(std::list<AnalyseurPeptide::v_tokens_ptr>&
                     finds.emplace_back(move(tmp));
 
                     #ifndef APPRENTISSAGE
-                    /*if(finds_max_size > 0 and finds.size() > finds_max_size + 500)
+                    if(finds_max_size > 0 and ++_size > finds_max_size*5)
                     {
-                        sort(finds.begin(),finds.end(),solution_gt);
+                        const auto& _begin = finds.begin();
+                        partial_sort(_begin,_begin+finds_max_size,finds.end(),solution_gt);
                         finds.resize(finds_max_size);
-                    }*/
+                        _size = finds_max_size;
+                    }
                     #endif
                 }
             }
@@ -998,9 +1010,9 @@ void AnalyseurPeptide::merge_solution(std::list<AnalyseurPeptide::v_tokens_ptr>&
     
 
     #ifndef APPRENTISSAGE
-    //sort(finds.begin(),finds.end(),solution_gt);
-    finds.sort(solution_gt);
-    if(finds.size() > finds_max_size)
+    const auto& _begin = finds.begin();
+    partial_sort(_begin,_begin+finds_max_size,finds.end(),solution_gt); //au cas ou tous les peaks n'ont pas eu de charge spécifiées
+    if(_size > finds_max_size)
     {
         finds.resize(finds_max_size);
     }
