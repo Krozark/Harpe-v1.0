@@ -327,9 +327,9 @@ void AnalyseurPeptide::resolve(int debut)
         {
             register int current_peak_index = peak_index[i];
             #if (DEBUG & DEBUG_SOLUTION) || (DEBUG & DEBUG_STATE_RUNNING)
+            std::cout<<std::endl;
             std::cout<<ROUGE<<"Pic #"<<i<<"("<<current_peak_index<<")"<<BLANC;
             pep->peaks[current_peak_index]->__print__();
-            std::cout<<std::endl;
             #endif
 
 
