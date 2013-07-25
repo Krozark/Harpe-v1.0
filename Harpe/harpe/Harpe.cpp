@@ -4,8 +4,12 @@
 #include "fonction_finds/408.hpp"
 #endif
 
-#include "execution/serveur.hpp"
+#include "parser_mgf/parser.hpp"
+#include "analyseur/analyseur_peptide.hpp"
+
+//#include "execution/serveur.hpp"
 #include "execution/local.hpp"
+//#include "execution/difference_masse_parent.hpp"
 
 #if DEBUG & DEBUG_STATS
 float calc_stats[20][STATS_SIZE];

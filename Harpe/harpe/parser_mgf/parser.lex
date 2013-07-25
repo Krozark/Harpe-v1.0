@@ -57,7 +57,7 @@ CHARGE {
     return AFF_PEAK;
 }
 
-=.* {
+=[^\n\r]+ {
     return AFF_VALUE;
 }
 

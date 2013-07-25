@@ -149,6 +149,8 @@ class AnalyseurPeptide
 
         std::mutex mutex;
     #endif
+
+        const Parser::peptide* get_peptide(){return pep;};
     private:
 
 
