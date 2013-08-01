@@ -9,7 +9,11 @@
 #include <string.h>
 #endif
 
+
+
 using namespace std;
+
+int lex_line;
 
 void find_and_replace(string& source, string const& find, string const& replace)
 {
@@ -196,7 +200,7 @@ Parser::peptide* Parser::parse_next(bool ignore)
                                 str += aa_slugs[i];
 
                             }
-                            #ifdef APPRENTISSAGE
+                            #if (DEBUG & DEBUG_STATS) | APPRENTISSAGE
                             pep->solutions->emplace_back(str);
                             #endif
 
@@ -215,7 +219,7 @@ Parser::peptide* Parser::parse_next(bool ignore)
                                     str += "|";
                                 str += aa_slugs[i];
                             }
-                            #ifdef APPRENTISSAGE
+                            #if (DEBUG & DEBUG_STATS) || APPRENTISSAGE
                             pep->solutions->emplace_back(str);
                             #endif
 
@@ -279,7 +283,7 @@ void Parser::__print__() const
 
 Parser::peptide::peptide(const double m,const unsigned int i,const char c):charge(c),intensitee(i),mz(m)
 {
-    #ifdef APPRENTISSAGE
+    #if (DEBUG & DEBUG_STATS) || APPRENTISSAGE
     solutions = make_shared<vector<string> >();
     #endif
     for (short int i=0;i<SIZE;++i)

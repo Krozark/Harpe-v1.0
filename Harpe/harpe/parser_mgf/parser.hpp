@@ -14,6 +14,7 @@ extern char* yytext;
 extern FILE* yyin;
 extern FILE* yyout;
 
+/*************** DEBUG VALUES ***********/
 #define DEBUG_NO 0
 #define DEBUG_FULL 0xFFFF
 
@@ -30,19 +31,27 @@ extern FILE* yyout;
 #define DEBUG_APPRENTISSAGE_STATS 1<<11
 #define DEBUG_MGF_PEAKS_START 1<<12
 #define DEBUG_STATE_RUNNING 1<<13
+/***************** PRINT VALUES *******************/
+#define PRINT_NO 0
+#define PRINT_SCORE 1<<1
+#define PRINT_FINDS 1<<2
 
-#define DEBUG_PEAKS 0
-
+/****************** VALUES *********************/
 #define GENETIQUE_SAVE_RESULTS  1
-
-#ifndef APPRENTISSAGE
-#define DEBUG (DEBUG_NO | DEBUG_STATE_RUNNING)
-#else
-#define DEBUG (DEBUG_APPRENTISSAGE_STATS)
-#endif
-
+#define DEBUG_PEAKS 0
 #define COMPLET_SOLUTION 0
 #define FILTER_SOLUTION 0
+#define PRINT (PRINT_FINDS)
+
+#ifndef APPRENTISSAGE
+//#define DEBUG (DEBUG_NO | DEBUG_STATE_RUNNING)
+//#define DEBUG (DEBUG_NO | DEBUG_MGF)
+#define DEBUG (DEBUG_NO | DEBUG_STATS)
+#else
+//#define DEBUG (DEBUG_APPRENTISSAGE_STATS)
+#define DEBUG (DEBUG_STATS |  DEBUG_MGF )
+#endif
+
 
 class AA_Tab;
 extern AA_Tab aa_tab;
@@ -72,9 +81,10 @@ class Parser
                 double intensitee;//,seuil;
                 std::string title;
                 std::vector<peak*> peaks;
-                #ifdef APPRENTISSAGE
+
+                //#if (DEBUG & DEBUG_STATS) || APPRENTISSAGE
                 std::shared_ptr<std::vector<std::string> > solutions;
-                #endif
+                //#endif
 
                 enum {DEBUT=0,DEBUT_H2O,FIN_H2O,FIN,SIZE} special_peaks_keys;
                 peak* special_peaks[SIZE];

@@ -22,6 +22,8 @@ enum lex_states{
     UNKNOW
 };
 
+extern int lex_lines;
+
 #ifdef COLORS
 
 #define ROUGE  	"\033[31m"
@@ -53,7 +55,7 @@ enum lex_states{
 #define MO 15.99943f
 #define MH2O (MO + 2*MH)
 
-#define PERROR(x) std::cerr<<ROUGE<<__FILE__<<":"<<__LINE__<<" ERROR: "<<x<<BLANC<<std::endl;
+#define PERROR(x) std::cerr<<ROUGE<<__FILE__<<":"<<__LINE__<<" ERROR in line "<<lex_line<<": "<<x<<BLANC<<std::endl;
 
 #define MAX(x,y) (x>y?x:y)
 #define MIN(x,y) (x<y?x:y)

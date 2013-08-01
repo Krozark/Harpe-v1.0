@@ -146,6 +146,14 @@ int local(int argc, char* argv[])
 
         #endif
 
+        #if DEBUG & DEBUG_STATS 
+        std::string stats_filename("stats.csv");
+        std::ofstream stats_file;
+        stats_file.open(stats_filename);
+
+        stats_file<<"\"nombre points départ\", \"Propositions en accord avec la séquence attendue\", \"Propositions Total\", \"temps d'éxécution\", \"travail réalisé sur ? peptides\", \"peptide identifié\", \"pourcentage peptide identifié\"\n";
+        #endif
+
         //parse le fichier
         while((p=parser.parse_next(ignore))!=NULL)
         {
@@ -170,9 +178,12 @@ int local(int argc, char* argv[])
         {
             calc_stats[i][NB_SOL_FIND] /= nb_peptide;
             calc_stats[i][NB_SOL_FIND_OK] /= nb_peptide;
+            double nb_ok = calc_stats[i][HAS_SOLUTION]*100.0 /nb_peptide;
             calc_stats[i][CALC_TIME] /= nb_peptide;
-            cout<<"pour "<<nb_peptide<<" peptides => "<<i+1<<" NB_SOL : "<<calc_stats[i][NB_SOL_FIND_OK]<<"/"<<calc_stats[i][NB_SOL_FIND]<<" en: "<<calc_stats[i][CALC_TIME]<<" secondes"<<endl;
+
+            stats_file<<i+1<<","<<calc_stats[i][NB_SOL_FIND_OK]<<","<<calc_stats[i][NB_SOL_FIND]<<","<<calc_stats[i][CALC_TIME]<<","<<nb_peptide<<","<<calc_stats[i][HAS_SOLUTION]<<","<<nb_ok<<std::endl;
         }
+        stats_file.close();
         #endif
      
         //destruction des analiser_pep 

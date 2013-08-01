@@ -22,7 +22,7 @@ extern AA_Tab aa_tab;
 extern double calc_score(const double* const values);
 
 #if DEBUG & DEBUG_STATS
-enum STATS_ENUM{NB_SOL_FIND=0,NB_SOL_FIND_OK,CALC_TIME,STATS_SIZE};
+enum STATS_ENUM{NB_SOL_FIND=0,NB_SOL_FIND_OK,HAS_SOLUTION,CALC_TIME,MAX_LEN,STATS_SIZE};
 extern float calc_stats[20][STATS_SIZE];
 #endif
 
@@ -141,13 +141,14 @@ class AnalyseurPeptide
 
         };
         std::vector<ApprentissageSolution> propositions;
-        #if DEBUG & DEBUG_STATS
-        void verifier_resultats_complet(std::list<v_tokens_ptr>& s,int boucle);
-        #else
-        void verifier_resultats_complet(std::list<v_tokens_ptr>& s);
-        #endif
 
         std::mutex mutex;
+    #endif
+
+    #if DEBUG & DEBUG_STATS
+        void verifier_resultats_complet(std::vector<v_tokens_ptr>& s,int boucle);
+    #else
+    void verifier_resultats_complet(std::vector<v_tokens_ptr>& s);
     #endif
 
         const Parser::peptide* get_peptide(){return pep;};

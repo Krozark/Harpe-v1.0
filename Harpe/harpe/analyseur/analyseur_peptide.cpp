@@ -289,7 +289,7 @@ void AnalyseurPeptide::print_stack_used(const AnalyseurPeptide::pile_tokens_ptr&
 void AnalyseurPeptide::resolve(int debut)
 {
     //pep->set_seuil();
-    #ifndef APPRENTISSAGE && (DEBUG & DEBUG_STATE_RUNNING) ||(DEBUG & DEBUG_MGF)
+    #if (DEBUG & DEBUG_STATE_RUNNING) ||(DEBUG & DEBUG_MGF)
     //visualisation MGF
     std::cout<<"Spectre reconstitué et complété"<<std::endl;
     pep->__print__();
@@ -322,7 +322,7 @@ void AnalyseurPeptide::resolve(int debut)
         #endif
 
        
-        // instantiation
+        // pour tous les points de dépards
         for(int i=0;i<size;++i)
         {
             register int current_peak_index = peak_index[i];
@@ -467,7 +467,7 @@ void AnalyseurPeptide::resolve(int debut)
             cout<<" ------------------------- END RESOLVE ----------------------"<<endl;
             #endif
 
-            std::cout<<"merge ("<<results_left.size()<<" | "<<results_right.size()<<" = "<<results_right.size()*results_left.size()+results_left.size()+results_right.size()<<")"<<std::endl;
+            //std::cout<<"merge ("<<results_left.size()<<" | "<<results_right.size()<<" = "<<results_right.size()*results_left.size()+results_left.size()+results_right.size()<<")"<<std::endl;
 
             #if DEBUG & DEBUG_STATS 
             merge_solution(results_left,results_right,k);
@@ -476,41 +476,48 @@ void AnalyseurPeptide::resolve(int debut)
             #endif
 
 
-            results_left.clear();
-            results_right.clear();
+            //results_left.clear();
+            //results_right.clear();
 
-            #warning "TODO ajouter l'enzyme corectement, et non en dure"
-            #if FILTER_SOLUTION == 1
-            //TODO
-            Enzyme tryp("Trypsine");
-            filter_enzyme(finds,tryp);
-            #endif
-
-
-            #ifdef APPRENTISSAGE
-                #if DEBUG & DEBUG_STATS
-                verifier_resultats_complet(finds,k-1);
-                #else
-                verifier_resultats_complet(finds);
-                #endif
-
-                for(auto current_sol= finds.begin();current_sol != finds.end();++current_sol)
-                {
-                    propositions.emplace_back(ApprentissageSolution(*current_sol,pep));
-                    #if DEBUG & DEBUG_APPRENTISSAGE_STATS
-                    //propositions.back().__print__();
-                    #endif
-                }
-            #endif
 
         }
 
+        #if DEBUG & DEBUG_STATS
+        verifier_resultats_complet(finds,k-1);
+        #endif
+
+        #ifdef APPRENTISSAGE
+        #if !(DEBUG & DEBUG_STATS)
+        verifier_resultats_complet(finds);
+        #endif
+        for(auto current_sol= finds.begin();current_sol != finds.end();++current_sol)
+        {
+            propositions.emplace_back(ApprentissageSolution(*current_sol,pep));
+            #if DEBUG & DEBUG_APPRENTISSAGE_STATS
+            //propositions.back().__print__();
+            #endif
+        }
+        #endif
+
     #if DEBUG & DEBUG_STATS 
         calc_stats[k-1][CALC_TIME] += float(clock()-t)/CLOCKS_PER_SEC;
+        if (calc_stats[k-1][MAX_LEN]>5)
+            ++calc_stats[k-1][HAS_SOLUTION];
+
+        #ifndef APPRENTISSAGE
+        finds.clear();
+        #endif
     }
     #endif
 
-    #ifndef APPRENTISSAGE
+    #warning "TODO ajouter l'enzyme corectement, et non en dure"
+    #if FILTER_SOLUTION == 1
+    //TODO
+    Enzyme tryp("Trypsine");
+    filter_enzyme(finds,tryp);
+    #endif
+
+    #if (PRINT & PRINT_FINDS)
     {
         int _size = finds.size();
         int f_size = _size;
@@ -531,8 +538,9 @@ void AnalyseurPeptide::resolve(int debut)
             std::cout<<std::endl;
         }
     }
-    #else
+    #endif
 
+    #ifdef APPRENTISSAGE
     //mise des score reels
     {
         const int _size =propositions.size();
@@ -788,7 +796,9 @@ void AnalyseurPeptide::print_AA(const AnalyseurPeptide::v_tokens_ptr& v,int sens
     #if DEBUG & DEBUG_FILTER
     v_0.__print__();
     #endif
+    #if PRINT & PRINT_SCORE
     cout<<"score: ["<<v_0.header_token.score<<"] ";
+    #endif
     if (p)
     {
         bool pr=false;
@@ -947,7 +957,11 @@ const AnalyseurPeptide::v_tokens_ptr* AnalyseurPeptide::get_near(const int index
 };
 
 
-void AnalyseurPeptide::merge_solution(std::list<AnalyseurPeptide::v_tokens_ptr>& left_part,const std::list<AnalyseurPeptide::v_tokens_ptr>& right_part)
+#if DEBUG & DEBUG_STATS 
+void AnalyseurPeptide::merge_solution(std::list<AnalyseurPeptide::v_tokens_ptr >& left_part,const std::list<AnalyseurPeptide::v_tokens_ptr>& right_part,int k)
+#else 
+void AnalyseurPeptide::merge_solution(std::list<v_tokens_ptr >& left_part,const std::list<v_tokens_ptr>& right_part)
+#endif
 {
 
     auto l_end = left_part.end();
@@ -986,18 +1000,18 @@ void AnalyseurPeptide::merge_solution(std::list<AnalyseurPeptide::v_tokens_ptr>&
                     
                     //TODO
                     #if DEBUG & DEBUG_STATS 
-                    //++calc_stats[k-1][NB_SOL_FIND];
+                    ++calc_stats[k-1][NB_SOL_FIND];
                     #endif
 
                     //SCORE
                     #ifndef APPRENTISSAGE
-                    //calc_values(tmp_values,tmp,pep);
-                    //tmp[0]->header_token.score = calc_score(tmp_values);
+                    calc_values(tmp_values,tmp,pep);
+                    tmp[0]->header_token.score = calc_score(tmp_values);
                     #endif
 
-                    /*finds.emplace_back(move(tmp));
+                    finds.emplace_back(move(tmp));
 
-                    #ifndef APPRENTISSAGE
+                    /*#ifndef APPRENTISSAGE
                     if(finds_max_size > 0 and ++_size > finds_max_size*5)
                     {
                         const auto& _begin = finds.begin();
@@ -1057,8 +1071,9 @@ void AnalyseurPeptide::merge_solution(std::list<AnalyseurPeptide::v_tokens_ptr>&
     
 
     #ifndef APPRENTISSAGE
-    /*const auto& _begin = finds.begin();
-    partial_sort(_begin,_begin+finds_max_size,finds.end(),solution_gt); //au cas ou tous les peaks n'ont pas eu de charge spécifiées
+    //const auto& _begin = finds.begin();
+    //sort(_begin,finds.end(),solution_gt); //au cas ou tous les peaks n'ont pas eu de charge spécifiées
+    /*partial_sort(_begin,_begin+finds_max_size,finds.end(),solution_gt); //au cas ou tous les peaks n'ont pas eu de charge spécifiées
     if(_size > finds_max_size)
     {
         finds.resize(finds_max_size);
@@ -1545,14 +1560,15 @@ void AnalyseurPeptide::ApprentissageSolution::check_validity()
     }
 };
 
+#endif
 
 #if DEBUG & DEBUG_STATS
-void AnalyseurPeptide::verifier_resultats_complet(list<AnalyseurPeptide::v_tokens_ptr>& s,int boucle)
+void AnalyseurPeptide::verifier_resultats_complet(std::vector<AnalyseurPeptide::v_tokens_ptr>& s,int boucle)
 #else
-void AnalyseurPeptide::verifier_resultats_complet(list<AnalyseurPeptide::v_tokens_ptr>& s)
+void AnalyseurPeptide::verifier_resultats_complet(std::vector<AnalyseurPeptide::v_tokens_ptr>& s)
 #endif
 {
-    #warning "le code acctuel ne donne pas tout, PE regarder les plus longue véquense commune?"
+    #warning "le code acctuel ne donne pas tout, PE regarder les plus longue séquense commune?"
     #if DEBUG & DEBUG_VERIFICATION
     cout<<" ***************** VERIFICATION RESULTAT COMPLET ***********"<<endl;
     #endif
@@ -1567,15 +1583,16 @@ void AnalyseurPeptide::verifier_resultats_complet(list<AnalyseurPeptide::v_token
             int find = (*i_str).find(value);
             if(find != string::npos)
             {
-                //on l'ajoute parmis les solutions possibles
+                int nb = count(value.begin(),value.end(),'|') +1;//nombre de AA
                 #warning "TODO ajouter le résultat dans un tableau ou autre"
                 #if DEBUG & DEBUG_VERIFICATION
-                cout<<"solution: "<<(*i_str)<<" trouvé: "<<value<<" nb AA: "<<find<<endl;
+                cout<<"solution: "<<(*i_str)<<" trouvé: "<<value<<" nb AA: "<<MAX(0,nb)<<endl;
                 #endif
-                //et on regarde pour les bords (mais n'influe pas sur le score)
                 #if DEBUG & DEBUG_STATS
+                calc_stats[boucle][MAX_LEN] = (nb>calc_stats[boucle][MAX_LEN])?nb:calc_stats[boucle][MAX_LEN];
                 ++calc_stats[boucle][NB_SOL_FIND_OK];
                 #endif
+                break;
             }
         }
     }
@@ -1586,4 +1603,3 @@ void AnalyseurPeptide::verifier_resultats_complet(list<AnalyseurPeptide::v_token
 
 };
 
-#endif

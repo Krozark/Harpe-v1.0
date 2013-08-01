@@ -5,12 +5,18 @@
 #define YY_NO_INPUT
 #include "defines.hpp"
 
+extern int lex_line;
+
+
 %}
 
 %option nounput
 %option noyywrap
 
+
 %%
+
+\n {++lex_line;}
 
 #.* {}
 
