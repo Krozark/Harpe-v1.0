@@ -27,7 +27,7 @@ LIBS = -lmysqlcppconn -lpthread -pg
 
 export DEFINES = -DCOLORS $(APPRENTISSAGE)
 #-Ofast
-export FLAGS = -pg -std=c++0x $(SFLAGS) $(INCPATH) $(LIBS) $(DEFINES)
+export FLAGS = -std=c++0x $(SFLAGS) $(INCPATH) $(LIBS) $(DEFINES)
 export TOP := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
 export OBJ_DIR = $(TOP)/obj
 
