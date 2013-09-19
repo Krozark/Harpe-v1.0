@@ -261,7 +261,6 @@ class Parser
 
         FILE* file; ///< fichier à analyser
         FILE* null_output; ///< fichier poubelle
-
 };
 
 #endif
