@@ -274,15 +274,36 @@ class AnalyseurPeptide
     #endif
 
     #if DEBUG & DEBUG_STATS
+        /**
+         * \brief Fonction qui permet de vérifier les solutions proposées avec les solutions attendus
+         *
+         * \param s SOlution à vérifier
+         * \param numéro du point de dépat, pour les stats
+         **/
         void verifier_resultats_complet(std::vector<v_tokens_ptr>& s,int boucle); 
     #else
+        /**
+         * \brief Fonction qui permet de vérifier les solutions proposées avec les solutions attendus
+         *
+         * \param s SOlution à vérifier
+         **/
     void verifier_resultats_complet(std::vector<v_tokens_ptr>& s);
     #endif
-
+        /**
+         * \return Revoie le peptide
+         *
+         **/
         const Parser::peptide* get_peptide(){return pep;};
     private:
 
 
+        /**
+         * \brief Calcule les stats de la solution
+         *
+         * \param value Tableau ou les stats sont stoqués
+         * \param s séquence à analyser
+         * \param pep peptide associé à la séquence
+         **/
         static void calc_values(double* const values,const v_tokens_ptr& s,const Parser::peptide* pep);
         
         Parser::peptide* pep;
