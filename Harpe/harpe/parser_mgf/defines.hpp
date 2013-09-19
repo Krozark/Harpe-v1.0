@@ -1,6 +1,12 @@
 #ifndef DEFINES_PARSER_HPP
 #define DEFINES_PARSER_HPP
 
+/**
+ * \brief les différent états du parseur
+ * Chaque opton corespond à une option du fichier .mgf
+ *
+ * \todo recoder le parseur avec yacc
+ **/
 enum lex_states{
     OPTION_HEADER=0,
     OPTION_LOCAL,
@@ -22,19 +28,20 @@ enum lex_states{
     UNKNOW
 };
 
-extern int lex_lines;
+
+extern int lex_lines;///< Pour compter les lignes du fichier
 
 #ifdef COLORS
 
-#define ROUGE  	"\033[31m"
-#define VERT   	"\033[32m"
-#define JAUNE  	"\033[33m"
-#define BLEU   	"\033[34m"
-#define MAGENTA "\033[35m"
-#define LMAGENTA "\033[01;35m"
-#define BLEU2 "\033[36m"
-#define COMMENTAIRE "\033[31m"
-#define BLANC 	"\033[00m"
+#define ROUGE  	"\033[31m" ///< couleur rouge pour le terminal
+#define VERT   	"\033[32m" ///< couleur vert pour le terminal
+#define JAUNE  	"\033[33m" ///< couleur jaune
+#define BLEU   	"\033[34m" ///< couleur bleu
+#define MAGENTA "\033[35m" ///< couleur magenta
+#define LMAGENTA "\033[01;35m" ///<couleur magenta claire
+#define BLEU2 "\033[36m" ///< couleur bleu
+#define COMMENTAIRE "\033[31m" ///< couleur pour les commentaires
+#define BLANC 	"\033[00m" ///< couleur par défaut du terminal
 
 #else
 
@@ -50,14 +57,14 @@ extern int lex_lines;
 
 #endif
 
-#define NULL_OUTPUT "/dev/null"
-#define MH 1.00794f
-#define MO 15.99943f
-#define MH2O (MO + 2*MH)
+#define NULL_OUTPUT "/dev/null" ///< fichier de sortie pour la poubelle
+#define MH 1.00794f ///< Masse d'un Hydrogène en Da
+#define MO 15.99943f ///< masse d'un carbone en Da
+#define MH2O (MO + 2*MH) ///< masse de H2O en Da
 
-#define PERROR(x) std::cerr<<ROUGE<<__FILE__<<":"<<__LINE__<<" ERROR in line "<<lex_line<<": "<<x<<BLANC<<std::endl;
+#define PERROR(x) std::cerr<<ROUGE<<__FILE__<<":"<<__LINE__<<" ERROR in line "<<lex_line<<": "<<x<<BLANC<<std::endl; ///< macro pour afficher où est l'erreur dans le fichier
 
-#define MAX(x,y) (x>y?x:y)
-#define MIN(x,y) (x<y?x:y)
+#define MAX(x,y) (x>y?x:y) ///< fonction mathématique max 
+#define MIN(x,y) (x<y?x:y) ///< fonction mathématique min
 
 #endif
