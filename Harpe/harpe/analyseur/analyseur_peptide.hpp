@@ -306,37 +306,134 @@ class AnalyseurPeptide
          **/
         static void calc_values(double* const values,const v_tokens_ptr& s,const Parser::peptide* pep);
         
-        Parser::peptide* pep;
+        Parser::peptide* pep;///< Peptide à analyser
 
-        std::vector<v_tokens_ptr> finds;
-        std::vector<stack_token*> tokens_ptr;
+        std::vector<v_tokens_ptr> finds;///< Propositions trouvées
+        std::vector<stack_token*> tokens_ptr;///< stocke les stack token pour les delete à la fin de l'analyse
 
-        int nb_affiche;
-        int finds_max_size;
-        const double erreur, masse_max_trou;
+        int nb_affiche; ///< nombre de solution à affichier
+        int finds_max_size;  ///< nombre de solution a garder en mémoire 
+        const double erreur, ///< marge d'erreur en Da
+              masse_max_trou; ///< masse maximale à combler (par assosiation de plusieurs AA)
 
+        /**
+         * \brief Permet de trouver le pic avec l'intensité maximale
+         *
+         * \result l'index du pic
+         **/
         const int get_index_max_intensitee();
         //const int get_index_max_intensitee(const double max);
+        /**
+         * \brief Cherche les x pic les plus intenses
+         *
+         * \param nb Nobre de pic à retourner
+         *
+         * \return vecteur contenant les index des pic par ordre d'intensité
+         **/
         const std::vector<int> get_index_max_intensitee_vector(const int nb);
+
+        /**
+         * \brief Permet de chercher le prochain pic à partir de l'index spécifié
+         *
+         * \param index index de recherche
+         * \param inc Permet de définir si la recherche se foit du coté droit ou gauche (N/C terminal)
+         *
+         * \return AA_TOKEN avec le pic qui lui ai associé dasn son data
+         **/
         const v_tokens_ptr* get_near(const int index, const short int inc=1); //[<peak,AA]*
+
+        /**
+         * \brief Fonction a appeler quand un sens de recherche est aboutis, pour revenir au dernier "croisement"
+         *
+         * \param search pile stockant les résultats de get_near
+         * \param sens indique si la recherche est faite depuis la gauche ou droite (N/C terminal)
+         **/
         const int depiler(pile_tokens_ptr& search,const int sens);
 
+        /**
+         * \brief Permet de stocker la séquance actuelement utilisé dasn finds
+         *
+         * \param search Pile des résultats
+         * \param res où sera stocké la séquence actuelle
+         **/
         void save_stack(const pile_tokens_ptr& search, std::list<v_tokens_ptr>& res);
 
+        /**
+         * \brief Permet d'afficher les séquences présente dasn la pile
+         *
+         * \param search pile contenant les séquances
+         * */
         void print_stack_all(const pile_tokens_ptr& search);
+
+        /**
+         * \brief Affiche la séquence actuellement en cours d'analyse
+         *
+         * \param search la pile
+         **/
         void print_stack_used(const pile_tokens_ptr& search);
+
+        /**
+         * \brief Affiche les séqences trouvées
+         *
+         * \param search la liste des séquances
+         **/
         void print_results(const std::list<v_tokens_ptr>& res);
+
+        /**
+         * \brief Complet une solution qui ne va pas jusqu'au bout avec des solutions théoriques
+         *
+         * \param sol Solution à compléter
+         * \param sens Sens à compléter
+         **/
         void complet_solution(v_tokens_ptr& sol,int sens);
 
         #if DEBUG & DEBUG_STATS 
+        /**
+         * \brief Permet de fusionner 2 proposition. Le dernier pic de left_part doit etre le premier de right_part
+         *
+         * \param left_part La partie de gauche de la solution
+         * \param right_part La partie droite de la solution
+         * \param boucle pour les statistiques uniquement
+         *
+         * \result le résultat est mis dans finds
+         **/
         void merge_solution(std::list<v_tokens_ptr >& left_part,const std::list<v_tokens_ptr>& right_part,int boucle); //met tout dasn left
         #else 
+        /**
+         * \brief Permet de fusionner 2 proposition. Le dernier pic de left_part doit etre le premier de right_part
+         *
+         * \param left_part La partie de gauche de la solution
+         * \param right_part La partie droite de la solution
+         *
+         * \result le résultat est mis dans finds
+         **/
         void merge_solution(std::list<v_tokens_ptr >& left_part,const std::list<v_tokens_ptr>& right_part); //met tout dasn left
         #endif
         
+        /***
+         * \brief Permet d'enlever les solution qui ne sont pas compatibles avec l'enzyme utilisé (compure non valide)
+         *
+         * \param solution Solution à vérifier
+         * \param enz Enzyme utilisée
+         *
+         * \todo Ne tien pas compte que les deux sens sont possible, et je ne sais plus si ca le fait sur les AA trouvée ou sur ceux ajoutés thoriquement (via complet_solution)
+         **/
         void filter_enzyme(std::list<v_tokens_ptr>& solutions,Enzyme& enz);
 
+        /**
+         * \brief Permet d'afficher la séquence en AA de la proposition
+         *
+         * \param v la séquence
+         * \param sens Sens de lecture
+         * \param p affiche les "?" et les masse
+         **/
         void print_AA(const v_tokens_ptr& v,int sens=Sens::STOP,bool p=true);
+
+        /**
+         * \brief Transforme la séquence en chaine formatée AA[|AA]* en utilisant les slugs
+         *
+         * \result la chaine crée
+         **/
         static std::string to_string(const v_tokens_ptr& v);
 };
 
