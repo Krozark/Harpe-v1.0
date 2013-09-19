@@ -201,17 +201,17 @@ class AnalyseurPeptide
                         int index;
                         double error;
                         stack_token* pt_data;
-                    } aa_token ///< AA_TOKEN;
+                    } aa_token; ///< AA_TOKEN;
 
                     struct{
                         double error;
                         std::vector<int> aa_index;
-                    } aa_hold_token ///<AA_HOLD_TOKEN;
+                    } aa_hold_token; ///<AA_HOLD_TOKEN;
 
                     struct {
                         int index;
                         Parser::peptide::peak* pt_data;
-                    } peak_token ///< PEAK_TOKEN;
+                    } peak_token; ///< PEAK_TOKEN;
 
                     struct {
                         double score;
@@ -220,7 +220,7 @@ class AnalyseurPeptide
                             double to_find;
                         } holds [Parser::peptide::SIZE];
                         //double values[VALUES_SIZE];
-                    } header_token ///< HEADER_TOKEN;
+                    } header_token; ///< HEADER_TOKEN;
                 };
         };
 

@@ -1,5 +1,5 @@
-#include "Socket/src/SocketSerialized.hpp"
-#include "Socket/src/SelectManager.hpp"
+#include "Socket/Socket/SocketSerialized.hpp"
+#include "Socket/Socket/SelectManager.hpp"
 
 #include <iostream>
 #include <chrono>
