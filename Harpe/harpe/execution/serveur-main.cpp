@@ -1,5 +1,4 @@
-#include "Socket/Socket/SocketSerialized.hpp"
-#include "Socket/Socket/SelectManager.hpp"
+#include "serveur.hpp"
 
 #include <iostream>
 #include <chrono>
@@ -55,6 +54,8 @@ void reply(ntw::SelectManager& selector,ntw::Socket& sock)
 
 int main(int argc, char* argv[])
 {
+
+    return serveur(argc,argv);
     /*
     ntw::Socket sock(ntw::Socket::Dommaine::IP,ntw::Socket::Type::TCP);
     ntw::Socket client = sock.Wait();
@@ -64,7 +65,7 @@ int main(int argc, char* argv[])
     client.Shutdown();
     */
 
-    ntw::SocketSerialized sockSer(ntw::Socket::Dommaine::IP,ntw::Socket::Type::TCP);
+    /*ntw::SocketSerialized sockSer(ntw::Socket::Dommaine::IP,ntw::Socket::Type::TCP);
     sockSer.ServeurMode();
 
     ntw::SelectManager serverSelector;
@@ -81,9 +82,8 @@ int main(int argc, char* argv[])
     //serverSelector.Stop();
 
     clientSelector.Wait();
-    serverSelector.Wait();
+    serverSelector.Wait();*/
 
-    return 0;
 };
 
 
