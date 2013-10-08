@@ -42,15 +42,15 @@ extern FILE* yyout;
 #define COMPLET_SOLUTION 0 ///< complete les trous
 #define FILTER_SOLUTION 0 ///< filter avec l'enzyme
 
-#define PRINT (PRINT_NO) ///< défini Print
+#define PRINT (PRINT_SCORE|PRINT_FINDS) ///< défini Print
 
-#ifndef APPRENTISSAGE
+#ifdef APPRENTISSAGE
 //#define DEBUG (DEBUG_NO | DEBUG_STATE_RUNNING)
 //#define DEBUG (DEBUG_NO | DEBUG_MGF)
 #define DEBUG (DEBUG_NO ) ///< définis le niveau de débug
-#else
 //#define DEBUG (DEBUG_APPRENTISSAGE_STATS)
-#define DEBUG (DEBUG_STATS |  DEBUG_MGF ) ///< défini le niveau de debug
+#else
+#define DEBUG (DEBUG_MGF ) ///< défini le niveau de debug
 #endif
 
 

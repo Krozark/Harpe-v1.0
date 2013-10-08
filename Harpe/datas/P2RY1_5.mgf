@@ -1,3 +1,4 @@
+#find http://blog.qt.digia.com/blog/2012/03/26/qt-commercial-support-weekly-16-floating-widgets-and-how-to-find-their-way-back-home-2/
 BEGIN IONS
 TITLE= Cmpd 200, +MSn(799.0662), 26.9 min
 PEPMASS=799.06617	21675
@@ -75,3 +76,4 @@ SOLUTION=S|E|A|N|L|Q|S|K|S|E|D|M|T|L|N|I|L|P|E|F|K
 1090.06619	373	2+
 1189.51998	142	
 END IONS
+

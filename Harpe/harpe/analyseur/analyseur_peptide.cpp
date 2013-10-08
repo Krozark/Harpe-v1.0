@@ -289,7 +289,7 @@ void AnalyseurPeptide::print_stack_used(const AnalyseurPeptide::pile_tokens_ptr&
 void AnalyseurPeptide::resolve(int debut)
 {
     //pep->set_seuil();
-    #if (DEBUG & DEBUG_STATE_RUNNING) ||(DEBUG & DEBUG_MGF)
+    #if (DEBUG & DEBUG_STATE_RUNNING) || (DEBUG & DEBUG_MGF)
     //visualisation MGF
     std::cout<<"Spectre reconstitué et complété"<<std::endl;
     pep->__print__();
@@ -519,6 +519,8 @@ void AnalyseurPeptide::resolve(int debut)
 
     #if (PRINT & PRINT_FINDS)
     {
+        sort(finds.begin(),finds.end(),solution_gt);// todo
+
         int _size = finds.size();
         int f_size = _size;
         if(nb_affiche >=0 and  nb_affiche<_size)
@@ -972,7 +974,6 @@ void AnalyseurPeptide::merge_solution(std::list<v_tokens_ptr >& left_part,const 
     #ifndef APPRENTISSAGE
     double tmp_values[VALUES_SIZE];
     #endif
-    int _size = 0;
 
     for(auto i=l_begin; i != l_end; ++i)
     {
@@ -1071,10 +1072,16 @@ void AnalyseurPeptide::merge_solution(std::list<v_tokens_ptr >& left_part,const 
     
 
     #ifndef APPRENTISSAGE
-    //const auto& _begin = finds.begin();
-    //sort(_begin,finds.end(),solution_gt); //au cas ou tous les peaks n'ont pas eu de charge spécifiées
-    /*partial_sort(_begin,_begin+finds_max_size,finds.end(),solution_gt); //au cas ou tous les peaks n'ont pas eu de charge spécifiées
-    if(_size > finds_max_size)
+    const auto& _begin = finds.begin();
+
+    /*int _size = finds.size();
+    if(_size<finds_max_size)
+        sort(_begin,finds.end(),solution_gt);
+    else
+        partial_sort(_begin,_begin+finds_max_size,finds.end(),solution_gt);
+    */
+
+    /*if(_size > finds_max_size)
     {
         finds.resize(finds_max_size);
     }*/

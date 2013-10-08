@@ -67,6 +67,8 @@ void Parser::parse_all(bool ignore)
 
 Parser::peptide* Parser::parse_next(bool ignore)
 {
+    if(!file)
+        return 0;
     #warning "traiter les cas d'erreur dans le parsage du mgf"
     #warning "traiter les variables mise dans le fichier mgf"
 
@@ -175,15 +177,32 @@ Parser::peptide* Parser::parse_next(bool ignore)
 
                     for(int i=1;i<str_size;++i)
                     {
+                        bool next = false;
                         if(yytext[i] == '|')
                         {//fin du slug
                             if (slug == "I" or slug == "L")
                                 slug = "I_L";
                             aa_slugs.emplace_back(slug);
                             slug = "";
+                            continue;
                         }
-                        else if(yytext[i] == ',' or i == str_size -1)
+
+                        if(yytext[i] == ',')
                         {//fin de la solution
+                            next = true;
+                        }
+                        else if(i == str_size -1)
+                        {
+                            next = true;
+                            slug += yytext[i];
+                        }
+                        else
+                        {
+                            slug += yytext[i];
+                        }
+
+                        if(next)
+                        {
                             if (slug == "I" or slug == "L")
                                 slug = "I_L";
                             aa_slugs.emplace_back(slug);
@@ -226,10 +245,6 @@ Parser::peptide* Parser::parse_next(bool ignore)
                             #if DEBUG & DEBUG_MGF
                             cout<<"solution reverse: "<<str<<endl;
                             #endif
-                        }
-                        else 
-                        {//caractère du slug
-                            slug += yytext[i];
                         }
                     }
                 }

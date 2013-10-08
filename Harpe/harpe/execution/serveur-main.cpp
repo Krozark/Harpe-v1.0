@@ -21,32 +21,32 @@ ntw::SelectManager clientSelector;
 
 void newclient(ntw::SelectManager& selector,ntw::Socket& sock)
 {
-    ntw::SocketSerialized* clientSock = new ntw::SocketSerialized(sock.Accept());
-    std::cout<<"Envoi du message: <hello!> à la soket "<<clientSock->Id()<<std::endl;
+    ntw::SocketSerialized* clientSock = new ntw::SocketSerialized(sock.accept());
+    std::cout<<"Envoi du message: <hello!> à la soket "<<clientSock->id()<<std::endl;
     *clientSock<<"hello!";
-    clientSock->Send();
+    clientSock->send();
 
     //clientSock->Shutdown(ntw::Socket::Down::SEND);
-    clientSelector.Add(clientSock);
+    clientSelector.add(clientSock);
 };
 
 void reply(ntw::SelectManager& selector,ntw::Socket& sock)
 {
     ntw::SocketSerialized& clientSock = *(ntw::SocketSerialized*)&sock;
-    std::cout<<"Répond à "<<clientSock.Id()<<std::endl;
-    if(clientSock.Receive() >0)
+    std::cout<<"Répond à "<<clientSock.id()<<std::endl;
+    if(clientSock.receive() >0)
     {
         char* c=0;
         clientSock>>c;
         std::cout<<"[serveur] recu char*: <"<<c<<">"<<std::endl;
-        clientSock.Clear();
+        clientSock.clear();
         clientSock<<"message du serveur";
-        clientSock.Send();
+        clientSock.send();
     }
     else
     {
-        std::cerr<<"Client connection lost <id:"<<clientSock.Id()<<">"<<std::endl; 
-        selector.Remove(&clientSock);
+        std::cerr<<"Client connection lost <id:"<<clientSock.id()<<">"<<std::endl; 
+        selector.remove(&clientSock);
         delete &clientSock;
     }
 };

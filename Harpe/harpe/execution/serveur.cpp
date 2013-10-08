@@ -8,14 +8,14 @@
 
 Serveur::Serveur() : main_sock(ntw::Socket::Dommaine::IP,ntw::Socket::Type::TCP)
 {
-    main_sock.ServeurMode(MAX_CLIENTS,"",PORT);
+    main_sock.serveurMode(MAX_CLIENTS,"",PORT);
 
-    new_client_selector.SetRead(true);
-    new_client_selector.OnSelect = Serveur::newClientRecived;
-    new_client_selector.Add(&main_sock);
+    new_client_selector.setRead(true);
+    new_client_selector.onSelect = Serveur::newClientRecived;
+    new_client_selector.add(&main_sock);
 
-    client_selector.SetRead(true);
-    client_selector.OnSelect = Serveur::clientMsgRecived;
+    client_selector.setRead(true);
+    client_selector.onSelect = Serveur::clientMsgRecived;
 
 };
 
@@ -27,48 +27,48 @@ Serveur::~Serveur()
 
 void Serveur::start()
 {
-    new_client_selector.Start();
-    client_selector.Start();
+    new_client_selector.start();
+    client_selector.start();
 
-    new_client_selector.Wait();
-    client_selector.Wait();
+    new_client_selector.wait();
+    client_selector.wait();
 }
 
 void Serveur::stop()
 {
-    new_client_selector.Stop();
-    client_selector.Stop();
+    new_client_selector.stop();
+    client_selector.stop();
 }
 
 
 void Serveur::newClientRecived(ntw::SelectManager& new_client_selector, ntw::Socket& client_sock)
 {
-    ntw::SocketSerialized* clientSock = new ntw::SocketSerialized(client_sock.Accept());
+    ntw::SocketSerialized* clientSock = new ntw::SocketSerialized(client_sock.accept());
     //gros hack pour choper l'instance de serveur
-    Serveur* serveur = (Serveur*)((int)&new_client_selector- (int)offsetof(class Serveur,new_client_selector));
-    serveur->client_selector.Add(clientSock);
+    Serveur* serveur = (Serveur*)((int)&new_client_selector- (int)(&((Serveur*)NULL)->new_client_selector));
+    serveur->client_selector.add(clientSock);
 
     *clientSock<<"hello!";
-    clientSock->Send();
+    clientSock->send();
     
 }
 
 void Serveur::clientMsgRecived(ntw::SelectManager& client_selector, ntw::Socket& client_sock)
 {
     ntw::SocketSerialized& clientSock = *(ntw::SocketSerialized*)&client_sock;
-    if(clientSock.Receive() >0)
+    if(clientSock.receive() >0)
     {
         char* c=0;
         clientSock>>c;
         std::cout<<"[serveur] recu char*: <"<<c<<">"<<std::endl;
-        clientSock.Clear();
+        clientSock.clear();
         clientSock<<"message du serveur";
-        clientSock.Send();
+        clientSock.send();
     }
     else
     {
-        std::cerr<<"Client connection lost <id:"<<clientSock.Id()<<">"<<std::endl; 
-        client_selector.Remove(&clientSock);
+        std::cerr<<"Client connection lost <id:"<<clientSock.id()<<">"<<std::endl; 
+        client_selector.remove(&clientSock);
         delete &clientSock;
     }
 }
