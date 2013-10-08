@@ -14,7 +14,7 @@ main : local.o serveur.o difference_masse_parent.o Socket/Socket/Socket.o Socket
 local$(EXTENTION): local-main.cpp Socket/Socket/Socket.o Socket/Socket/Serializer.o Socket/Socket/SocketSerialized.o Socket/Socket/SelectManager.o
 	$(CC) $^ $(FLAGS) -o $@
 
-serveur$(EXTENTION): serveur-main.cpp Socket/Socket/Socket.o Socket/Socket/Serializer.o Socket/Socket/SocketSerialized.o Socket/Socket/SelectManager.o serveur.o
+serveur$(EXTENTION): serveur-main.cpp Socket/Socket/Socket.o Socket/Socket/Serializer.o Socket/Socket/SocketSerialized.o Socket/Socket/SelectManager.o
 	$(CC) $^ $(FLAGS) -o $@
 
 #difference_masse_parent$(EXTENTION): difference_masse_parent-main.cpp Socket/src/Socket.o Socket/src/Serializer.o Socket/src/SocketSerialized.o Socket/src/SelectManager.o difference_masse_parent.o
@@ -22,6 +22,6 @@ serveur$(EXTENTION): serveur-main.cpp Socket/Socket/Socket.o Socket/Socket/Seria
 
 clean:
 	@rm -f *.o
-	@rm -f Socket/Socket/*.o
+	@rm -f Socket/src/*.o
 	@rm -f local$(EXTENTION)
 	@rm -f serveur$(EXTENTION)
