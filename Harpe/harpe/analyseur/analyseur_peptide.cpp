@@ -984,8 +984,8 @@ void AnalyseurPeptide::merge_solution(std::list<v_tokens_ptr >& left_part,const 
                 if(j->size() > 2) //il y a au moins 1 AA
                 {
                     v_tokens_ptr tmp= (*i);
-                    stack_token* tmp_head = new stack_token(*tmp[0]);
-                    tokens_ptr.emplace_back(tmp_head);//copy it
+                    stack_token* tmp_head = new stack_token(*tmp[0]); //copie
+                    tokens_ptr.emplace_back(tmp_head);
                     tmp[0] = tmp_head;
                     stack_token& i_0 = *tmp[0];
                     stack_token& j_0 = *(*j)[0];
@@ -1010,7 +1010,9 @@ void AnalyseurPeptide::merge_solution(std::list<v_tokens_ptr >& left_part,const 
                     tmp[0]->header_token.score = calc_score(tmp_values);
                     #endif
 
-                    finds.emplace_back(move(tmp));
+                    print_AA(tmp);
+
+                    //finds.emplace_back(move(tmp));
 
                     /*#ifndef APPRENTISSAGE
                     if(finds_max_size > 0 and ++_size > finds_max_size*5)
