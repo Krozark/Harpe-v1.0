@@ -1010,9 +1010,9 @@ void AnalyseurPeptide::merge_solution(std::list<v_tokens_ptr >& left_part,const 
                     tmp[0]->header_token.score = calc_score(tmp_values);
                     #endif
 
-                    print_AA(tmp);
+                    //print_AA(tmp);
 
-                    //finds.emplace_back(move(tmp));
+                    finds.emplace_back(move(tmp));
 
                     /*#ifndef APPRENTISSAGE
                     if(finds_max_size > 0 and ++_size > finds_max_size*5)
