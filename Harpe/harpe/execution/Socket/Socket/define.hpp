@@ -23,16 +23,16 @@
  * ERRORS MESSAGE / code
  * ***********************/
 
-#define NTW_ERROR_UNKNOW_MSG "Unknow error"
+#define NTW_ERROR_UNKNOW_MSG "Unknow error\0"
 #define NTW_ERROR_UNKNOW 404
 
-#define NTW_WELCOM_MSG "hello!"
+#define NTW_WELCOM_MSG "hello!\0"
 #define NTW_ERROR_NO 0
 
-#define NTW_ERROR_REQUEST_ADD_MSG "ERROR: to much client connected"
+#define NTW_ERROR_REQUEST_ADD_MSG "ERROR: to much client connected\0"
 #define NTW_ERROR_REQUEST_ADD 1
 
-#define NTW_ERROR_BROADCAST_ADD_MSG "ERROR: connection to broadcast not etablish"
+#define NTW_ERROR_BROADCAST_ADD_MSG "ERROR: connection to broadcast not etablish\0"
 #define NTW_ERROR_BROADCAST_ADD 2
 
 #define NTW_ERROR_TIMEOUT 3
