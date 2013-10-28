@@ -23,7 +23,6 @@ namespace ntw
                 friend class Server;
 
                 SocketSerialized request_sock;
-                SocketSerialized broadcast_sock;
         };
     }
 }

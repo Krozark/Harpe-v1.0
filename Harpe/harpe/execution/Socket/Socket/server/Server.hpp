@@ -29,11 +29,9 @@ namespace ntw
                 ntw::SocketSerialized new_connexion_sock;
                 ntw::SelectManager new_connexion_recv;
                 ntw::BalancingSelector request_recv;
-                ntw::BalancingSelector broadcast_sender;
 
                 static void onNewClientRecv(ntw::SelectManager& new_connexion_recv,void* data, ntw::SocketSerialized& sock);
                 static void onRequestRecv(ntw::SelectManager& new_connexion_recv,void* data, ntw::SocketSerialized& sock);
-                static void onBroadCastRecv(ntw::SelectManager& new_connexion_recv, void* data,ntw::SocketSerialized& sock);
 
                 bool remove(Client* client);
 

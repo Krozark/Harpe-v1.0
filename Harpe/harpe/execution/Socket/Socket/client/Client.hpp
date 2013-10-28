@@ -22,8 +22,6 @@ namespace ntw
                 ~Client();
                 
                 int connect(const std::string& host,int port=NTW_PORT_SERVER);
-                void stop();
-                void wait();
 
                 template<typename Ret,typename ... Args>
                 Ret call(Ret (*pf)(SocketSerialized&, Args ...),Args&& ... args);
@@ -31,11 +29,6 @@ namespace ntw
             private:
                 SocketSerialized request_sock;
 
-                SocketSerialized new_broadcast_sock;
-                SocketSerialized broadcast_recv_sock;
-                SelectManager broadcast_recv;
-
-                static void onBroadcastRecv(SelectManager& broadcast_recv,void* data,SocketSerialized& sock);
         };
     }
 }
