@@ -1,0 +1,109 @@
+@import "css3.scss";
+
+$width: 980px;
+
+
+.right { float: right;}
+.left { float: left;}
+
+body {
+     background-image: url(../img/body_head.png);
+     background-repeat: repeat-x;
+}
+
+.wrapper {
+    width : $width;
+    padding: 0 10px;
+    margin: 0 auto;
+}
+
+.header {
+    width : 100%;
+    background: url(../img/header.jpg) top center no-repeat;
+    padding: 40px 0 0;
+    height: 80px;
+
+    #title {
+        @extend .left;
+        a {
+            display: block; 
+            width: 186px; 
+            height: 10px; 
+            padding: 40px 10px 0 0; 
+            color: #fff; 
+            font-size: 14px; 
+            text-align: right; 
+            background: url(../img/logo.png) no-repeat left center; 
+        }
+
+    }
+
+    .menu {
+        @extend .right;
+        @extend .clearfix;
+
+        width : $width - 300;
+        height : 46px;
+        background: url(../img/menu.png) no-repeat; 
+
+        .nav {
+           list-style-type: none;
+        }
+
+        
+        .nav-0 {
+           padding: 0 0 0 30px;
+            .item {
+                &:hover {
+                    & > ul {
+                        float : right;
+                        display:inline;
+                    }
+                }
+            }
+            .item-1 {
+                float : left;
+                //@extend .left;
+                margin-right : 5px;
+
+                &:last-child {
+                    margin-right: 0px;
+                }
+
+                .link {
+                    color: #bbb3ac;
+                    display: block;
+                    height: 42px;
+                    padding: 0 30px 0 20px;
+                    line-height: 42px;
+                    font-size: 14px;
+                    color: #bbb3ac;	
+                    //text-align: center;
+                    text-decoration: none;
+                    font-weight: 400;
+                    outline: none;
+
+                    //font-size : 1.1em;
+                    &.active, &:hover {
+                        color: #0ad6e7;
+                    }
+                }
+
+                .nav {
+                    display : none;
+                    position : absolute;
+                    //@extend .btn;
+                    .item {
+                        .link {
+                        }
+                    }
+                }
+                &:hover {
+                    & > ul {
+                        display:block;
+                    }
+                }
+            }
+        }
+    }
+}

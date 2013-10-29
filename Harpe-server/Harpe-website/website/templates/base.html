@@ -1,0 +1,81 @@
+{% load i18n %}
+{% spaceless %}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <title>Harpe {% block page.title %} | {{page.name}}{% endblock %}</title>
+        <meta name="keywords" content="" />
+
+        {% block site.headstyles %}
+        <link href="{{ STATIC_URL}}website/css/reset.css" rel="stylesheet" type="text/css" media="screen" />
+        <link href="{{ STATIC_URL}}website/css/site.css" rel="stylesheet" type="text/css" media="screen" />
+        {% block app.headstyles %}{% endblock %}
+        {% block project.headstyles %}{% endblock %}
+        {% endblock %}
+
+        {% block site.headscripts %}
+            <script type="text/javascript" src="{{STATIC_URL}}website/js/jquery.min.js"></script>
+            {% block app.headscripts %}{% endblock %}
+            {% block project.headscripts %}{% endblock %}
+        {% endblock %}
+
+        {% block hextraHead %} {% endblock %}
+        {% block document.favicon %}
+            <link rel="icon" type="image/png" href="{{STATIC_URL}}website/img/icon.jpg" />
+        {% endblock%}
+    </head>
+    <body>
+        <div class="wrapper">
+            <div class="header">
+                <div id="title">
+                    <a href="/"></a>
+                </div>
+                <div class="nav-block menu">
+                    <ul class="nav nav-0">
+                        <li class="item-1 active item">
+                        <a class="link-1 active link" href="/">Accueil</a>
+                        </li>
+                        <li class="item-1 inactive item">
+                        <a class="link-1 inactive link" href="/propos">À propos</a>
+                        </li>
+                        <li class="item-1 inactive item">
+                        <a class="link-1 inactive link" href="/blog">Blog</a>
+                        <ul class="nav nav-1">
+                            <li class="item-2 inactive item">
+                            <a class="link-2 inactive link" href="/blog/2/">Une carte de jeu infine</a>
+                            </li>
+                            <li class="item-2 inactive item">
+                            <a class="link-2 inactive link" href="/blog/1/">Accès au nœuds X d'un arbre binaire</a>
+                            </li>
+                        </ul>
+                        </li>
+                        <li class="item-1 inactive item">
+                        <a class="link-1 inactive link" href="/services">Services</a>
+                        </li>
+                        <li class="item-1 inactive item">
+                        <a class="link-1 inactive link" href="/contact">Contact</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+            {% block page.body %}{% endblock %}
+
+            {% block site.scripts %}
+                {% block app.scripts %}{% endblock %}
+                {% block project.scripts %}{% endblock %}
+            {% endblock %}
+
+            <div id="footer">
+                <p class="copyright">
+                Harpe &copy;&nbsp;&nbsp;2013 - {% now "Y" %}, {% trans "Conception" %} <a href="mailto:maxime.barbier1991@gmail.com">Maxime BARBIER</a>, {% trans "Tous droits réservés" %}.
+
+                </p>
+            </div>
+        </div>
+    </body>
+</html>
+{% endspaceless %}
+

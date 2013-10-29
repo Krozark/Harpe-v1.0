@@ -1,0 +1,85 @@
+/*
+SCSS3 (c) 2011 Motion Média
+Inspired by http://css3please.com/
+*/
+.clearfix, .header .menu {
+  zoom: 1; }
+  .clearfix:before, .header .menu:before, .clearfix:after, .header .menu:after {
+    content: '.';
+    display: block;
+    overflow: hidden;
+    visibility: hidden;
+    font-size: 0;
+    line-height: 0;
+    width: 0;
+    height: 0; }
+  .clearfix:after, .header .menu:after {
+    clear: both; }
+
+.reset-box {
+  margin: 0;
+  padding: 0; }
+
+.right, .header .menu {
+  float: right; }
+
+.left, .header #title {
+  float: left; }
+
+body {
+  background-image: url(../img/body_head.png);
+  background-repeat: repeat-x; }
+
+.wrapper {
+  width: 980px;
+  padding: 0 10px;
+  margin: 0 auto; }
+
+.header {
+  width: 100%;
+  background: url(../img/header.jpg) top center no-repeat;
+  padding: 40px 0 0;
+  height: 80px; }
+  .header #title a {
+    display: block;
+    width: 186px;
+    height: 10px;
+    padding: 40px 10px 0 0;
+    color: #fff;
+    font-size: 14px;
+    text-align: right;
+    background: url(../img/logo.png) no-repeat left center; }
+  .header .menu {
+    width: 680px;
+    height: 46px;
+    background: url(../img/menu.png) no-repeat; }
+    .header .menu .nav {
+      list-style-type: none; }
+    .header .menu .nav-0 {
+      padding: 0 0 0 30px; }
+      .header .menu .nav-0 .item:hover > ul {
+        float: right;
+        display: inline; }
+      .header .menu .nav-0 .item-1 {
+        float: left;
+        margin-right: 5px; }
+        .header .menu .nav-0 .item-1:last-child {
+          margin-right: 0px; }
+        .header .menu .nav-0 .item-1 .link {
+          color: #bbb3ac;
+          display: block;
+          height: 42px;
+          padding: 0 30px 0 20px;
+          line-height: 42px;
+          font-size: 14px;
+          color: #bbb3ac;
+          text-decoration: none;
+          font-weight: 400;
+          outline: none; }
+          .header .menu .nav-0 .item-1 .link.active, .header .menu .nav-0 .item-1 .link:hover {
+            color: #0ad6e7; }
+        .header .menu .nav-0 .item-1 .nav {
+          display: none;
+          position: absolute; }
+        .header .menu .nav-0 .item-1:hover > ul {
+          display: block; }
