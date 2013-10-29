@@ -97,13 +97,40 @@ h6 {
     padding: 0;
 }
 
-.cleaner { clear: both }
-.h10 { height: 10px }
-.h20 { height: 20px }
-.h30 { height: 30px }
-.h40 { height: 40px }
-.h50 { height: 50px }
 
+.pagination {
+    margin: 0 0 20px; 
+	padding: 0;
+
+    ul { 
+        margin: 0; 
+        padding: 0; 
+        list-style: none; 
+
+        li {
+            margin: 0; 
+            padding: 0; 
+            display: inline; 
+
+            a { 
+                float: left; 
+                display: block; 
+                color: #333; 
+                text-decoration: none; 
+                margin-right: 5px; 
+                padding: 5px 10px; 
+                background: #fff; 
+                border: 1px solid $bordercolor;
+
+                &:hover { 
+                    background: #ccc; 
+                    border: 1px solid #fff;
+                    color: #fff;  
+                }
+            }
+        }
+    }
+}
 
 body {
      background-image: url(../img/body_head.png);

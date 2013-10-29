@@ -102,23 +102,30 @@ h6 {
   margin: 0 0 5px;
   padding: 0; }
 
-.cleaner {
-  clear: both; }
-
-.h10 {
-  height: 10px; }
-
-.h20 {
-  height: 20px; }
-
-.h30 {
-  height: 30px; }
-
-.h40 {
-  height: 40px; }
-
-.h50 {
-  height: 50px; }
+.pagination {
+  margin: 0 0 20px;
+  padding: 0; }
+  .pagination ul {
+    margin: 0;
+    padding: 0;
+    list-style: none; }
+    .pagination ul li {
+      margin: 0;
+      padding: 0;
+      display: inline; }
+      .pagination ul li a {
+        float: left;
+        display: block;
+        color: #333;
+        text-decoration: none;
+        margin-right: 5px;
+        padding: 5px 10px;
+        background: #fff;
+        border: 1px solid #6c6c6c; }
+        .pagination ul li a:hover {
+          background: #ccc;
+          border: 1px solid #fff;
+          color: #fff; }
 
 body {
   background-image: url(../img/body_head.png);
