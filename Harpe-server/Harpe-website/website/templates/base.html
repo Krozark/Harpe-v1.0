@@ -27,8 +27,8 @@
         {% endblock%}
     </head>
     <body>
-        <div class="wrapper">
-            <div class="header">
+        <div class="header">
+            <div class="wrapper">
                 <div id="title">
                     <a href="/"></a>
                 </div>
@@ -61,20 +61,85 @@
                 </div>
             </div>
         </div>
-            {% block page.body %}{% endblock %}
+        <div id="main">
+            <div class="wrapper">
+                <div id="sidebar">
+                    <h4>My ???</h4>
+                    <ul>
+                        <li><a href="#">blah blah blah blah blah blah blah blah </a></li>
+                        <li><a href="#">blah</a></li>
+                        <li><a href="#">blah</a></li>
+                        <li><a href="#">blah</a></li>
+                    </ul>
+                    <h4>User ???</h4>
+                    <ul>
+                        <li><a href="#">blah</a></li>
+                        <li><a href="#">blah</a></li>
+                        <li><a href="#">blah</a></li>
+                        <li><a href="#">blah</a></li>
+                    </ul>
+                    {% block page.sidebar %}{% endblock %}
+                </div>
+                <div id="content">
+                    {% block page.body %}{% endblock %}
+                </div>
 
-            {% block site.scripts %}
+                {% block site.scripts %}
                 {% block app.scripts %}{% endblock %}
                 {% block project.scripts %}{% endblock %}
-            {% endblock %}
-
-            <div id="footer">
-                <p class="copyright">
-                Harpe &copy;&nbsp;&nbsp;2013 - {% now "Y" %}, {% trans "Conception" %} <a href="mailto:maxime.barbier1991@gmail.com">Maxime BARBIER</a>, {% trans "Tous droits réservés" %}.
-
-                </p>
+                {% endblock %}
             </div>
         </div>
+        <div id="footer">
+            <div class="wrapper">
+                <div class="col one_fourth">
+                    <h4>About Us</h4>
+                    <p>Lorem ipsum dolor sit amet, adipiscing consectetur adipiscing elit. Morbi eros scelerisque urna odio, rutrum quis volutpat nec, venenatis congue nulla. Praesent quis mauris purus, at pellentesque. Donec ut erat at urna condimentum mollis. Nulla feugiat feugiat erat et.</p>
+                </div>
+                <div class="col one_fourth">
+                    <h4>Blogroll</h4>
+                    <ul class="footer_list">
+                        <li><a href="#">Blah</a></li>
+                        <li><a href="#">Blah</a></li>
+                        <li><a href="#">Blah</a></li>
+                        <li><a href="#">Blah</a></li>
+                    </ul>   
+                </div>
+
+                <div class="col one_fourth">
+                    <h4>Twitter</h4>
+                    <ul class="twitter_post">
+                        <li>Suspendisse at scelerisque urna. Aenean tincidunt massa in tellus varius ultricies. <a href="#">http://bit.ly/13IwZO</a></li>
+                        <li>Proin dignissim, diam nec <a href="#">@Krozark</a> enim lorem tempus orci, ac imperdiet ante purus in justo.</li>   
+                    </ul>
+                </div>
+
+                <div class="col one_fourth no_margin_right">
+                    <h4>Follow Us</h4>	
+
+                    <div class="social_button">
+                        <div class="facebook" alt="Facebook" />
+                            <a href="#"></a>
+                        </div>
+                        <div class="flickr" alt="Flickr" />
+                            <a href="#"></a>
+                        </div>
+                        <div class="twitter" alt="twitter" />
+                            <a href="#"></a>
+                        </div>
+                        <div class="youtube" alt="youtube" />
+                            <a href="#"></a>
+                        </div>
+                        <div class="feed" alt="feed" />
+                            <a href="#"></a>
+                        </div>
+                    </div>
+
+                    <p class="copyright">
+                    Harpe &copy;&nbsp;&nbsp;2013 - {% now "Y" %}, {% trans "Conception" %} <a href="mailto:maxime.barbier1991@gmail.com">Maxime BARBIER</a>, {% trans "Tous droits réservés" %}.
+                    </p>
+                </div>
+            </div>
     </body>
 </html>
 {% endspaceless %}
