@@ -1,10 +1,11 @@
+@charset "UTF-8";
 /*
 SCSS3 (c) 2011 Motion Média
 Inspired by http://css3please.com/
 */
-.clearfix, .header .menu, #main, #main .wrapper, #footer, #footer .wrapper, #footer .wrapper .social_button {
+.clearfix, .header .menu, #main, #main .wrapper, #main .wrapper #content #contact_form, #footer, #footer .wrapper, #footer .wrapper .social_button {
   zoom: 1; }
-  .clearfix:before, .header .menu:before, #main:before, #main .wrapper:before, #footer:before, #footer .wrapper:before, #footer .wrapper .social_button:before, .clearfix:after, .header .menu:after, #main:after, #main .wrapper:after, #footer:after, #footer .wrapper:after, #footer .wrapper .social_button:after {
+  .clearfix:before, .header .menu:before, #main:before, #main .wrapper:before, #main .wrapper #content #contact_form:before, #footer:before, #footer .wrapper:before, #footer .wrapper .social_button:before, .clearfix:after, .header .menu:after, #main:after, #main .wrapper:after, #main .wrapper #content #contact_form:after, #footer:after, #footer .wrapper:after, #footer .wrapper .social_button:after {
     content: '.';
     display: block;
     overflow: hidden;
@@ -13,7 +14,7 @@ Inspired by http://css3please.com/
     line-height: 0;
     width: 0;
     height: 0; }
-  .clearfix:after, .header .menu:after, #main:after, #main .wrapper:after, #footer:after, #footer .wrapper:after, #footer .wrapper .social_button:after {
+  .clearfix:after, .header .menu:after, #main:after, #main .wrapper:after, #main .wrapper #content #contact_form:after, #footer:after, #footer .wrapper:after, #footer .wrapper .social_button:after {
     clear: both; }
 
 .reset-box {
@@ -36,7 +37,7 @@ Inspired by http://css3please.com/
 .divider {
   margin-bottom: 40px;
   padding-bottom: 20px;
-  border-bottom: 1px solid #ccc; }
+  border-bottom: 1px solid #cccccc; }
 
 .bordered, .header .menu, .header .menu .nav-0 .item-1 .nav {
   border: #6c6c6c 1px solid;
@@ -124,7 +125,7 @@ h6 {
         border: 1px solid #6c6c6c; }
         .pagination ul li a:hover {
           background: #ccc;
-          border: 1px solid #fff;
+          border: 1px solid white;
           color: #fff; }
 
 body {
@@ -238,6 +239,47 @@ body {
           background: url(../img/list.png) no-repeat scroll 0 7px; }
     #main .wrapper #content {
       width: 784px; }
+      #main .wrapper #content #contact_form {
+        padding: 0;
+        width: 410px;
+        margin-bottom: 40px; }
+        #main .wrapper #content #contact_form form {
+          margin: 0px;
+          padding: 0px; }
+          #main .wrapper #content #contact_form form label {
+            display: block;
+            width: 100px;
+            margin-right: 12px;
+            font-size: 13px; }
+          #main .wrapper #content #contact_form form input {
+            width: 270px;
+            padding: 5px;
+            color: #222;
+            background: #fcfcfc;
+            border: 1px solid #dedede;
+            font-size: 12px;
+            font-family: Tahoma, Geneva, sans-serif;
+            margin-top: 5px; }
+          #main .wrapper #content #contact_form form textarea {
+            width: 398px;
+            height: 200px;
+            padding: 5px;
+            color: #222;
+            background: #fcfcfc;
+            border: 1px solid #dedede;
+            font-size: 12px;
+            font-family: Tahoma, Geneva, sans-serif;
+            margin-top: 5px; }
+          #main .wrapper #content #contact_form form .btn {
+            padding: 5px 14px;
+            font-weight: bold;
+            color: #222;
+            background: #fcfcfc;
+            border: 1px solid #dedede;
+            font-family: Tahoma, Geneva, sans-serif;
+            font-size: 13px;
+            margin: 10px 0px;
+            width: 100px; }
 
 #footer {
   width: 100%;
