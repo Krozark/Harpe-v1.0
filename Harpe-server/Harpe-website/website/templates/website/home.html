@@ -22,25 +22,27 @@
     </ul>
 </div>
 
-<div id="contact_form">
-    <form method="post" name="contact" action="#">
+<form method="post" name="contact" action="#">
 
-        <label for="author">Name:</label>
-        <input type="text" id="author" name="author" />
+    <label for="author">Name:</label>
+    <ul class="errorlist">
+        <li>Ce champ est obligatoire.</li>
+    </ul>
+    <input type="text" id="author" name="author" />
 
-        <label for="email">Email:</label>
-        <input type="text" id="email" name="email" />
 
-        <label for="subject">Subject:</label>
-        <input type="text" name="subject" id="subject" />
+    <label for="email">Email:</label>
+    <input type="text" id="email" name="email" />
 
-        <label for="text">Message:</label>
-        <textarea id="text" name="text" rows="0" cols="0"></textarea>
+    <label for="subject">Subject:</label>
+    <input type="text" name="subject" id="subject" />
 
-        <input type="submit" value="Send" id="submit" name="submit" class="btn left" />
-        <input type="reset" value="Reset" id="reset" name="reset" class="btn right" />
+    <label for="text">Message:</label>
+    <textarea id="text" name="text" rows="0" cols="0"></textarea>
 
-    </form>
-</div>
+    <input type="submit" value="Send" id="submit" name="submit" class="btn left" />
+    <input type="reset" value="Reset" id="reset" name="reset" class="btn right" />
+
+</form>
 
 {% endblock %}

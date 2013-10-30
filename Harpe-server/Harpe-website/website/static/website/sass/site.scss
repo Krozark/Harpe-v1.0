@@ -98,6 +98,7 @@ h6 {
 }
 
 .pagination {
+    @extend .clearfix;
     margin: 0 0 20px; 
 	padding: 0;
 
@@ -298,59 +299,65 @@ body {
             @extend .right;
             width : $width/5.0 * 4; 
 
-            #contact_form { 
+            form {
                 @extend .clearfix;
                 padding: 0; 
                 width: 410px; 
                 margin-bottom: 40px; 
 
-                form {
-                    margin: 0px; 
-                    padding: 0px; 
-
-                    label { 
-                        display: block; 
-                        width: 100px; 
-                        margin-right: 12px; 
-                        font-size: 13px; 
-                    }
-
-                    input { 
-                        width: 270px; 
-                        padding: 5px; 
-                        color: #222;  
-                        background: #fcfcfc; 
-                        border: 1px solid #dedede; 
-                        font-size: 12px;
-                        font-family: Tahoma, Geneva, sans-serif;
-                        margin-top: 5px; 
-                    }
-
-                    textarea { 
-                        width: 398px; 
-                        height: 200px; 
-                        padding: 5px; 
-                        color: #222; 
-                        background: #fcfcfc; 
-                        border: 1px solid #dedede; 
-                        font-size: 12px;
-                        font-family: Tahoma, Geneva, sans-serif;
-                        margin-top: 5px; 
-                    }
-
-                    .btn { 
-                        padding: 5px 14px; 
-                        font-weight: bold;  
-                        color: #222; 
-                        background: #fcfcfc; 
-                        border: 1px solid #dedede; 
-                        font-family: Tahoma, Geneva, sans-serif;
-                        font-size: 13px;
-                        margin: 10px 0px; 
-                        width : 100px;
-                    }	
-
+                label { 
+                    display: block; 
+                    width: 100px; 
+                    margin-right: 12px; 
+                    font-size: 13px; 
                 }
+
+                ul.errorlist {
+                    @extend .right;
+                    margin-right: 12px; 
+                    margin-top: -18px; 
+                    list-style: none; 
+
+                    li {
+                        color: #F00;
+                    }
+                }
+
+                input { 
+                    width: 270px; 
+                    padding: 5px; 
+                    color: #222;  
+                    background: #fcfcfc; 
+                    border: 1px solid #dedede; 
+                    font-size: 12px;
+                    font-family: Tahoma, Geneva, sans-serif;
+                    margin-top: 5px; 
+                }
+
+                textarea { 
+                    width: 398px; 
+                    height: 200px; 
+                    padding: 5px; 
+                    color: #222; 
+                    background: #fcfcfc; 
+                    border: 1px solid #dedede; 
+                    font-size: 12px;
+                    font-family: Tahoma, Geneva, sans-serif;
+                    margin-top: 5px; 
+                }
+
+                .btn { 
+                    padding: 5px 14px; 
+                    font-weight: bold;  
+                    color: #222; 
+                    background: #fcfcfc; 
+                    border: 1px solid #dedede; 
+                    font-family: Tahoma, Geneva, sans-serif;
+                    font-size: 13px;
+                    margin: 10px 0px; 
+                    width : 100px;
+                }	
+
             }
         }
     }
