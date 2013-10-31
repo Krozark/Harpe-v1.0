@@ -1,0 +1,99 @@
+{% comment %}
+<link href="{{STATIC_URL}}contentblocks/css/jquery.ui.resizable.css" rel="stylesheet">
+<link href="{{STATIC_URL}}contentblocks/css/jquery.ui.theme.css" rel="stylesheet">
+{% endcomment %}
+
+<link href="{{STATIC_URL}}contentblocks/css/fileuploader.css" rel="stylesheet">
+<link href="{{STATIC_URL}}Kraggne/css/jquery.dialog2.css" rel="stylesheet">
+
+<script src="{{STATIC_URL}}Kraggne/js/jquery.controls.js"></script>
+<script src="{{STATIC_URL}}Kraggne/js/jquery.forms.js"></script>
+
+<script src="{{STATIC_URL}}Kraggne/js/jquery.dialog2.js"></script>
+<script src="{{STATIC_URL}}Kraggne/js/jquery-ui.js"></script>
+<script src="{{STATIC_URL}}contentblocks/js/fileuploader.js"></script>
+
+<script src="{{STATIC_URL}}contentblocks/js/admin.js"></script>
+<script src="{{ STATIC_URL }}contentblocks/js/jquery.cookie.js"></script>
+
+<div id="admin-dialog">
+    <div class="admin-dialog-content"></div>
+</div>
+<iframe id="admin-upload-target" name="admin-upload-target" src="#" style="width:0;height:0;border:0px solid #fff;"></iframe> 
+
+<script>
+    var django = (function($){
+        var _urls = {}
+        var _conf = {}
+        return {
+            settings: {
+                'MEDIA_URL':  '{{ MEDIA_URL }}',
+                'STATIC_URL': '{{ STATIC_URL }}'
+            },
+
+            i18n: function() {
+                var strs = {};
+                var get = function(k)    { return _conf[k] }
+                var set = function(k, v) { return _conf[k] = v }
+                return arguments.length == 2 
+                && set(arguments[0], arguments[1]) 
+                || get(arguments[0])
+            },
+
+            urls: function() {
+                var get = function(k)    { return _urls[k] }
+                var set = function(k, v) { return _urls[k] = v }
+                return arguments.length >= 2 
+                && set(arguments[0], arguments[1]) 
+                || get(arguments[0])
+            }
+        }
+    })(jQuery)
+
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            if ($.cookie('csrftoken') && (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url)))) {
+                xhr.setRequestHeader("X-CSRFToken", $.cookie('csrftoken'))
+            }
+        }
+    });
+
+    var admin_dialog = $("#admin-dialog");
+    var admin_content_class = ".admin-dialog-content";
+
+    var admin_dialog_reset= (function(html){
+        admin_dialog.find(admin_content_class).html(html);
+    });
+
+    var create_form = (function(input){
+        form ='<form target="admin-upload-target" action="'+contentblocks_ajax_receiver+'" method="post" id="admin-dialog-form" enctype="multipart/form-data">';
+            form += "{% csrf_token %}";
+            form +='<input type="hidden" name="page_url" value="{{ request.path }}">';
+            form += input;
+            form +='<div class="form-actions"><input class="btn btn-success" type="submit" id="admin-form-valid" value="Send"/></div>';
+            form += "</form>";
+        return form;
+    });
+
+    $(function() {
+      admin_dialog.dialog2({
+        title: "Admin", 
+        autoOpen: false,
+        buttons: {
+            Close: { 
+                primary: true, 
+                click: function() {
+                    $(this).dialog2("close");
+                    admin_dialog_reset();
+                }
+            }
+        }, 
+        removeOnClose: false
+        });
+      });
+
+      var contentblocks_ajax_receiver = "{% url ajax-receiver %}";
+      var contentblocks_ajax_uploader = "{% url ajax-receiver %}";
+
+</script>
+

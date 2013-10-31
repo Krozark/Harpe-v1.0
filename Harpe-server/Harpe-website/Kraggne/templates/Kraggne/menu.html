@@ -1,0 +1,37 @@
+{% load Kraggne_tags %}
+
+<div class="nav-block {{MENU_CLASS}}">
+{% for menu in object_list %}
+{% if menu|is_visible_for:request.user %}
+{% if forloop.first %}
+<ul class="nav nav-0">
+{% else %}
+    {% for x in last_value|range:menu.level %}
+    <ul class="nav nav-{{x|sub:root.level}}">
+    {% endfor %}
+
+    {% for x in menu.level|range:last_value %}
+    </ul></li>
+    {% endfor %}
+{% endif %}
+
+{% if menu.have_to_display %}
+{% for it in menu.get_model_all %}
+<li class="item-{{menu.level|sub:root.level}} {% if object == it %}active{% else %}inactive{% endif %} item">
+<a href="{% if menu.is_include %}{{it.get_absolute_url}}{% else %}{{menu|get_object_url:it}}{% endif %}" class="link-{{menu.level}} {% if object == it %}active{% else %}inactive{% endif %} link">{{it}}</a>
+{% endfor %}
+{% else %}
+<li class="item-{{menu.level|sub:root.level}} {% if menu|ancestor:page %}active{% else %}inactive{% endif %} item">
+<a href="{{menu.get_absolute_url}}" class="link-{{menu.level}} {% if menu|ancestor:page %}active{% else %}inactive{% endif %} link">{{menu}}</a>
+{% endif %}
+
+
+{% if forloop.last %}
+    {% for x in root.level|range:menu.level %}
+    </ul></li>
+    {% endfor %}
+{% endif %}
+{% last == menu.level diff %}
+{% endif %}
+{% endfor %}
+</div>

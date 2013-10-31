@@ -4,9 +4,9 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    # Examples:
-    url(r'^', include('website.urls')),
-
-    # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
+    # Examples:
+    (r'^accounts/', include('registration.urls')),
+    url(r'^', include('website.urls')),
+    url(r'^', include('Kraggne.urls')),
 )

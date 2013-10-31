@@ -1,6 +1,6 @@
-{% load i18n %}
+{% load i18n Kraggne_tags contentblocks %}
 {% spaceless %}
-
+{% getmenu %}
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
@@ -32,6 +32,7 @@
                 <div id="title">
                     <a href="/"></a>
                 </div>
+                {% menu "main" %} 
                 <div class="nav-block menu">
                     <ul class="nav nav-0">
                         <li class="item-1 active item">

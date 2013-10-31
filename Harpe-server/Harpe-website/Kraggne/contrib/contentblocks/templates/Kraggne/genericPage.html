@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% load flatblocks contentblocks %}
+
+{% block page.body %}
+{% containeur page.slug  %}
+{% for object in page.get_containeurs %}
+{% display object %}
+{% endfor %}
+
+{% endblock %}
+

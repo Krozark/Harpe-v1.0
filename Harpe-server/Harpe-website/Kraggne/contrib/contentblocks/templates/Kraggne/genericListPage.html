@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load flatblocks contentblocks %}
+
+{% block page.body %}
+{% containeur page.slug  %}
+
+{% include "Kraggne/pagination.inc.html" %}
+
+<div class="contentblocks containeur">
+    <div class="contentblocks object">
+        {% for object in object_list %}
+        {% display object %}
+        {% endfor %}
+    </div>
+</div>
+
+{% include "Kraggne/pagination.inc.html" %}
+{% endblock %}

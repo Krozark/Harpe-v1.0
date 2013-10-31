@@ -2,6 +2,7 @@
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -45,10 +46,20 @@ class Enzyme(models.Model):
             return 1
         return 0
 
-
     def __unicode__(self):
         return "%s" % self.name
 
+class AnalyseMgf(models.Model):
+    owner   = models.ForeignKey(User)
+    name    = models.CharField(_("name"),max_length=255,unique=True)
+    created = models.DateTimeField(_("Created"),auto_now=True)
+    mgf     = models.FileField(_("MGF"),upload_to="mgf/")
 
+    class Meta:
+        ordering = ["created",]
+        unique_together = ("owner","name")
+
+    def __unicode__(self):
+        return u"%s" % self.name
 
 

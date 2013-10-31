@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from django.views.generic import TemplateView
+from Kraggne.views import GenericView
 
 
-class HomeView(TemplateView):
+class HomeView(GenericView):
+    slug          = "accueil"
     template_name = "website/home.html"
