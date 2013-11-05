@@ -36,18 +36,3 @@ class AnalyseMgfCreateView(GenericFormView):
     slug          = "analyse-create"
     form_class    = AnalyseMgfForm
 
-    #template_name = "website/analysemgf/create.html"
-
-   # def get_form_class(self):
-   #     return model_to_modelform(AnalyseMgf)
-
-   # def get_form_kwargs(self):
-   #     kwargs = GenericFormView.get_form_kwargs(self)
-   #     kwargs["initial"]["owner"] = self.request.user
-   #     return kwargs
-
-   # def form_valid(self,form):
-   #     object = form.save(commit=False)
-   #     object.owner = self.request.user
-   #     object.save()
-   #     return super(AnalyseMgfCreateView,self).form_valid(form)
