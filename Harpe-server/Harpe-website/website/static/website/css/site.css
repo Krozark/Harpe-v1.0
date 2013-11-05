@@ -2,9 +2,9 @@
 SCSS3 (c) 2011 Motion Média
 Inspired by http://css3please.com/
 */
-.clearfix, .pagination, .header .menu, #main, #main .wrapper, #main .wrapper #content form, #main .wrapper #content .post .meta, #footer, #footer .wrapper, #footer .wrapper .social_button {
+.clearfix, .pagination, .header .menu, #main, #main .wrapper, #main .wrapper #content form, #main .wrapper #content .post .title, #main .wrapper #content .post .meta, #footer, #footer .wrapper, #footer .wrapper .social_button {
   zoom: 1; }
-  .clearfix:before, .pagination:before, .header .menu:before, #main:before, #main .wrapper:before, #main .wrapper #content form:before, #main .wrapper #content .post .meta:before, #footer:before, #footer .wrapper:before, #footer .wrapper .social_button:before, .clearfix:after, .pagination:after, .header .menu:after, #main:after, #main .wrapper:after, #main .wrapper #content form:after, #main .wrapper #content .post .meta:after, #footer:after, #footer .wrapper:after, #footer .wrapper .social_button:after {
+  .clearfix:before, .pagination:before, .header .menu:before, #main:before, #main .wrapper:before, #main .wrapper #content form:before, #main .wrapper #content .post .title:before, #main .wrapper #content .post .meta:before, #footer:before, #footer .wrapper:before, #footer .wrapper .social_button:before, .clearfix:after, .pagination:after, .header .menu:after, #main:after, #main .wrapper:after, #main .wrapper #content form:after, #main .wrapper #content .post .title:after, #main .wrapper #content .post .meta:after, #footer:after, #footer .wrapper:after, #footer .wrapper .social_button:after {
     content: '.';
     display: block;
     overflow: hidden;
@@ -13,17 +13,17 @@ Inspired by http://css3please.com/
     line-height: 0;
     width: 0;
     height: 0; }
-  .clearfix:after, .pagination:after, .header .menu:after, #main:after, #main .wrapper:after, #main .wrapper #content form:after, #main .wrapper #content .post .meta:after, #footer:after, #footer .wrapper:after, #footer .wrapper .social_button:after {
+  .clearfix:after, .pagination:after, .header .menu:after, #main:after, #main .wrapper:after, #main .wrapper #content form:after, #main .wrapper #content .post .title:after, #main .wrapper #content .post .meta:after, #footer:after, #footer .wrapper:after, #footer .wrapper .social_button:after {
     clear: both; }
 
 .reset-box {
   margin: 0;
   padding: 0; }
 
-.right, .header .menu, #main .wrapper #content, #main .wrapper #content form ul.errorlist, #main .wrapper #content .post .meta .comments {
+.right, .header .menu, ul.breadcrumb, #main .wrapper #content, #main .wrapper #content form ul.errorlist, #main .wrapper #content .post .title span, #main .wrapper #content .post .meta .comments {
   float: right; }
 
-.left, .header #title, #main .wrapper #sidebar, #main .wrapper #content .post .meta .byline, #footer .wrapper .social_button .facebook, #footer .wrapper .social_button .flickr, #footer .wrapper .social_button .twitter, #footer .wrapper .social_button .youtube, #footer .wrapper .social_button .feed {
+.left, .header #title, #main .wrapper #sidebar, #main .wrapper #content .post .title h2, #main .wrapper #content .post .meta .byline, #footer .wrapper .social_button .facebook, #footer .wrapper .social_button .flickr, #footer .wrapper .social_button .twitter, #footer .wrapper .social_button .youtube, #footer .wrapper .social_button .feed {
   float: left; }
 
 .link, a {
@@ -203,6 +203,15 @@ body {
       .header .menu .nav-0 .item-1:hover > ul {
         display: block; }
 
+ul.breadcrumb {
+  padding-bottom: 10px;
+  list-style: none; }
+  ul.breadcrumb li {
+    float: left;
+    margin-right: 3px; }
+    ul.breadcrumb li span.self {
+      color: #09c0cf; }
+
 #main {
   width: 100%;
   padding: 40px 0; }
@@ -286,36 +295,36 @@ body {
         -moz-background-clip: padding;
         -webkit-background-clip: padding-box;
         background-clip: padding-box;
-        background-color: #cccccc;
-        -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#cccccc', EndColorStr='#eeeeee')";
-        filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#cccccc', EndColorStr='#eeeeee');
-        background-image: -webkit-gradient(linear, left top, left bottom, from(#cccccc), to(#eeeeee));
-        background-image: -webkit-linear-gradient(top, #cccccc, #eeeeee);
-        background-image: -moz-linear-gradient(top, #cccccc, #eeeeee);
-        background-image: -ms-linear-gradient(top, #cccccc, #eeeeee);
-        background-image: -o-linear-gradient(top, #cccccc, #eeeeee);
-        background-image: linear-gradient(top bottom, #cccccc, #eeeeee);
-        /*background: url(../img/divider_2.png) bottom center no-repeat ;  
-        &:last-child {
-            background : None;
-        }*/ }
+        background-color: #eeeeee;
+        -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#eeeeee', EndColorStr='white')";
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#eeeeee', EndColorStr='white');
+        background-image: -webkit-gradient(linear, left top, left bottom, from(#eeeeee), to(white));
+        background-image: -webkit-linear-gradient(top, #eeeeee, white);
+        background-image: -moz-linear-gradient(top, #eeeeee, white);
+        background-image: -ms-linear-gradient(top, #eeeeee, white);
+        background-image: -o-linear-gradient(top, #eeeeee, white);
+        background-image: linear-gradient(top bottom, #eeeeee, white); }
         #main .wrapper #content .post:nth-child(2n+2) {
-          background-color: #a3a3a3;
-          -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#a3a3a3', EndColorStr='#bebebe')";
-          filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#a3a3a3', EndColorStr='#bebebe');
-          background-image: -webkit-gradient(linear, left top, left bottom, from(#a3a3a3), to(#bebebe));
-          background-image: -webkit-linear-gradient(top, #a3a3a3, #bebebe);
-          background-image: -moz-linear-gradient(top, #a3a3a3, #bebebe);
-          background-image: -ms-linear-gradient(top, #a3a3a3, #bebebe);
-          background-image: -o-linear-gradient(top, #a3a3a3, #bebebe);
-          background-image: linear-gradient(top bottom, #a3a3a3, #bebebe); }
-        #main .wrapper #content .post .meta span {
-          float: left;
+          background-color: #dddddd;
+          -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#dddddd', EndColorStr='#eeeeee')";
+          filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#dddddd', EndColorStr='#eeeeee');
+          background-image: -webkit-gradient(linear, left top, left bottom, from(#dddddd), to(#eeeeee));
+          background-image: -webkit-linear-gradient(top, #dddddd, #eeeeee);
+          background-image: -moz-linear-gradient(top, #dddddd, #eeeeee);
+          background-image: -ms-linear-gradient(top, #dddddd, #eeeeee);
+          background-image: -o-linear-gradient(top, #dddddd, #eeeeee);
+          background-image: linear-gradient(top bottom, #dddddd, #eeeeee); }
+        #main .wrapper #content .post .title span {
           display: block;
           margin-right: 15px;
           padding: 5px 0 5px 26px; }
-          #main .wrapper #content .post .meta span.date {
+          #main .wrapper #content .post .title span.date {
             background: url(../img/calendar.png) no-repeat; }
+        #main .wrapper #content .post .entry p {
+          text-indent: 15px;
+          margin-bottom: 5px; }
+        #main .wrapper #content .post .meta .comments .more {
+          color: #09c0cf; }
 
 #footer {
   width: 100%;
@@ -366,3 +375,121 @@ body {
         width: 24px;
         height: 24px;
         background: url("../img/feed.png") no-repeat; }
+
+div.icon {
+  padding: 6px 6px 10px 22px;
+  background: url(../img/docicons/unknown.png) no-repeat 0 7px transparent; }
+
+div.icon.aed {
+  background-image: url(../img/docicons/aed.png); }
+
+div.icon.ai {
+  background-image: url(../img/docicons/ai.png); }
+
+div.icon.aiff {
+  background-image: url(../img/docicons/aiff.png); }
+
+div.icon.asp {
+  background-image: url(../img/docicons/asp.png); }
+
+div.icon.avi {
+  background-image: url(../img/docicons/avi.png); }
+
+div.icon.flv {
+  background-image: url(../img/docicons/flv.png); }
+
+div.icon.html {
+  background-image: url(../img/docicons/html.png); }
+
+div.icon.indd {
+  background-image: url(../img/docicons/indd.png); }
+
+div.icon.js {
+  background-image: url(../img/docicons/js.png); }
+
+div.icon.mpeg {
+  background-image: url(../img/docicons/mpeg.png); }
+
+div.icon.pdf {
+  background-image: url(../img/docicons/pdf.png); }
+
+div.icon.php {
+  background-image: url(../img/docicons/php.png); }
+
+div.icon.png {
+  background-image: url(../img/docicons/png.png); }
+
+div.icon.ppj {
+  background-image: url(../img/docicons/ppj.png); }
+
+div.icon.psd {
+  background-image: url(../img/docicons/psd.png); }
+
+div.icon.svg {
+  background-image: url(../img/docicons/svg.png); }
+
+div.icon.swf {
+  background-image: url(../img/docicons/swf.png); }
+
+div.icon.txt {
+  background-image: url(../img/docicons/txt.png); }
+
+div.icon.wav {
+  background-image: url(../img/docicons/wav.png); }
+
+div.icon.mp3 {
+  background-image: url(../img/docicons/mp3.png); }
+
+div.icon.wma {
+  background-image: url(../img/docicons/wma.png); }
+
+div.icon.wmv {
+  background-image: url(../img/docicons/wmv.png); }
+
+div.icon.xml {
+  background-image: url(../img/docicons/xml.png); }
+
+div.icon.doc {
+  background-image: url(../img/docicons/doc.png); }
+
+div.icon.docx {
+  background-image: url(../img/docicons/docx.png); }
+
+div.icon.xls {
+  background-image: url(../img/docicons/xls.png); }
+
+div.icon.png {
+  background-image: url(../img/docicons/png.png); }
+
+div.icon.jpg {
+  background-image: url(../img/docicons/jpg.png); }
+
+div.icon.jpeg {
+  background-image: url(../img/docicons/jpeg.png); }
+
+div.icon.bmp {
+  background-image: url(../img/docicons/bmp.png); }
+
+div.icon.xbmp {
+  background-image: url(../img/docicons/xbmp.png); }
+
+div.icon.gif {
+  background-image: url(../img/docicons/gif.png); }
+
+div.icon.zip {
+  background-image: url(../img/docicons/zip.png); }
+
+div.icon.sit {
+  background-image: url(../img/docicons/sit.png); }
+
+div.icon.rar {
+  background-image: url(../img/docicons/rar.png); }
+
+div.icon.tar {
+  background-image: url(../img/docicons/tar.png); }
+
+div.icon.gz {
+  background-image: url(../img/docicons/gz.png); }
+
+div.icon.user {
+  background-image: url(../img/docicons/user.png); }

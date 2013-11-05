@@ -1,8 +1,9 @@
 {% load i18n markup %}
 <div class="post">
-    <h2 class="title">
-        <a href="{{ object.get_absolute_url }}">{{object}}</a>
-    </h2>
+    <div class="title">
+        <h2 href="{{ object.get_absolute_url }}">{{object}}</h2>
+        <span class="date right">{{object.created}}</span>
+    </div >
     <div class="entry">
         {{ object.descriptif|truncatewords_html:"70"|textile }}
     </div>
@@ -11,7 +12,7 @@
             {% trans "Peptides" %}:&nbsp;{{object.peptides}}
         </div>
         <div class="comments">
-            <span class="date">{{object.created}}</span>
+            <a class="more" href="{{object.get_absolute_url}}">{% trans "Voire plus" %}</a>
         </div>
     </div>
 </div>

@@ -56,6 +56,8 @@
                     {% block page.sidebar %}{% endblock %}
                 </div>
                 <div id="content">
+                    {% breadcrumb %}
+                    <div class="clearfix"></div>
                     {% block page.body %}{% endblock %}
                 </div>
 

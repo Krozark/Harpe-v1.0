@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load i18n markup gblocks %}
+{% block page.title %} | {{page}}  {{ object}}{% endblock %}
+
+{% block page.body %}
+<h2>{{ object }}</h2>
+
+<div class="post">
+    <div class="entry">
+        {{object.descriptif|textile}}
+    </div>
+    <div class="meta">
+        <div class="byline">
+            <a href="{{MEDIA_URL}}{{object.mgf}}">
+                <div class="icon {{object.mgf|get_file_extension}}">
+                    {{object.mgf|get_file_name}}
+                </div>
+            </a>
+        </div>
+        <div class="comments">
+            <span class="date">{{object.created}}</span>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
