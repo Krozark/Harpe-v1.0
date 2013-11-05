@@ -1,0 +1,17 @@
+{% load i18n markup %}
+<div class="post">
+    <h2 class="title">
+        <a href="{{ object.get_absolute_url }}">{{object}}</a>
+    </h2>
+    <div class="entry">
+        {{ object.descriptif|truncatewords_html:"70"|textile }}
+    </div>
+    <div class="meta">
+        <div class="byline">
+            {% trans "Peptides" %}:&nbsp;{{object.peptides}}
+        </div>
+        <div class="comments">
+            <span class="date">{{object.created}}</span>
+        </div>
+    </div>
+</div>

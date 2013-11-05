@@ -1,11 +1,10 @@
-@charset "UTF-8";
 /*
 SCSS3 (c) 2011 Motion Média
 Inspired by http://css3please.com/
 */
-.clearfix, .pagination, .header .menu, #main, #main .wrapper, #main .wrapper #content form, #footer, #footer .wrapper, #footer .wrapper .social_button {
+.clearfix, .pagination, .header .menu, #main, #main .wrapper, #main .wrapper #content form, #main .wrapper #content .post .meta, #footer, #footer .wrapper, #footer .wrapper .social_button {
   zoom: 1; }
-  .clearfix:before, .pagination:before, .header .menu:before, #main:before, #main .wrapper:before, #main .wrapper #content form:before, #footer:before, #footer .wrapper:before, #footer .wrapper .social_button:before, .clearfix:after, .pagination:after, .header .menu:after, #main:after, #main .wrapper:after, #main .wrapper #content form:after, #footer:after, #footer .wrapper:after, #footer .wrapper .social_button:after {
+  .clearfix:before, .pagination:before, .header .menu:before, #main:before, #main .wrapper:before, #main .wrapper #content form:before, #main .wrapper #content .post .meta:before, #footer:before, #footer .wrapper:before, #footer .wrapper .social_button:before, .clearfix:after, .pagination:after, .header .menu:after, #main:after, #main .wrapper:after, #main .wrapper #content form:after, #main .wrapper #content .post .meta:after, #footer:after, #footer .wrapper:after, #footer .wrapper .social_button:after {
     content: '.';
     display: block;
     overflow: hidden;
@@ -14,17 +13,17 @@ Inspired by http://css3please.com/
     line-height: 0;
     width: 0;
     height: 0; }
-  .clearfix:after, .pagination:after, .header .menu:after, #main:after, #main .wrapper:after, #main .wrapper #content form:after, #footer:after, #footer .wrapper:after, #footer .wrapper .social_button:after {
+  .clearfix:after, .pagination:after, .header .menu:after, #main:after, #main .wrapper:after, #main .wrapper #content form:after, #main .wrapper #content .post .meta:after, #footer:after, #footer .wrapper:after, #footer .wrapper .social_button:after {
     clear: both; }
 
 .reset-box {
   margin: 0;
   padding: 0; }
 
-.right, .header .menu, #main .wrapper #content, #main .wrapper #content form ul.errorlist {
+.right, .header .menu, #main .wrapper #content, #main .wrapper #content form ul.errorlist, #main .wrapper #content .post .meta .comments {
   float: right; }
 
-.left, .header #title, #main .wrapper #sidebar, #footer .wrapper .social_button .facebook, #footer .wrapper .social_button .flickr, #footer .wrapper .social_button .twitter, #footer .wrapper .social_button .youtube, #footer .wrapper .social_button .feed {
+.left, .header #title, #main .wrapper #sidebar, #main .wrapper #content .post .meta .byline, #footer .wrapper .social_button .facebook, #footer .wrapper .social_button .flickr, #footer .wrapper .social_button .twitter, #footer .wrapper .social_button .youtube, #footer .wrapper .social_button .feed {
   float: left; }
 
 .link, a {
@@ -37,7 +36,7 @@ Inspired by http://css3please.com/
 .divider {
   margin-bottom: 40px;
   padding-bottom: 20px;
-  border-bottom: 1px solid #cccccc; }
+  border-bottom: 1px solid #ccc; }
 
 .bordered, .header .menu, .header .menu .nav-0 .item-1 .nav {
   border: #6c6c6c 1px solid;
@@ -106,27 +105,19 @@ h6 {
 .pagination {
   margin: 0 0 20px;
   padding: 0; }
-  .pagination ul {
-    margin: 0;
-    padding: 0;
-    list-style: none; }
-    .pagination ul li {
-      margin: 0;
-      padding: 0;
-      display: inline; }
-      .pagination ul li a {
-        float: left;
-        display: block;
-        color: #333;
-        text-decoration: none;
-        margin-right: 5px;
-        padding: 5px 10px;
-        background: #fff;
-        border: 1px solid #6c6c6c; }
-        .pagination ul li a:hover {
-          background: #ccc;
-          border: 1px solid white;
-          color: #fff; }
+  .pagination a {
+    float: left;
+    display: block;
+    color: #333;
+    text-decoration: none;
+    margin-right: 5px;
+    padding: 5px 10px;
+    background: #fff;
+    border: 1px solid #6c6c6c; }
+    .pagination a:hover {
+      background: #ccc;
+      border: 1px solid #fff;
+      color: #fff; }
 
 body {
   background-image: url(../img/body_head.png);
@@ -283,6 +274,48 @@ body {
           font-size: 13px;
           margin: 10px 0px;
           width: 100px; }
+      #main .wrapper #content .post {
+        padding: 10px;
+        margin-bottom: 10px;
+        -webkit-box-shadow: -3px -3px 8px black;
+        -moz-box-shadow: -3px -3px 8px black;
+        box-shadow: -3px -3px 8px black;
+        -moz-border-radius: 8px 8px 8px 8px;
+        -webkit-border-radius: 8px 8px 8px 8px;
+        border-radius: 8px 8px 8px 8px;
+        -moz-background-clip: padding;
+        -webkit-background-clip: padding-box;
+        background-clip: padding-box;
+        background-color: #cccccc;
+        -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#cccccc', EndColorStr='#eeeeee')";
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#cccccc', EndColorStr='#eeeeee');
+        background-image: -webkit-gradient(linear, left top, left bottom, from(#cccccc), to(#eeeeee));
+        background-image: -webkit-linear-gradient(top, #cccccc, #eeeeee);
+        background-image: -moz-linear-gradient(top, #cccccc, #eeeeee);
+        background-image: -ms-linear-gradient(top, #cccccc, #eeeeee);
+        background-image: -o-linear-gradient(top, #cccccc, #eeeeee);
+        background-image: linear-gradient(top bottom, #cccccc, #eeeeee);
+        /*background: url(../img/divider_2.png) bottom center no-repeat ;  
+        &:last-child {
+            background : None;
+        }*/ }
+        #main .wrapper #content .post:nth-child(2n+2) {
+          background-color: #a3a3a3;
+          -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#a3a3a3', EndColorStr='#bebebe')";
+          filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#a3a3a3', EndColorStr='#bebebe');
+          background-image: -webkit-gradient(linear, left top, left bottom, from(#a3a3a3), to(#bebebe));
+          background-image: -webkit-linear-gradient(top, #a3a3a3, #bebebe);
+          background-image: -moz-linear-gradient(top, #a3a3a3, #bebebe);
+          background-image: -ms-linear-gradient(top, #a3a3a3, #bebebe);
+          background-image: -o-linear-gradient(top, #a3a3a3, #bebebe);
+          background-image: linear-gradient(top bottom, #a3a3a3, #bebebe); }
+        #main .wrapper #content .post .meta span {
+          float: left;
+          display: block;
+          margin-right: 15px;
+          padding: 5px 0 5px 26px; }
+          #main .wrapper #content .post .meta span.date {
+            background: url(../img/calendar.png) no-repeat; }
 
 #footer {
   width: 100%;

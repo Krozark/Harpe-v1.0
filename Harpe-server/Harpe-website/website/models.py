@@ -3,6 +3,8 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
+from Kraggne.contrib.gblocks.utils import file_cleanup
+from django.db.models.signals import post_delete
 
 # Create your models here.
 
@@ -50,16 +52,26 @@ class Enzyme(models.Model):
         return "%s" % self.name
 
 class AnalyseMgf(models.Model):
-    owner   = models.ForeignKey(User)
-    name    = models.CharField(_("name"),max_length=255,unique=True)
-    created = models.DateTimeField(_("Created"),auto_now=True)
-    mgf     = models.FileField(_("MGF"),upload_to="mgf/")
+    owner      = models.ForeignKey(User)
+    name       = models.CharField(_("name"),max_length=255,unique=True)
+    descriptif = models.TextField(_("Descriptif"),blank=True)
+    created    = models.DateTimeField(_("Created"),auto_now=True)
+    mgf        = models.FileField(_("MGF"),upload_to="mgf/")
+
+    paginate_by = 3
 
     class Meta:
-        ordering = ["created",]
+        ordering = ["-created",]
         unique_together = ("owner","name")
+
+    
+    @property
+    def peptides(self):
+        return 42
 
     def __unicode__(self):
         return u"%s" % self.name
+
+post_delete.connect(file_cleanup, sender=AnalyseMgf, dispatch_uid="AnalyseMgf.file_cleanup")
 
 

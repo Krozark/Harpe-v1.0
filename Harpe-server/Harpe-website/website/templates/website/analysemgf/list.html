@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% load flatblocks %}
+
+{% block page.body %}
+
+{# include "Kraggne/pagination.inc.html" #}
+
+{% for object in object_list %}
+{% display object %}
+{% endfor %}
+
+{% include "Kraggne/pagination.inc.html" %}
+
+{% endblock %}

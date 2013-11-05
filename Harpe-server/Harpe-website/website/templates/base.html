@@ -10,13 +10,14 @@
 
         {% block site.headstyles %}
         <link href="{{ STATIC_URL}}website/css/reset.css" rel="stylesheet" type="text/css" media="screen" />
+        <link href="{{STATIC_URL}}Kraggne/css/kraggne.css" rel="stylesheet">
         <link href="{{ STATIC_URL}}website/css/site.css" rel="stylesheet" type="text/css" media="screen" />
         {% block app.headstyles %}{% endblock %}
         {% block project.headstyles %}{% endblock %}
         {% endblock %}
 
         {% block site.headscripts %}
-            <script type="text/javascript" src="{{STATIC_URL}}website/js/jquery.min.js"></script>
+            <script src="{{STATIC_URL}}Kraggne/js/jquery.js"></script>
             {% block app.headscripts %}{% endblock %}
             {% block project.headscripts %}{% endblock %}
         {% endblock %}
@@ -33,33 +34,6 @@
                     <a href="/"></a>
                 </div>
                 {% menu "main" %} 
-                <div class="nav-block menu">
-                    <ul class="nav nav-0">
-                        <li class="item-1 active item">
-                        <a class="link-1 active link" href="/">Accueil</a>
-                        </li>
-                        <li class="item-1 inactive item">
-                        <a class="link-1 inactive link" href="/propos">À propos</a>
-                        </li>
-                        <li class="item-1 inactive item">
-                        <a class="link-1 inactive link" href="/blog">Blog</a>
-                        <ul class="nav nav-1">
-                            <li class="item-2 inactive item">
-                            <a class="link-2 inactive link" href="/blog/2/">Une carte de jeu infine</a>
-                            </li>
-                            <li class="item-2 inactive item">
-                            <a class="link-2 inactive link" href="/blog/1/">Accès au nœuds X d'un arbre binaire</a>
-                            </li>
-                        </ul>
-                        </li>
-                        <li class="item-1 inactive item">
-                        <a class="link-1 inactive link" href="/services">Services</a>
-                        </li>
-                        <li class="item-1 inactive item">
-                        <a class="link-1 inactive link" href="/contact">Contact</a>
-                        </li>
-                    </ul>
-                </div>
             </div>
         </div>
         <div id="main">
@@ -85,10 +59,6 @@
                     {% block page.body %}{% endblock %}
                 </div>
 
-                {% block site.scripts %}
-                {% block app.scripts %}{% endblock %}
-                {% block project.scripts %}{% endblock %}
-                {% endblock %}
             </div>
         </div>
         <div id="footer">
@@ -141,6 +111,10 @@
                     </p>
                 </div>
             </div>
+            {% block site.scripts %}
+            {% block app.scripts %}{% endblock %}
+            {% block project.scripts %}{% endblock %}
+            {% endblock %}
     </body>
 </html>
 {% endspaceless %}

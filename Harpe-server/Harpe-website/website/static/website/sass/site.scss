@@ -100,34 +100,22 @@ h6 {
 .pagination {
     @extend .clearfix;
     margin: 0 0 20px; 
-	padding: 0;
+    padding: 0;
 
-    ul { 
-        margin: 0; 
-        padding: 0; 
-        list-style: none; 
+    a { 
+        float: left; 
+        display: block; 
+        color: #333; 
+        text-decoration: none; 
+        margin-right: 5px; 
+        padding: 5px 10px; 
+        background: #fff; 
+        border: 1px solid $bordercolor;
 
-        li {
-            margin: 0; 
-            padding: 0; 
-            display: inline; 
-
-            a { 
-                float: left; 
-                display: block; 
-                color: #333; 
-                text-decoration: none; 
-                margin-right: 5px; 
-                padding: 5px 10px; 
-                background: #fff; 
-                border: 1px solid $bordercolor;
-
-                &:hover { 
-                    background: #ccc; 
-                    border: 1px solid #fff;
-                    color: #fff;  
-                }
-            }
+        &:hover { 
+            background: #ccc; 
+            border: 1px solid #fff;
+            color: #fff;  
         }
     }
 }
@@ -359,6 +347,51 @@ body {
                 }	
 
             }
+
+            .post {
+                padding : 10px;
+                margin-bottom : 10px;
+
+                @include box-shadow(-3px,-3px,8px);
+                @include border-radius();
+                @include background-gradient(#CCC,#EEE);
+
+                /*background: url(../img/divider_2.png) bottom center no-repeat ;  
+                &:last-child {
+                    background : None;
+                }*/
+                &:nth-child(2n+2) {  
+                    @include background-gradient(#CCC*0.8 ,#EEE*0.8);
+                }
+
+                .title {
+                }
+
+                .entry {
+                }
+
+                .meta {
+                    @extend .clearfix;
+                    span { 
+                        float: left; 
+                        display: block; 
+                        margin-right: 15px; 
+                        padding: 5px 0 5px 26px; 
+
+                        &.date { 
+                            background: url(../img/calendar.png) no-repeat; 
+                        }
+                    }
+
+                    .byline {
+                        @extend .left;
+                    }
+                    .comments {
+                        @extend .right;
+                    }
+                }
+            }
+
         }
     }
 }

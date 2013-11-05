@@ -5,5 +5,5 @@ from website.views import *
 
 urlpatterns = patterns('',
        url(r'^$', HomeView.as_view(),name="website-home"), 
-       url(r'^a-propos$', HomeView.as_view(),name="website-about"), 
+       url(r'^mes-analyses$', AnalyseMgfView.as_view(),name="mes-analyses"), 
 )
