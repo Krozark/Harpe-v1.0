@@ -77,11 +77,6 @@ class AnalyseMgf(models.Model):
     def get_peptide_count(self):
         return self.analysepeptide_set.count()
 
-    def get_calculated_peptide_count(self):
-        res = CalculatedPeptide.objects.filter(analyse__analyse=self).values('analyse__analyse').annotate(num=Count("id")).order_by()
-        print res
-        print res.query
-
     def __unicode__(self):
         return u"%s" % self.name
 
