@@ -8,14 +8,18 @@
 
 Serveur::Serveur() : main_sock(ntw::Socket::Dommaine::IP,ntw::Socket::Type::TCP)
 {
-    main_sock.serveurMode(MAX_CLIENTS,"",PORT);
+    main_sock.serverMode(PORT,MAX_CLIENTS);
 
     new_client_selector.setRead(true);
     new_client_selector.onSelect = Serveur::newClientRecived;
+    new_client_selector.data = this;
+    new_client_selector.setDelete(true);
     new_client_selector.add(&main_sock);
 
     client_selector.setRead(true);
     client_selector.onSelect = Serveur::clientMsgRecived;
+    client_selector.data = this;
+    client_selector.setDelete(true);
 
 };
 
@@ -41,11 +45,11 @@ void Serveur::stop()
 }
 
 
-void Serveur::newClientRecived(ntw::SelectManager& new_client_selector, ntw::Socket& client_sock)
+void Serveur::newClientRecived(ntw::SelectManager& new_client_selector,void* data,ntw::SocketSerialized& client_sock)
 {
     ntw::SocketSerialized* clientSock = new ntw::SocketSerialized(client_sock.accept());
     //gros hack pour choper l'instance de serveur
-    Serveur* serveur = (Serveur*)((long int)&new_client_selector- (long int)(&((Serveur*)NULL)->new_client_selector));
+    Serveur* serveur = (Serveur*)data;
     serveur->client_selector.add(clientSock);
 
     *clientSock<<"hello!";
@@ -53,7 +57,7 @@ void Serveur::newClientRecived(ntw::SelectManager& new_client_selector, ntw::Soc
     
 }
 
-void Serveur::clientMsgRecived(ntw::SelectManager& client_selector, ntw::Socket& client_sock)
+void Serveur::clientMsgRecived(ntw::SelectManager& client_selector,void* data, ntw::SocketSerialized& client_sock)
 {
     ntw::SocketSerialized& clientSock = *(ntw::SocketSerialized*)&client_sock;
     if(clientSock.receive() >0)

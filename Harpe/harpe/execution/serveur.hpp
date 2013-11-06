@@ -49,8 +49,8 @@ class Serveur
         ntw::SelectManager new_client_selector;
         ntw::SelectManager client_selector;
         
-        static void newClientRecived(ntw::SelectManager& new_client_selector, ntw::Socket& client_sock);
-        static void clientMsgRecived(ntw::SelectManager& client_selector, ntw::Socket& client_sock);
+        static void newClientRecived(ntw::SelectManager& new_client_selector,void* data,ntw::SocketSerialized& client_sock);
+        static void clientMsgRecived(ntw::SelectManager& client_selector,void* data,ntw::SocketSerialized& client_sock);
 
 };
 

@@ -24,11 +24,11 @@ LIBS = -lmysqlcppconn -lpthread
 #else
 #SFLAGS = -static  -Ldir_path -lmysqlclient
 #endif
+export TOP := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
 
 export DEFINES = -DCOLORS $(APPRENTISSAGE)
 #-Ofast
-export FLAGS = -g -std=c++0x $(SFLAGS) $(INCPATH) $(LIBS) $(DEFINES)
-export TOP := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
+export FLAGS = -g -std=c++0x $(SFLAGS) -I$(TOP)/harpe/execution/Socket $(INCPATH) $(LIBS) $(DEFINES)
 export OBJ_DIR = $(TOP)/obj
 
 SRC = $(wildcard *.c*)
