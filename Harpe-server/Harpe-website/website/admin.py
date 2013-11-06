@@ -24,5 +24,15 @@ admin.site.register(Enzyme,EnzymeAdmin)
 
 class AnalyseMgfAdmin(admin.ModelAdmin):
     list_display = ("name","owner","created","mgf")
-    search_list = ("name","owner")
+    search_list  = ("name","owner")
 admin.site.register(AnalyseMgf,AnalyseMgfAdmin)
+
+class AnalysePeptideAdmin(admin.ModelAdmin):
+    list_display    = ('analyse','name')
+    search_list     = ('analyse','name')
+admin.site.register(AnalysePeptide,AnalysePeptideAdmin)
+
+class CalculatedPeptideAdmin(admin.ModelAdmin):
+    list_display    = ('analyse','score')
+    search_list     = ('analyse','sequence')
+admin.site.register(CalculatedPeptide,CalculatedPeptideAdmin)

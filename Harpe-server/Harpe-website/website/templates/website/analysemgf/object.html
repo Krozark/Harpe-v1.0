@@ -9,7 +9,7 @@
     </div>
     <div class="meta">
         <div class="byline">
-            {% trans "Peptides" %}:&nbsp;{{object.peptides}}
+            {% trans "Peptides" %}:&nbsp;{{object.get_calculated_peptide_count}}/{{object.get_peptide_count}}
         </div>
         <div class="comments">
             <a class="more" href="{{object.get_absolute_url}}">{% trans "Voir plus" %}</a>

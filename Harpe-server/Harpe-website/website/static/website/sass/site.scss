@@ -410,6 +410,19 @@ ul.breadcrumb {
                         text-indent : 15px;
                         margin-bottom : 5px;
                     }
+
+                    table {
+                        font-size: 0.9em;
+                        width : 100%;
+                        margin : 0 auto;
+
+                        tr {
+                            td {
+                                border: 1px solid #CCC;
+                                padding : 3px;
+                            }
+                        }
+                    }
                 }
 
                 .meta {

@@ -5,6 +5,7 @@ from django.db import models
 from django.db.models.signals import post_delete
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
+from django.db.models import Count
 
 from Kraggne.contrib.gblocks.utils import file_cleanup
 
@@ -15,10 +16,9 @@ class AA(models.Model):
     slug = models.SlugField(_("short name"),max_length=16)
     mass = models.DecimalField(_("mass"),max_digits=15,decimal_places=10)
 
-
     class Meta:
         ordering = ["slug",]
-        verbose_name = _("amino acid")
+        verbose_name = _(u"Acide aminé")
 
 
     def __unicode__(self):
@@ -27,6 +27,9 @@ class AA(models.Model):
 class ImpossibleCut(models.Model):
     first = models.ForeignKey(AA,related_name="first")
     second = models.ForeignKey(AA,related_name="second")
+
+    class Meta:
+        verbose_name = _(u"Coupure d'enzyme impossible")
 
     def __unicode__(self):
         return "%s - %s" % (self.first,self.second)
@@ -37,9 +40,9 @@ class Enzyme(models.Model):
     cut_after = models.ManyToManyField(AA,null=True,blank=True,related_name="AA_after")
     cut_imposible = models.ManyToManyField(ImpossibleCut,null=True,blank=True)
 
-
     class Meta:
         ordering = ["name",]
+        verbose_name = _("Enzyme")
 
 
     @property
@@ -52,6 +55,7 @@ class Enzyme(models.Model):
 
     def __unicode__(self):
         return "%s" % self.name
+
 
 class AnalyseMgf(models.Model):
     owner      = models.ForeignKey(User)
@@ -68,11 +72,15 @@ class AnalyseMgf(models.Model):
     class Meta:
         ordering = ["-created",]
         unique_together = ("owner","name")
+        verbose_name = _(u"Analyse de fichier Mgf")
 
-    
-    @property
-    def peptides(self):
-        return 42
+    def get_peptide_count(self):
+        return self.analysepeptide_set.count()
+
+    def get_calculated_peptide_count(self):
+        res = CalculatedPeptide.objects.filter(analyse__analyse=self).values('analyse__analyse').annotate(num=Count("id")).order_by()
+        print res
+        print res.query
 
     def __unicode__(self):
         return u"%s" % self.name
@@ -89,6 +97,7 @@ class AnalysePeptide(models.Model):
 
     class Meta:
         ordering = ['analyse',]
+        verbose_name = _(u"Analyse d'un peptide")
 
     def __unicode__(self):
         return "%s : %s" % (self.analyse,self.name or self.pk)
@@ -96,13 +105,14 @@ class AnalysePeptide(models.Model):
     def get_absolute_url(self):
         return "#"
 
-class PeptideFind(models.Model):
+class CalculatedPeptide(models.Model):
     score       = models.FloatField(_("Score"),null=False,blank=False)
     sequence    = models.TextField(_("Séquence"),null=False,blank=False,help_text = u"peak_masse(AA_id,peak_masse)*")
     analyse     = models.ForeignKey(AnalysePeptide,null=False,blank=False)
 
     class Meta:
         ordering = ['analyse','-score']
+        verbose_name = _(u"Proposition de peptide")
 
     def __unicode__(self):
         return "%s : %f" % (self.analyse.name, self.score)

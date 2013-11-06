@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /*
 SCSS3 (c) 2011 Motion Média
 Inspired by http://css3please.com/
@@ -36,7 +37,7 @@ Inspired by http://css3please.com/
 .divider {
   margin-bottom: 40px;
   padding-bottom: 20px;
-  border-bottom: 1px solid #ccc; }
+  border-bottom: 1px solid #cccccc; }
 
 .bordered, .header .menu, .header .menu .nav-0 .item-1 .nav {
   border: #6c6c6c 1px solid;
@@ -116,7 +117,7 @@ h6 {
     border: 1px solid #6c6c6c; }
     .pagination a:hover {
       background: #ccc;
-      border: 1px solid #fff;
+      border: 1px solid white;
       color: #fff; }
 
 body {
@@ -322,6 +323,13 @@ ul.breadcrumb {
         #main .wrapper #content .post .entry p {
           text-indent: 15px;
           margin-bottom: 5px; }
+        #main .wrapper #content .post .entry table {
+          font-size: 0.9em;
+          width: 100%;
+          margin: 0 auto; }
+          #main .wrapper #content .post .entry table tr td {
+            border: 1px solid #cccccc;
+            padding: 3px; }
         #main .wrapper #content .post .meta .comments .more {
           color: #09c0cf; }
 

@@ -7,19 +7,30 @@
 
 <div class="post">
     <div class="entry">
-        {{object.descriptif|textile}}
-    </div>
-    <div class="meta">
-        <div class="byline">
-            <a href="{{MEDIA_URL}}{{object.mgf}}">
-                <div class="icon {{object.mgf|get_file_extension}}">
-                    {{object.mgf|get_file_name}}
-                </div>
-            </a>
-        </div>
-        <div class="comments">
-            <span class="date">{{object.created}}</span>
-        </div>
+        <table>
+            <tr>
+                <td>{% trans "Descriptif"%}</td>
+                <td>{% if object.descriptif %}{{object.descriptif|textile}}{% else %}{% trans "Aucun" %}{% endif %}</td>
+            </tr>
+            <tr>
+                <td>{% trans "Enzyme utilisé" %}</td>
+                <td>{% if object.enzyme %}{{object.enzyme}}{% else %}{% trans "Non précisée" %}{% endif %}</td>
+            </tr>
+            <tr>
+                <td>{% trans "Fichier original" %}</td>
+                <td>
+                    <a href="{{MEDIA_URL}}{{object.mgf}}">
+                        <div class="icon {{object.mgf|get_file_extension}}">
+                            {{object.mgf|get_file_name}}
+                        </div>
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td>{% trans "Date de création" %}</td>
+                <td><span class="date">{{object.created}}</span></td>
+            </tr>
+        </table>
     </div>
 </div>
 
