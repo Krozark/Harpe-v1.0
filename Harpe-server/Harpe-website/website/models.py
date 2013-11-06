@@ -87,6 +87,9 @@ class AnalysePeptide(models.Model):
     name        = models.CharField(_("name"),max_length=255,null=True,blank=True)
     mgf_part    = models.TextField(_("Peptide MGF"),blank=False,null=False)
 
+    class Meta:
+        ordering = ['analyse',]
+
     def __unicode__(self):
         return "%s : %s" % (self.analyse,self.name or self.pk)
 
@@ -97,6 +100,9 @@ class PeptideFind(models.Model):
     score       = models.FloatField(_("Score"),null=False,blank=False)
     sequence    = models.TextField(_("Séquence"),null=False,blank=False,help_text = u"peak_masse(AA_id,peak_masse)*")
     analyse     = models.ForeignKey(AnalysePeptide,null=False,blank=False)
+
+    class Meta:
+        ordering = ['analyse','-score']
 
     def __unicode__(self):
         return "%s : %f" % (self.analyse.name, self.score)
