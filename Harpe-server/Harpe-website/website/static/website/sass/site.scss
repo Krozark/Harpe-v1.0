@@ -120,6 +120,24 @@ h6 {
     }
 }
 
+.btn { 
+    padding: 5px 14px; 
+    font-weight: bold;  
+    color: #222; 
+    background: #fcfcfc; 
+    border: 1px solid #dedede; 
+    font-family: Tahoma, Geneva, sans-serif;
+    font-size: 13px;
+    margin: 10px 0px; 
+    width : 100px;
+
+    &:hover { 
+        background: #ccc; 
+        border: 1px solid #fff;
+        color: #fff;  
+    }
+}	
+
 body {
      background-image: url(../img/body_head.png);
      background-repeat: repeat-x;
@@ -357,17 +375,6 @@ ul.breadcrumb {
                     margin-top: 5px; 
                 }
 
-                .btn { 
-                    padding: 5px 14px; 
-                    font-weight: bold;  
-                    color: #222; 
-                    background: #fcfcfc; 
-                    border: 1px solid #dedede; 
-                    font-family: Tahoma, Geneva, sans-serif;
-                    font-size: 13px;
-                    margin: 10px 0px; 
-                    width : 100px;
-                }	
 
             }
 
@@ -414,7 +421,7 @@ ul.breadcrumb {
                     table {
                         font-size: 0.9em;
                         width : 100%;
-                        margin : 0 auto;
+                        margin-bottom : 10px;
 
                         tr {
                             td {

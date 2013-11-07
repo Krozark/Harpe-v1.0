@@ -80,8 +80,15 @@ class AnalyseMgf(models.Model):
     def __unicode__(self):
         return u"%s" % self.name
 
+    def can_analyse(self):
+        return CalculatedPeptide.objects.filter(analyse__analyse=self.pk).count()
+
+    def get_analyse_url(self):
+        return reverse("analyse-analyse",kwargs={"pk":self.pk})
+
     def get_absolute_url(self):
         return reverse("analyse-detail",kwargs={"pk":self.pk})
+
 post_delete.connect(file_cleanup, sender=AnalyseMgf, dispatch_uid="AnalyseMgf.file_cleanup")
 
 

@@ -32,6 +32,40 @@
             </tr>
         </table>
     </div>
+    {% if object.can_analyse %}
+        <span class="btn" id="go-analyse">{% trans "Analyser" %}</span>
+    {% endif %}
 </div>
 
+{% for object in object.analysepeptide_set.all %}
+{{object}}
+{% endfor %}
+
+{% endblock %}
+
+{% block app.scripts %}
+{% if object.can_analyse %}
+<script src="{{ STATIC_URL }}contentblocks/js/jquery.cookie.js"></script>
+<script>
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            if ($.cookie('csrftoken') && (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url)))) {
+                xhr.setRequestHeader("X-CSRFToken", $.cookie('csrftoken'))
+            }
+        }
+    });
+
+    $("#go-analyse").click(function(){
+        $.ajax({
+            type:"POST",
+            url:"{{object.get_analyse_url}}",
+            data:"",
+            success: function(json){
+                console.log(json);
+            }
+        });
+    });
+
+</script>
+{% endif %}
 {% endblock %}

@@ -1,13 +1,11 @@
 from django.core.management.base import BaseCommand, CommandError
-from website.utils import Socket
+from website.contrib.commuication.utils import Socket, create_socket
 
 class Command(BaseCommand):
 
     def handle(self, *args, **options):
-        sock = Socket(Socket.Dommaine.IP,Socket.Type.TCP)
-        sock.connect("127.0.0.1",3987)
-        if sock.verify_connexion() != sock.NTW_ERROR_NO:
-            print "An error accur"
+        sock = create_socket()
+        if not sock:
             return
         print "Ready"
         print "Call function with id 1 (get version)"

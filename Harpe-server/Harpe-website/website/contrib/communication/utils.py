@@ -103,3 +103,18 @@ class Socket:
            return unpack("!"+ret_type,self.buffer)[0]
         return None
 
+
+def create_socket():
+    sock = Socket(Socket.Dommaine.IP,Socket.Type.TCP)
+    sock.connect("127.0.0.1",3987)
+    if sock.verify_connexion() != sock.NTW_ERROR_NO:
+        print "An error accur"
+        return None
+    return sock
+
+
+def send_AnalyseMgf_to_calc(analyseMfg):
+    sock = create_socket()
+    if not sock:
+        return False
+    sock.call("i",3,"i",analyseMfg.pk)
