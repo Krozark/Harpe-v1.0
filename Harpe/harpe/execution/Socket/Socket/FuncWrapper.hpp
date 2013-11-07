@@ -20,9 +20,17 @@ namespace ntw
             static int getVersion(SocketSerialized& sock); ///< get serveur version
             static int testParamInt(SocketSerialized& sock,int);
 
-            enum FUNCTONS_ID {UNKNOW=0,GET_VERSION,TESTPARAMINT,MAX_FN_ID};
+            enum FUNCTONS_ID {
+                UNKNOW=0,
+                GET_VERSION,
+                TESTPARAMINT,
+                ANALYSE_ANALYSEMGF,
+                MAX_FN_ID
+            };
 
             #if NTW_MODE == NTW_SERVER
+            static int analyseAnalyseMgf(SocketSerialized& sock,int analyseMGF_pk);
+
             static void dispatch(SocketSerialized& request);
             #endif
             

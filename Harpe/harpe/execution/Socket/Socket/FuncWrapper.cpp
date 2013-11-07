@@ -62,6 +62,13 @@ namespace ntw
         return v+12;
     }
 
+    int FuncWrapper::analyseAnalyseMgf(SocketSerialized& sock,int analyseMGF_pk)
+    {
+        /* \todo TODO
+         auto analyse = AnalyseMgf.query().get(analyseMGF_pk);
+         */
+    }
+
 
     void FuncWrapper::dispatch(SocketSerialized& request)
     {
@@ -81,6 +88,10 @@ namespace ntw
             case  FUNCTONS_ID::TESTPARAMINT :
                 {
                     exec(testParamInt,request);
+                }break;
+            case FUNCTONS_ID::ANALYSE_ANALYSEMGF:
+                {
+                    exec(analyseAnalyseMgf,request);
                 }break;
             default:
                 std::cerr<<"[ERROR] FuncWrapper::dispatch, FUNCTONS_ID not find: "<<id<<std::endl;
